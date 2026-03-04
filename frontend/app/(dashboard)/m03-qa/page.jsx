@@ -7,17 +7,12 @@ import {
   Layout,
   ShieldCheck,
   Users,
-  Search,
-  Filter,
   Download,
-  Plus,
-  PlayCircle,
-  FileText
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { mockQualityForms, mockEvaluations, mockComplianceRules } from "@/lib/mock-data/qa";
+import { mockEvaluations, mockComplianceRules } from "@/lib/mock-data/qa";
 
 // M03 Components
 import ScorecardBuilder from "@/components/m03/ScorecardBuilder";
@@ -47,7 +42,7 @@ export default function QACompliancePage() {
           <Badge variant="outline" className="bg-background/50 backdrop-blur-sm border-primary/20 text-primary font-bold px-3 py-1">
             <ShieldCheck className="h-3 w-3 mr-1.5" /> 100% AUDIT COVERAGE
           </Badge>
-          <div className="h-10 w-[1px] bg-border/50 mx-2" />
+          <div className="h-10 w-px bg-border/50 mx-2" />
           <Button variant="outline" size="sm" className="h-10 px-4 gap-2 font-bold backdrop-blur-sm bg-background/50">
             <Download className="h-4 w-4" /> Export Report
           </Button>

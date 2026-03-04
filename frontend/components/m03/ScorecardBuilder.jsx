@@ -9,12 +9,9 @@ import {
    Settings2,
    FileText,
    CheckCircle2,
-   AlertTriangle,
-   Info,
-   ChevronDown,
    Layout
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,297 +31,167 @@ import {
    AccordionItem,
    AccordionTrigger,
 } from "@/components/ui/accordion";
-import { cn } from "@/lib/utils";
 
 export default function ScorecardBuilder() {
-   const [formName, setFormName] = useState("New Quality Scorecard");
-   const [passingScore, setPassingScore] = useState(85);
    const [sections, setSections] = useState([
-      {
-         id: "s1",
-         name: "Soft Skills",
-         weight: 40,
-         criteria: [
-            { id: "c1", name: "Professional Greeting", method: "yes-no", weight: 10, aiDetection: "keyword", critical: false },
-            { id: "c2", name: "Empathy Demonstrated", method: "scale-5", weight: 30, aiDetection: "sentiment", critical: false }
-         ]
-      }
+      { name: "Compliance & Security", weight: 30, items: [] },
+      { name: "Soft Skills", weight: 20, items: [] },
+      { name: "Product Knowledge", weight: 50, items: [] }
    ]);
 
-   const addSection = () => {
-      setSections([...sections, {
-         id: Math.random().toString(36).substr(2, 9),
-         name: "New Section",
-         weight: 0,
-         criteria: []
-      }]);
-   };
-
-   const addCriteria = (sectionId) => {
-      setSections(sections.map(s => {
-         if (s.id === sectionId) {
-            return {
-               ...s,
-               criteria: [...s.criteria, {
-                  id: Math.random().toString(36).substr(2, 9),
-                  name: "New Criteria",
-                  method: "yes-no",
-                  weight: 0,
-                  aiDetection: "none",
-                  critical: false
-               }]
-            };
-         }
-         return s;
-      }));
-   };
-
-   const totalWeight = sections.reduce((sum, s) => sum + s.weight, 0);
+   const [activeConfig, setActiveConfig] = useState({
+      autoSubmit: true,
+      alertOnFail: false,
+      requireCoaching: true,
+      calibrationMode: "consensus"
+   });
 
    return (
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-         {/* Sidebar Settings (3.1.1) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+         {/* Left Column: Form & Configuration (3.1.1) */}
          <div className="lg:col-span-1 space-y-6">
-            <Card>
-               <CardHeader className="pb-3 border-b bg-muted/30">
-                  <CardTitle className="text-sm font-bold flex items-center gap-2">
-                     <Settings2 className="h-4 w-4 text-primary" />
-                     Scorecard Settings
-                  </CardTitle>
+            <Card className="border-primary/20 shadow-lg">
+               <CardHeader className="bg-primary/5 pb-4">
+                  <div className="flex items-center gap-2">
+                     <Settings2 className="h-5 w-5 text-primary" />
+                     <CardTitle className="text-lg">Scorecard Configuration</CardTitle>
+                  </div>
                </CardHeader>
-               <CardContent className="pt-4 space-y-4">
+               <CardContent className="pt-6 space-y-6">
                   <div className="space-y-2">
-                     <Label htmlFor="form-name">Form Name</Label>
-                     <Input
-                        id="form-name"
-                        value={formName}
-                        onChange={(e) => setFormName(e.target.value)}
-                     />
+                     <Label className="text-xs uppercase font-bold text-muted-foreground mr-1">1. Scorecard Name</Label>
+                     <Input placeholder="e.g. Inbound Sales V2.1" className="bg-muted/10 h-10" />
                   </div>
-                  <div className="space-y-2">
-                     <Label htmlFor="passing-score">Passing Score ({passingScore}%)</Label>
-                     <Input
-                        id="passing-score"
-                        type="number"
-                        value={passingScore}
-                        onChange={(e) => setPassingScore(parseInt(e.target.value))}
-                     />
-                  </div>
-                  <div className="space-y-2">
-                     <Label>Scoring Method</Label>
-                     <Select defaultValue="weighted">
-                        <SelectTrigger>
-                           <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                           <SelectItem value="weighted">Weighted Percentage</SelectItem>
-                           <SelectItem value="flat">Flat Points</SelectItem>
-                           <SelectItem value="deductive">Deductive (100% Start)</SelectItem>
-                        </SelectContent>
-                     </Select>
-                  </div>
-                  <div className="pt-4 border-t">
-                     <div className="flex items-center justify-between text-xs mb-2">
-                        <span className="font-medium">Total Resource Weight</span>
-                        <span className={cn(
-                           "font-bold",
-                           totalWeight === 100 ? "text-green-500" : "text-red-500"
-                        )}>
-                           {totalWeight}%
-                        </span>
-                     </div>
-                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                           className={cn(
-                              "h-full transition-all duration-300",
-                              totalWeight === 100 ? "bg-green-500" : "bg-primary"
-                           )}
-                           style={{ width: `${Math.min(totalWeight, 100)}%` }}
+
+                  <div className="space-y-4 pt-2 border-t border-dashed">
+                     <div className="flex items-center justify-between">
+                        <Label className="font-bold flex items-center gap-2">
+                           <FileText className="h-4 w-4 text-primary" /> 2. Auto-Coaching Trigger
+                        </Label>
+                        <Switch
+                           checked={activeConfig.requireCoaching}
+                           onCheckedChange={(v) => setActiveConfig({ ...activeConfig, requireCoaching: v })}
                         />
                      </div>
-                     {totalWeight !== 100 && (
-                        <p className="text-[10px] text-red-500 mt-1 flex items-center gap-1">
-                           <AlertTriangle className="h-3 w-3" />
-                           Weights must sum to 100%
-                        </p>
-                     )}
+                     <p className="text-[10px] text-muted-foreground leading-relaxed">
+                        Automatically trigger coaching workflow if score falls below 70%.
+                     </p>
                   </div>
-                  <Button className="w-full gap-2 mt-4 shadow-md bg-primary hover:bg-primary/90">
-                     <Save className="h-4 w-4" />
-                     Publish Version 2.2
-                  </Button>
-               </CardContent>
-            </Card>
 
-            <Card className="bg-primary/5 border-primary/20 border-dashed">
-               <CardContent className="p-4 space-y-3">
-                  <div className="flex items-center gap-2 text-primary">
-                     <Info className="h-4 w-4" />
-                     <span className="text-xs font-bold uppercase tracking-wider">Builder Tips</span>
+                  <div className="space-y-3 pt-4 border-t border-dashed">
+                     <Label className="text-xs uppercase font-bold text-muted-foreground mr-1">3. Automated AI Detection Fields</Label>
+                     {[
+                        "Identity Verification",
+                        "PCI-DSS Redaction",
+                        "Greeting Standards",
+                        "Forbidden Vocabulary"
+                     ].map((field, i) => (
+                        <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-muted/20 border text-xs">
+                           <span>{field}</span>
+                           <Badge className="bg-primary/10 text-primary border-none text-[9px]">AI ENABLED</Badge>
+                        </div>
+                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                     Use **AI Detection** for criteria that can be verified via transcripts. **Critical Fail** items will result in a 0 for the entire scorecard if failed.
-                  </p>
+
+                  <div className="space-y-2 pt-2 border-t border-dashed">
+                     <Label className="text-xs uppercase font-bold text-muted-foreground mr-1">11. Metadata Tags</Label>
+                     <Input placeholder="sales, q1, high-value, retention" className="h-8 text-xs" />
+                  </div>
+
+                  <Button className="w-full gap-2 shadow-md bg-primary hover:bg-primary/90">
+                     <Save className="h-4 w-4" />
+                     Deploy Scorecard (3.1.2)
+                  </Button>
                </CardContent>
             </Card>
          </div>
 
-         {/* Main Builder Area (3.1.2) */}
-         <div className="lg:col-span-3 space-y-6">
-            <div className="flex items-center justify-between">
+         {/* Middle/Right: Criteria Builder & Weighting */}
+         <div className="lg:col-span-2 space-y-6">
+            <div className="flex items-center justify-between mb-2">
                <div>
-                  <h2 className="text-2xl font-bold tracking-tight">Criteria Configuration</h2>
-                  <p className="text-muted-foreground">Define what agents should be measured against.</p>
+                  <h3 className="text-xl font-bold tracking-tight">Criteria Builder</h3>
+                  <p className="text-sm text-muted-foreground">Manage sections, criteria, and weights (11 Fields Specification).</p>
                </div>
-               <Button variant="outline" size="sm" onClick={addSection} className="gap-2">
+               <Button variant="outline" className="gap-2 border-dashed border-primary/40 text-primary">
                   <Plus className="h-4 w-4" />
                   Add Section
                </Button>
             </div>
 
-            <Accordion type="multiple" defaultValue={["s1"]} className="space-y-4">
+            <Accordion type="multiple" defaultValue={["section-0", "section-1", "section-2"]} className="space-y-4">
                {sections.map((section, sIdx) => (
-                  <AccordionItem key={section.id} value={section.id} className="border rounded-xl bg-card shadow-sm overflow-hidden">
-                     <div className="flex items-center px-4 py-3 bg-muted/20 border-b group">
-                        <GripVertical className="h-4 w-4 text-muted-foreground mr-2 opacity-0 group-hover:opacity-100 cursor-move transition-opacity" />
-                        <AccordionTrigger className="flex-1 py-0 hover:no-underline">
-                           <div className="flex items-center gap-4 w-full">
-                              <Input
-                                 className="h-8 max-w-xs bg-transparent border-none font-bold"
-                                 value={section.name}
-                                 onClick={(e) => e.stopPropagation()}
-                                 onChange={(e) => {
-                                    const newSections = [...sections];
-                                    newSections[sIdx].name = e.target.value;
-                                    setSections(newSections);
-                                 }}
-                              />
-                              <Badge variant="secondary" className="font-mono text-[10px]">
-                                 Weight: {section.weight}%
-                              </Badge>
+                  <AccordionItem key={sIdx} value={`section-${sIdx}`} className="border rounded-xl bg-card overflow-hidden shadow-sm">
+                     <div className="flex items-center px-4 py-2 bg-muted/30">
+                        <GripVertical className="h-4 w-4 text-muted-foreground mr-2 cursor-grab" />
+                        <AccordionTrigger className="flex-1 py-3 hover:no-underline">
+                           <div className="flex items-center gap-4 text-left">
+                              <span className="font-bold text-sm">{section.name}</span>
+                              <Badge variant="secondary" className="font-mono text-[10px]">WEIGHT: {section.weight}%</Badge>
                            </div>
                         </AccordionTrigger>
-                        <Button
-                           variant="ghost"
-                           size="icon"
-                           className="h-8 w-8 text-muted-foreground hover:text-red-500"
-                           onClick={(e) => {
-                              e.stopPropagation();
-                              setSections(sections.filter(s => s.id !== section.id));
-                           }}
-                        >
-                           <Trash2 className="h-4 w-4" />
-                        </Button>
-                     </div>
-                     <AccordionContent className="p-4 space-y-4">
-                        <div className="space-y-4">
-                           {section.criteria.map((crt, cIdx) => (
-                              <div key={crt.id} className="relative pl-6 before:absolute before:left-0 before:top-4 before:bottom-4 before:w-1 before:bg-muted-foreground/10 before:rounded-full">
-                                 <div className="grid grid-cols-12 gap-4 items-end p-4 bg-muted/10 rounded-lg border border-transparent hover:border-border/50 transition-all">
-                                    <div className="col-span-4 space-y-2">
-                                       <Label className="text-[10px] uppercase font-bold text-muted-foreground">Criteria Name</Label>
-                                       <Input
-                                          className="h-9"
-                                          value={crt.name}
-                                          onChange={(e) => {
-                                             const newSections = [...sections];
-                                             newSections[sIdx].criteria[cIdx].name = e.target.value;
-                                             setSections(newSections);
-                                          }}
-                                       />
-                                    </div>
-                                    <div className="col-span-2 space-y-2">
-                                       <Label className="text-[10px] uppercase font-bold text-muted-foreground">Method</Label>
-                                       <Select value={crt.method}>
-                                          <SelectTrigger className="h-9">
-                                             <SelectValue />
-                                          </SelectTrigger>
-                                          <SelectContent>
-                                             <SelectItem value="yes-no">Yes/No</SelectItem>
-                                             <SelectItem value="scale-5">1-5 Scale</SelectItem>
-                                             <SelectItem value="scale-10">1-10 Scale</SelectItem>
-                                             <SelectItem value="na">N/A Available</SelectItem>
-                                          </SelectContent>
-                                       </Select>
-                                    </div>
-                                    <div className="col-span-2 space-y-2">
-                                       <Label className="text-[10px] uppercase font-bold text-muted-foreground">Weight (%)</Label>
-                                       <Input
-                                          type="number"
-                                          className="h-9"
-                                          value={crt.weight}
-                                          onChange={(e) => {
-                                             const newSections = [...sections];
-                                             newSections[sIdx].criteria[cIdx].weight = parseInt(e.target.value);
-                                             setSections(newSections);
-                                          }}
-                                       />
-                                    </div>
-                                    <div className="col-span-3 space-y-2">
-                                       <Label className="text-[10px] uppercase font-bold text-muted-foreground">AI Detection</Label>
-                                       <Select value={crt.aiDetection}>
-                                          <SelectTrigger className="h-9">
-                                             <SelectValue />
-                                          </SelectTrigger>
-                                          <SelectContent>
-                                             <SelectItem value="none">Manual Review</SelectItem>
-                                             <SelectItem value="keyword">Keyword Match</SelectItem>
-                                             <SelectItem value="sentiment">Sentiment Analysis</SelectItem>
-                                             <SelectItem value="compliance">Compliance Shield</SelectItem>
-                                          </SelectContent>
-                                       </Select>
-                                    </div>
-                                    <div className="col-span-1 flex flex-col items-center gap-2">
-                                       <Label className="text-[10px] uppercase font-bold text-red-500">Critical</Label>
-                                       <Switch
-                                          checked={crt.critical}
-                                          onCheckedChange={(checked) => {
-                                             const newSections = [...sections];
-                                             newSections[sIdx].criteria[cIdx].critical = checked;
-                                             setSections(newSections);
-                                          }}
-                                       />
-                                    </div>
-
-                                    <div className="col-span-12 mt-2 pt-2 border-t border-muted/50 flex items-center justify-between">
-                                       <div className="flex gap-4">
-                                          <Button variant="ghost" size="sm" className="h-7 text-[10px] px-2 text-muted-foreground hover:text-primary">
-                                             <Layout className="h-3 w-3 mr-1" /> Configure AI Rules
-                                          </Button>
-                                          <Button variant="ghost" size="sm" className="h-7 text-[10px] px-2 text-muted-foreground hover:text-primary">
-                                             <FileText className="h-3 w-3 mr-1" /> Add Coaching Tip
-                                          </Button>
-                                       </div>
-                                       <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="h-6 w-6 text-muted-foreground hover:text-red-500"
-                                          onClick={() => {
-                                             const newSections = [...sections];
-                                             newSections[sIdx].criteria = newSections[sIdx].criteria.filter(c => c.id !== crt.id);
-                                             setSections(newSections);
-                                          }}
-                                       >
-                                          <Trash2 className="h-3 w-3" />
-                                       </Button>
-                                    </div>
-                                 </div>
-                              </div>
-                           ))}
-                           <Button
-                              variant="ghost"
-                              size="sm"
-                              className="w-full border border-dashed border-muted-foreground/20 text-muted-foreground hover:text-primary hover:bg-primary/5 py-4"
-                              onClick={() => addCriteria(section.id)}
-                           >
-                              <Plus className="h-4 w-4 mr-2" />
-                              Add Criteria Item
+                        <div className="flex items-center gap-2 pr-2">
+                           <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500">
+                              <Trash2 className="h-4 w-4" />
                            </Button>
                         </div>
+                     </div>
+                     <AccordionContent className="p-4 bg-background">
+                        <div className="space-y-4">
+                           {/* Specification mapping: 4-10 within section */}
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                 <Label className="text-[10px] uppercase font-bold text-muted-foreground">4. Scoring Type</Label>
+                                 <Select defaultValue="binary">
+                                    <SelectTrigger className="h-8"><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                       <SelectItem value="binary">Binary (Pass/Fail)</SelectItem>
+                                       <SelectItem value="scale">Scale (1-5)</SelectItem>
+                                       <SelectItem value="nps">NPS Style (0-10)</SelectItem>
+                                    </SelectContent>
+                                 </Select>
+                              </div>
+                              <div className="space-y-2">
+                                 <Label className="text-[10px] uppercase font-bold text-muted-foreground">5. AI Mapping Logic</Label>
+                                 <Select defaultValue="llm">
+                                    <SelectTrigger className="h-8"><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                       <SelectItem value="llm">LLM Reasoning</SelectItem>
+                                       <SelectItem value="regex">Keyword/Regex</SelectItem>
+                                       <SelectItem value="ner">Entity Extraction</SelectItem>
+                                    </SelectContent>
+                                 </Select>
+                              </div>
+                           </div>
 
-                        <div className="mt-6 p-4 bg-muted/10 rounded-lg space-y-3">
-                           <div className="flex items-center justify-between">
-                              <Label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Section Weighting</Label>
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase font-bold text-muted-foreground">6. Section Description / Instruction</Label>
+                              <Textarea placeholder="Instructions for manual evaluators..." className="h-16 text-xs" />
+                           </div>
+
+                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div className="space-y-2">
+                                 <Label className="text-[10px] uppercase font-bold text-muted-foreground">7. Minimum Score</Label>
+                                 <Input type="number" defaultValue={0} className="h-8" />
+                              </div>
+                              <div className="space-y-2">
+                                 <Label className="text-[10px] uppercase font-bold text-muted-foreground">8. Maximum Score</Label>
+                                 <Input type="number" defaultValue={100} className="h-8" />
+                              </div>
+                              <div className="space-y-2">
+                                 <Label className="text-[10px] uppercase font-bold text-muted-foreground">9. Critical Fail?</Label>
+                                 <div className="flex items-center h-8">
+                                    <Switch />
+                                    <span className="text-[10px] ml-2 text-muted-foreground italic">(Zeroes entire scorecard)</span>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div className="flex items-center justify-between p-3 bg-primary/5 rounded-lg border border-primary/10">
+                              <div className="flex items-center gap-2">
+                                 <Layout className="h-4 w-4 text-primary" />
+                                 <span className="text-xs font-bold">10. Section Allocation Weight</span>
+                              </div>
                               <div className="flex items-center gap-2">
                                  <Input
                                     type="number"
@@ -341,7 +208,7 @@ export default function ScorecardBuilder() {
                            </div>
                            <div className="flex items-center gap-3 text-[10px] text-muted-foreground italic">
                               <CheckCircle2 className="h-3 w-3 text-green-500" />
-                              Criteria within this section must equal 100% of the section's allocated weight.
+                              Criteria within this section must equal 100% of the section&apos;s allocated weight.
                            </div>
                         </div>
                      </AccordionContent>

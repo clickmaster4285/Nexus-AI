@@ -1,21 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import {
    ShieldCheck,
    ShieldAlert,
-   History,
    Search,
-   Filter,
    Download,
    Plus,
-   AlertTriangle,
    CheckCircle2,
    ExternalLink,
    ChevronRight,
-   TrendingDown,
    TrendingUp,
-   Minus
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,8 +34,21 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-export default function ComplianceMonitor({ rules }) {
-   const [searchTerm, setSearchTerm] = useState("");
+export default function ComplianceMonitor() {
+
+   const packs = [
+      { name: "PCI-DSS", desc: "Credit card handling & redaction", status: true, severity: "critical" },
+      { name: "TCPA", desc: "Telemarketing & consent rules", status: true, severity: "high" },
+      { name: "HIPAA", desc: "Healthcare privacy standards", status: false, severity: "high" },
+      { name: "GDPR", desc: "Data protection & right to erase", status: true, severity: "critical" },
+      { name: "CCPA", desc: "California consumer privacy", status: true, severity: "medium" }
+   ];
+
+   const violations = [
+      { id: "V092", type: "PCI-DSS CC Leak", severity: "critical", agent: "Sarah Jenkins", time: "2 min ago", status: "unresolved", quote: "... customer said card is 4111 2222 ... agent failed to mask ..." },
+      { id: "V088", type: "Missing Disclosure", severity: "high", agent: "Mike Ross", time: "1 hour ago", status: "reviewed", quote: "... greeting started immediately without regulatory disclaimer ..." },
+      { id: "V085", type: "Data Sharing", severity: "medium", agent: "Alex Chen", time: "4 hours ago", status: "resolved", quote: "... mentioned internal system node names to unauthorized user ..." }
+   ];
 
    return (
       <div className="space-y-6">
@@ -57,28 +64,57 @@ export default function ComplianceMonitor({ rules }) {
                      <CardDescription className="text-xs">Manage regulatory enforcement rules.</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-6">
-                     {[
-                        { name: "PCI-DSS", desc: "Credit card handling & redaction", status: true, severity: "critical" },
-                        { name: "TCPA", desc: "Telemarketing & consent rules", status: true, severity: "high" },
-                        { name: "HIPAA", desc: "Healthcare privacy standards", status: false, severity: "high" },
-                        { name: "GDPR", desc: "Data protection & right to erase", status: true, severity: "critical" },
-                        { name: "CCPA", desc: "California consumer privacy", status: true, severity: "medium" }
-                     ].map((pack, i) => (
-                        <div key={i} className="flex items-start justify-between gap-4 p-3 rounded-xl bg-card border hover:border-primary/30 transition-all group">
-                           <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                 <span className="font-bold text-sm">{pack.name}</span>
-                                 <Badge variant="outline" className={cn(
-                                    "text-[9px] h-3.5 uppercase px-1 border-none",
-                                    pack.severity === 'critical' ? "bg-red-50 text-red-600" :
-                                       pack.severity === 'high' ? "bg-orange-50 text-orange-600" : "bg-blue-50 text-blue-600"
-                                 )}>
-                                    {pack.severity}
-                                 </Badge>
+                     {packs.map((pack, i) => (
+                        <div key={i} className="flex flex-col gap-4 p-4 rounded-xl bg-card border hover:border-primary/30 transition-all group shadow-sm">
+                           <div className="flex items-start justify-between gap-4">
+                              <div className="space-y-1">
+                                 <div className="flex items-center gap-2">
+                                    <span className="font-bold text-sm">{pack.name}</span>
+                                    <Badge variant="outline" className={cn(
+                                       "text-[9px] h-3.5 uppercase px-1 border-none",
+                                       pack.severity === 'critical' ? "bg-red-50 text-red-600" :
+                                          pack.severity === 'high' ? "bg-orange-50 text-orange-600" : "bg-blue-50 text-blue-600"
+                                    )}>
+                                       {pack.severity}
+                                    </Badge>
+                                 </div>
+                                 <p className="text-[10px] text-muted-foreground">{pack.desc}</p>
                               </div>
-                              <p className="text-[10px] text-muted-foreground">{pack.desc}</p>
+                              <Switch checked={pack.status} className="scale-75 group-hover:scale-90 transition-transform" />
                            </div>
-                           <Switch checked={pack.status} className="scale-75 group-hover:scale-90 transition-transform" />
+
+                           {pack.status && (
+                              <div className="pt-4 border-t space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                                 <div className="space-y-2">
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Enforcement Mode</Label>
+                                    <div className="flex gap-4">
+                                       <div className="flex items-center gap-1.5"><input type="radio" name={`enforce-${pack.name}`} defaultChecked id={`log-${pack.name}`} /><Label htmlFor={`log-${pack.name}`} className="text-[10px]">Log Only</Label></div>
+                                       <div className="flex items-center gap-1.5"><input type="radio" name={`enforce-${pack.name}`} id={`block-${pack.name}`} /><Label htmlFor={`block-${pack.name}`} className="text-[10px]">Active Block</Label></div>
+                                    </div>
+                                 </div>
+                                 <div className="space-y-2">
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Required Disclosures</Label>
+                                    <Input className="h-8 text-xs" placeholder="e.g. Call may be recorded" />
+                                 </div>
+                                 <div className="space-y-2">
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Forbidden Phrases</Label>
+                                    <Input className="h-8 text-xs" placeholder="e.g. Password is, Card number" />
+                                 </div>
+                                 <div className="space-y-2">
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Audit Frequency</Label>
+                                    <Select defaultValue="weekly">
+                                       <SelectTrigger className="h-8 text-xs">
+                                          <SelectValue />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                          <SelectItem value="realtime">Real-time</SelectItem>
+                                          <SelectItem value="daily">Daily</SelectItem>
+                                          <SelectItem value="weekly">Weekly</SelectItem>
+                                       </SelectContent>
+                                    </Select>
+                                 </div>
+                              </div>
+                           )}
                         </div>
                      ))}
 
@@ -122,11 +158,7 @@ export default function ComplianceMonitor({ rules }) {
                            </TableRow>
                         </TableHeader>
                         <TableBody>
-                           {[
-                              { id: "V092", type: "PCI-DSS CC Leak", severity: "critical", agent: "Sarah Jenkins", time: "2 min ago", status: "unresolved", quote: "... customer said card is 4111 2222 ... agent failed to mask ..." },
-                              { id: "V088", type: "Missing Disclosure", severity: "high", agent: "Mike Ross", time: "1 hour ago", status: "reviewed", quote: "... greeting started immediately without regulatory disclaimer ..." },
-                              { id: "V085", type: "Data Sharing", severity: "medium", agent: "Alex Chen", time: "4 hours ago", status: "resolved", quote: "... mentioned internal system node names to unauthorized user ..." }
-                           ].map((v) => (
+                           {violations.map((v) => (
                               <TableRow key={v.id} className="group hover:bg-muted/20">
                                  <TableCell className="px-4 py-3">
                                     <div className="space-y-1">
@@ -145,7 +177,7 @@ export default function ComplianceMonitor({ rules }) {
                                     </Badge>
                                  </TableCell>
                                  <TableCell className="px-4 py-3">
-                                    <div className="max-w-[200px]">
+                                    <div className="max-w-50">
                                        <p className="text-[10px] text-muted-foreground line-clamp-2 bg-muted/30 p-1.5 rounded-md italic font-mono border-l border-primary/20">
                                           {v.quote}
                                        </p>
@@ -161,9 +193,14 @@ export default function ComplianceMonitor({ rules }) {
                                        )}>
                                           {v.status}
                                        </Badge>
-                                       <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                                          <ExternalLink className="h-3 w-3" />
-                                       </Button>
+                                       <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                          <Button size="icon" variant="ghost" className="h-6 w-6" title="Legal Hold" onClick={() => alert("Legal Hold Applied")}>
+                                             <ShieldAlert className="h-3.5 w-3.5 text-amber-500" />
+                                          </Button>
+                                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                                             <ExternalLink className="h-3.5 w-3.5" />
+                                          </Button>
+                                       </div>
                                     </div>
                                  </TableCell>
                               </TableRow>
@@ -191,7 +228,7 @@ export default function ComplianceMonitor({ rules }) {
                               <TrendingUp className="h-4 w-4 text-red-500" />
                            </div>
                         </div>
-                        <div className="flex items-center gap-0.5 h-10 items-end">
+                        <div className="flex gap-0.5 h-10 items-end">
                            {[20, 15, 25, 30, 22, 28, 24].map((h, i) => (
                               <div key={i} className="w-1.5 bg-red-400/20 rounded-t-sm" style={{ height: `${h}%` }} />
                            ))}
@@ -207,7 +244,7 @@ export default function ComplianceMonitor({ rules }) {
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                            </div>
                         </div>
-                        <div className="flex items-center gap-0.5 h-10 items-end">
+                        <div className="flex gap-0.5 h-10 items-end">
                            {[80, 85, 90, 100, 100, 100, 100].map((h, i) => (
                               <div key={i} className="w-1.5 bg-green-400/20 rounded-t-sm" style={{ height: `${h}%` }} />
                            ))}

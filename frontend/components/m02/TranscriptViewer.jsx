@@ -290,7 +290,7 @@ export default function TranscriptViewer({ transcript, onWordClick }) {
                </DialogHeader>
                <div className="space-y-4 py-4">
                   <div className="p-3 bg-muted rounded-lg text-xs italic">
-                     "{selectedText || "No text selected..."}"
+                     &quot;{selectedText || "No text selected..."}&quot;
                   </div>
                   <div className="space-y-2">
                      <Label htmlFor="annotation-note">Observation Note</Label>

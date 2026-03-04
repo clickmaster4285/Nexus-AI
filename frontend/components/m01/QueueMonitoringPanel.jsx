@@ -17,7 +17,7 @@ function formatDuration(seconds) {
 
 function QueueCard({ queue }) {
   const [longestWait, setLongestWait] = useState(queue.longestWaitTime);
-  const [callsWaiting, setCallsWaiting] = useState(queue.callsWaiting);
+  const [callsWaiting] = useState(queue.callsWaiting);
 
   useEffect(() => {
     const interval = setInterval(() => {

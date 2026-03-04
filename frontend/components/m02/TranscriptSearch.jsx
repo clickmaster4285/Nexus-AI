@@ -3,18 +3,16 @@
 import { useState } from "react";
 import {
    Search,
-   Filter,
    Calendar as CalendarIcon,
    Clock,
    Download,
    MoreVertical,
    ExternalLink,
-   ChevronRight,
    TrendingUp,
    TrendingDown,
    Minus
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +31,6 @@ import {
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { mockTranscripts } from "@/lib/mock-data/transcripts";
-import { cn } from "@/lib/utils";
 
 export default function TranscriptSearch() {
    const [searchTerm, setSearchTerm] = useState("");
@@ -204,7 +201,7 @@ export default function TranscriptSearch() {
                                  <Badge variant="outline" className="text-[9px] h-3 px-1">{result.segments[1]?.speaker || 'Customer'}</Badge>
                               </div>
                               <p className="text-xs leading-relaxed text-muted-foreground italic">
-                                 "... {searchTerm ? result.segments.find(s => s.text.toLowerCase().includes(searchTerm.toLowerCase()))?.text || result.segments[1].text : result.segments[1].text} ..."
+                                 &quot;... {searchTerm ? result.segments.find(s => s.text.toLowerCase().includes(searchTerm.toLowerCase()))?.text || result.segments[1].text : result.segments[1].text} ...&quot;
                               </p>
                            </div>
                         </div>

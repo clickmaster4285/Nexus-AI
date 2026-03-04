@@ -9,14 +9,9 @@ import {
    Activity,
    AlertTriangle,
    Zap,
-   Clock,
    ArrowUpRight,
    ExternalLink,
-   Search,
    Filter,
-   BarChart,
-   PieChart,
-   LineChart
 } from "lucide-react";
 import {
    Bar,
@@ -28,10 +23,9 @@ import {
    ResponsiveContainer,
    Cell
 } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
    Select,
@@ -232,10 +226,10 @@ export default function ConversationAnalytics() {
                      <Label className="text-[10px] text-muted-foreground uppercase font-bold">Emerging Topics</Label>
                      <div className="flex flex-wrap gap-2">
                         <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400 border-amber-200">
-                           <Activity className="h-3 w-3 mr-1" /> "V3 API Delay" (+80%)
+                           <Activity className="h-3 w-3 mr-1" /> &quot;V3 API Delay&quot; (+80%)
                         </Badge>
                         <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400 border-blue-200">
-                           "Summer Promo" (+20%)
+                           &quot;Summer Promo&quot; (+20%)
                         </Badge>
                      </div>
                   </div>

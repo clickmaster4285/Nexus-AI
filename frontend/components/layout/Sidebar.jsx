@@ -21,7 +21,6 @@ import {
   ChevronRight,
   ChevronDown,
   Menu,
-  X,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -93,7 +92,7 @@ function SidebarContent() {
                       e.preventDefault();
                       toggleModule(module.id);
                     }}
-                    className="p-1 hover:bg-sidebar-accent rounded"
+                    className="p-1 rounded"
                   >
                     {expanded ? (
                       <ChevronDown className="h-4 w-4" />

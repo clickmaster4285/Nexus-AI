@@ -4,17 +4,13 @@ import { useState } from "react";
 import {
    Plus,
    Calendar,
-   User,
    Users,
    MessageSquare,
    CheckCircle2,
    Clock,
    Target,
-   FileText,
    Search,
    Filter,
-   MoreVertical,
-   ChevronRight,
    TrendingUp,
    History,
    ExternalLink
@@ -33,10 +29,12 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"; 
+import {Textarea} from "@/components/ui/textarea"; 
 import { cn } from "@/lib/utils";
 
 export default function CoachingWorkflow() {
-   const [activeTab, setActiveTab] = useState("sessions");
+   const [isCreating, setIsCreating] = useState(false);
 
    return (
       <div className="space-y-6">
@@ -45,11 +43,114 @@ export default function CoachingWorkflow() {
                <h2 className="text-2xl font-bold tracking-tight">Coaching & Development</h2>
                <p className="text-muted-foreground text-sm">Empowering agents through AI-targeted coaching sessions.</p>
             </div>
-            <Button className="gap-2 shadow-lg bg-primary">
+            <Button className="gap-2 shadow-lg bg-primary" onClick={() => setIsCreating(true)}>
                <Plus className="h-4 w-4" />
                Schedule Session (3.4.1)
             </Button>
          </div>
+
+         {isCreating && (
+            <Card className="border-primary shadow-xl animate-in zoom-in-95 duration-200">
+               <CardHeader className="bg-primary/5">
+                  <CardTitle className="text-lg">Create New Coaching Session</CardTitle>
+                  <CardDescription>Fill in all 13 required fields for a comprehensive development session.</CardDescription>
+               </CardHeader>
+               <CardContent className="pt-6 space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div className="space-y-2">
+                        <Label>1. Session Title</Label>
+                        <Input placeholder="e.g. Weekly Quality Review" />
+                     </div>
+                     <div className="space-y-2">
+                        <Label>2. Agent Name</Label>
+                        <Select>
+                           <SelectTrigger><SelectValue placeholder="Select Agent..." /></SelectTrigger>
+                           <SelectContent><SelectItem value="sjenkins">Sarah Jenkins</SelectItem></SelectContent>
+                        </Select>
+                     </div>
+                     <div className="space-y-2">
+                        <Label>3. Coach Name</Label>
+                        <Select>
+                           <SelectTrigger><SelectValue placeholder="Select Coach..." /></SelectTrigger>
+                           <SelectContent><SelectItem value="jdoe">John Doe</SelectItem></SelectContent>
+                        </Select>
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div className="space-y-2">
+                        <Label>4. Trigger Source</Label>
+                        <Badge variant="outline" className="w-full justify-start h-9 px-3 font-normal opacity-70">Manual Assignment</Badge>
+                     </div>
+                     <div className="space-y-2">
+                        <Label>5. Call Examples (ID)</Label>
+                        <Input placeholder="e.g. C092, C105" />
+                     </div>
+                     <div className="space-y-2 md:col-span-1">
+                        <Label>6. Focus Areas</Label>
+                        <div className="flex gap-2 flex-wrap pt-1">
+                           <Badge variant="secondary" className="cursor-pointer">Empathy</Badge>
+                           <Badge variant="secondary" className="cursor-pointer">Closing</Badge>
+                           <Badge variant="secondary" className="cursor-pointer">Technical</Badge>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div className="space-y-2">
+                        <Label>7. Scheduled Date/Time</Label>
+                        <Input type="datetime-local" />
+                     </div>
+                     <div className="space-y-2">
+                        <Label>8. Duration</Label>
+                        <Select defaultValue="30">
+                           <SelectTrigger><SelectValue /></SelectTrigger>
+                           <SelectContent>
+                              <SelectItem value="15">15 mins</SelectItem>
+                              <SelectItem value="30">30 mins</SelectItem>
+                              <SelectItem value="60">1 hour</SelectItem>
+                           </SelectContent>
+                        </Select>
+                     </div>
+                     <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                           <Label>9. Coaching Notes (Pre)</Label>
+                           <Badge variant="outline" className="text-[9px] uppercase">Hidden from agent</Badge>
+                        </div>
+                        <Textarea placeholder="Private preparation notes..." className="h-20" />
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <div className="space-y-2">
+                        <Label>10. Session Outcome</Label>
+                        <Select disabled>
+                           <SelectTrigger><SelectValue placeholder="To be determined..." /></SelectTrigger>
+                        </Select>
+                     </div>
+                     <div className="space-y-2">
+                        <Label>11. Improvement Plan</Label>
+                        <Textarea placeholder="Specific steps for improvement..." className="h-20" />
+                     </div>
+                     <div className="space-y-2">
+                        <Label>12. Follow-up Date</Label>
+                        <Input type="date" />
+                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t">
+                     <div className="flex items-center gap-2">
+                        <input type="checkbox" id="ack" disabled />
+                        <Label htmlFor="ack" className="text-xs opacity-50">13. Agent Acknowledgment Required</Label>
+                     </div>
+                     <div className="flex gap-3">
+                        <Button variant="ghost" onClick={() => setIsCreating(false)}>Cancel</Button>
+                        <Button onClick={() => { alert("Session Scheduled"); setIsCreating(false); }}>Schedule & Notify Agent</Button>
+                     </div>
+                  </div>
+               </CardContent>
+            </Card>
+         )}
 
          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Coaching Overview Stats */}
@@ -134,7 +235,7 @@ export default function CoachingWorkflow() {
                                     </div>
                                  </TableCell>
                                  <TableCell className="px-4 py-4">
-                                    <div className="flex flex-wrap gap-1 max-w-[150px]">
+                                    <div className="flex flex-wrap gap-1 max-w-37.5">
                                        {session.areas.map((a, j) => (
                                           <Badge key={j} variant="secondary" className="text-[9px] px-1 h-4 border-none bg-muted/70">{a}</Badge>
                                        ))}

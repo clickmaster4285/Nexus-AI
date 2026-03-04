@@ -15,20 +15,19 @@ function formatDuration(seconds) {
   return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 }
 
+const transcriptSnippets = [
+  "Thank you for calling our support center...",
+  "I understand your concern about the billing...",
+  "Let me check that for you right away...",
+  "I can see the issue now and I'll resolve it...",
+  "Is there anything else I can help you with?",
+];
+
 function ActiveCallCard({ call }) {
   const [duration, setDuration] = useState(call.duration);
   const [transcriptIndex, setTranscriptIndex] = useState(0);
 
   const agent = getAgentById(call.agentId);
-
-  // Mock transcript snippets
-  const transcriptSnippets = [
-    "Thank you for calling our support center...",
-    "I understand your concern about the billing...",
-    "Let me check that for you right away...",
-    "I can see the issue now and I'll resolve it...",
-    "Is there anything else I can help you with?",
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {

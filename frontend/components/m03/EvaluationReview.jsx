@@ -3,9 +3,6 @@
 import { useState } from "react";
 import {
    Play,
-   Pause,
-   SkipBack,
-   SkipForward,
    CheckCircle2,
    XCircle,
    AlertCircle,
@@ -16,13 +13,10 @@ import {
    Send,
    Flag,
    ChevronRight,
-   TrendingRight
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -33,16 +27,16 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export default function EvaluationReview({ evaluation }) {
-   const [overrideScores, setOverrideScores] = useState({});
    const [note, setNote] = useState("");
 
    if (!evaluation) return null;
 
    return (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-[700px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-175">
          {/* Left Column: Call Player & Info (Side-by-side 3.2.1) */}
          <div className="lg:col-span-5 flex flex-col gap-6">
             <Card className="flex flex-col flex-1 shadow-lg border-primary/20">
@@ -63,7 +57,7 @@ export default function EvaluationReview({ evaluation }) {
                <CardContent className="flex-1 flex flex-col p-6 space-y-6">
                   {/* Call Player Mock */}
                   <div className="aspect-video bg-black rounded-xl relative group overflow-hidden border-2 border-primary/10 shadow-inner">
-                     <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-black/80 to-transparent" />
+                     <div className="absolute inset-x-0 bottom-0 top-1/2 bg-linear-to-t from-black/80 to-transparent" />
 
                      {/* Waveform Visualization Mock */}
                      <div className="absolute bottom-4 inset-x-4 h-16 flex items-end gap-0.5">
@@ -71,7 +65,7 @@ export default function EvaluationReview({ evaluation }) {
                            <div
                               key={i}
                               className="flex-1 bg-primary/40 rounded-t-sm transition-all duration-300 group-hover:bg-primary/80"
-                              style={{ height: `${Math.random() * 100}%` }}
+                              style={{ height: `${((i * 13) % 60) + 20}%` }}
                            />
                         ))}
                      </div>
@@ -84,7 +78,7 @@ export default function EvaluationReview({ evaluation }) {
 
                      <div className="absolute top-4 right-4 space-y-2">
                         <Badge className="bg-red-500/80 backdrop-blur-sm border-none">04:22 PM</Badge>
-                        <Badge variant="outline" className="bg-black/50 backdrop-blur-sm block">12:34</Badge>
+                        <Badge variant="outline" className="bg-black/50 text-gray-50 backdrop-blur-sm block">12:34</Badge>
                      </div>
                   </div>
 
@@ -208,7 +202,7 @@ export default function EvaluationReview({ evaluation }) {
                         </Label>
                         <Textarea
                            placeholder="Provide detailed feedback for the agent..."
-                           className="bg-background min-h-[100px]"
+                           className="bg-background min-h-25"
                            value={note}
                            onChange={(e) => setNote(e.target.value)}
                         />

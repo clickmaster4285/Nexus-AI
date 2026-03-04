@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   MessageSquare,
   Search,
@@ -11,7 +11,6 @@ import {
   Clock,
   User,
   Bot,
-  ChevronRight
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,18 +24,16 @@ import { mockTranscripts } from "@/lib/mock-data/transcripts";
 import { cn } from "@/lib/utils";
 
 export default function ConversationIntelligencePage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "transcription");
+  const activeTab = searchParams.get("tab") || "transcription";
   const [activeTranscript, setActiveTranscript] = useState(mockTranscripts[0]);
-  const [currentTime, setCurrentTime] = useState(0);
 
-  useEffect(() => {
-    const tab = searchParams.get("tab");
-    if (tab) setActiveTab(tab);
-  }, [searchParams]);
+  const setActiveTab = (tab) => {
+    router.push(`/m02-conversation?tab=${tab}`);
+  };
 
   const handleWordClick = (time) => {
-    setCurrentTime(time);
     // In a real app, this would seek the audio player
     console.log(`Seeking to ${time}s`);
   };

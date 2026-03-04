@@ -10,7 +10,7 @@ import AlertsPanel from "@/components/m01/AlertsPanel";
 import AlertRulesEngine from "@/components/m01/AlertRulesEngine";
 import WallboardManager from "@/components/m01/WallboardManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Activity, LayoutDashboard, Monitor, Bell, Settings } from "lucide-react";
+import { Activity, LayoutDashboard, Monitor, Bell } from "lucide-react";
 
 export default function RealtimeOpsPage() {
   const [activeTab, setActiveTab] = useState("live-ops");

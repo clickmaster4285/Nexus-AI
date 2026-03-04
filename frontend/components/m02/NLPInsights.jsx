@@ -4,13 +4,11 @@ import { useState } from "react";
 import {
    CheckCircle2,
    AlertCircle,
-   HelpCircle,
    ShieldCheck,
    ArrowRight,
    Send,
    History,
    Layout,
-   MessageSquare,
    TrendingDown,
    TrendingUp,
    FileText,
@@ -208,7 +206,7 @@ export default function NLPInsights({ data }) {
                         Primary Interaction Reason
                      </Label>
                      <p className="text-sm bg-muted/30 p-4 rounded-xl italic leading-relaxed text-foreground/90 border-l-4 border-primary">
-                        "{data.summary.primaryReason}"
+                        &quot;{data.summary.primaryReason}&quot;
                      </p>
                   </div>
 
