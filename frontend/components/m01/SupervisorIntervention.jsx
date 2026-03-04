@@ -23,6 +23,7 @@ export default function SupervisorIntervention() {
   const [interventionMode, setInterventionMode] = useState("monitor");
   const [whisperMessage, setWhisperMessage] = useState("");
   const [notes, setNotes] = useState("");
+  const [outcome, setOutcome] = useState("");
 
   const activeCalls = getActiveCalls();
 
@@ -105,7 +106,7 @@ export default function SupervisorIntervention() {
               placeholder="Type your message to the agent..."
               value={whisperMessage}
               onChange={(e) => setWhisperMessage(e.target.value)}
-              className="min-h-[80px]"
+              className="min-h-20"
             />
           </div>
         )}
@@ -117,8 +118,24 @@ export default function SupervisorIntervention() {
             placeholder="Add notes about this intervention..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="min-h-[80px]"
+            className="min-h-20"
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Intervention Outcome</Label>
+          <Select value={outcome} onValueChange={setOutcome}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select outcome..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="resolved">Resolved Successfully</SelectItem>
+              <SelectItem value="escalated">Escalated to Manager</SelectItem>
+              <SelectItem value="coaching_required">Coaching Session Scheduled</SelectItem>
+              <SelectItem value="follow_up">Further Follow-up Needed</SelectItem>
+              <SelectItem value="no_action">No Action Taken</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <Button

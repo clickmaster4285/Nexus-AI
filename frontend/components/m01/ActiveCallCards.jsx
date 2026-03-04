@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getActiveCalls } from "@/lib/mock-data/calls";
 import { getAgentById } from "@/lib/mock-data/agents";
-import { Phone, Mic, Ear, LogIn, PhoneOff, TrendingUp, TrendingDown, Minus, ShieldAlert } from "lucide-react";
+import { Phone, Mic, Ear, LogIn, PhoneOff, TrendingUp, TrendingDown, Minus, ShieldAlert, X } from "lucide-react";
 
 function formatDuration(seconds) {
   const mins = Math.floor(seconds / 60);
@@ -54,8 +54,8 @@ function ActiveCallCard({ call }) {
     sentimentTrend === "rising"
       ? TrendingUp
       : sentimentTrend === "falling"
-      ? TrendingDown
-      : Minus;
+        ? TrendingDown
+        : Minus;
 
   return (
     <Card className={escalationRisk > 70 ? "border-red-500" : ""}>
@@ -69,7 +69,7 @@ function ActiveCallCard({ call }) {
             </div>
           </div>
           <Badge variant={call.direction === "inbound" ? "default" : "secondary"}>
-            {call.direction}
+            {call.type || call.direction}
           </Badge>
         </div>
 
@@ -139,8 +139,12 @@ function ActiveCallCard({ call }) {
               <LogIn className="h-3 w-3 mr-1" />
               Barge
             </Button>
-            <Button size="sm" variant="destructive" className="flex-1 text-xs h-7">
+            <Button size="sm" variant="outline" className="flex-1 text-xs h-7">
               <PhoneOff className="h-3 w-3 mr-1" />
+              Takeover
+            </Button>
+            <Button size="sm" variant="destructive" className="flex-1 text-xs h-7">
+              <X className="h-3 w-3 mr-1" />
               End
             </Button>
           </div>
@@ -154,7 +158,7 @@ export default function ActiveCallCards() {
   const activeCalls = getActiveCalls();
 
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Active Calls</CardTitle>

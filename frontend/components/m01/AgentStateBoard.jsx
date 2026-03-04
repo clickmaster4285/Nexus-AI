@@ -57,7 +57,9 @@ function AgentCard({ agent }) {
         <div className="flex items-start justify-between mb-3">
           <div>
             <p className="font-semibold text-sm">{agent.name}</p>
-            <p className="text-xs text-muted-foreground">{agent.id}</p>
+            <a href={`/m09-recording?callId=${agent.currentCallId || 'C001'}`} className="text-xs text-primary hover:underline font-mono">
+              {agent.currentCallId || agent.id}
+            </a>
           </div>
           <Badge variant="secondary" className={`${statusColor} text-white`}>
             {statusLabels[agent.status]}
@@ -123,7 +125,7 @@ export default function AgentStateBoard() {
   const busyCount = getBusyAgents().length;
 
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Agent State Board</CardTitle>

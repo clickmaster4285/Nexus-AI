@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { queues, getTotalCallsWaiting, getTotalAgentsAvailable } from "@/lib/mock-data/queues";
 import { Phone, Users, Clock, AlertTriangle } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function formatDuration(seconds) {
   const mins = Math.floor(seconds / 60);
@@ -92,15 +94,29 @@ function QueueCard({ queue }) {
             <span>{queue.abandonmentRate}%</span>
           </div>
 
+          <div className="space-y-1">
+            <Label className="text-[10px] text-muted-foreground uppercase">Overflow Destination</Label>
+            <Select defaultValue="voice_mail">
+              <SelectTrigger className="h-7 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="voice_mail">Voicemail</SelectItem>
+                <SelectItem value="ext_overflow">External Partner</SelectItem>
+                <SelectItem value="priority_queue">Priority Queue</SelectItem>
+                <SelectItem value="manager_direct">Manager Direct</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Priority</span>
             <div className="flex gap-1">
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`w-2 h-2 rounded-full ${
-                    i < queue.priority ? "bg-primary" : "bg-muted"
-                  }`}
+                  className={`w-2 h-2 rounded-full ${i < queue.priority ? "bg-primary" : "bg-muted"
+                    }`}
                 />
               ))}
             </div>
@@ -116,7 +132,7 @@ export default function QueueMonitoringPanel() {
   const totalAvailable = getTotalAgentsAvailable();
 
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Queue Monitoring</CardTitle>

@@ -62,7 +62,7 @@ export default function AlertsPanel() {
 
   const acknowledgeAlert = (id) => {
     setAlerts((prev) =>
-      prev.map((alert) =
+      prev.map((alert) =>
         alert.id === id ? { ...alert, acknowledged: true } : alert
       )
     );
