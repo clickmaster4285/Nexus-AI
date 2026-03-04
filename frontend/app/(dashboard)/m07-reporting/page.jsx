@@ -1,20 +1,35 @@
-export default function ReportingBIPage() {
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import DashboardBuilder from "@/components/m07/DashboardBuilder";
+import ReportLibrary from "@/components/m07/ReportLibrary";
+import ExecutiveBriefing from "@/components/m07/ExecutiveBriefing";
+
+export default function ReportingBIStudioPage() {
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "builder";
+
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Reporting & BI Studio</h1>
-      <p className="text-muted-foreground">Dashboard builder, report library, scheduled distribution, and executive AI</p>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="p-4 bg-card rounded-lg border">
-          <h2 className="text-lg font-semibold mb-4">Dashboard Builder</h2>
-          <p className="text-muted-foreground">Create custom dashboards with widgets...</p>
-        </div>
-
-        <div className="p-4 bg-card rounded-lg border">
-          <h2 className="text-lg font-semibold mb-4">Report Library</h2>
-          <p className="text-muted-foreground">Manage and schedule reports...</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tighter uppercase">Reporting & BI Studio</h1>
+          <p className="text-muted-foreground">Self-service dashboard builder and AI-powered executive insights.</p>
         </div>
       </div>
+
+      <Tabs value={activeTab} className="w-full">
+        <TabsContent value="builder" className="mt-0 border-none p-0 outline-hidden">
+          <DashboardBuilder />
+        </TabsContent>
+        <TabsContent value="library" className="mt-0 border-none p-0 outline-hidden">
+          <ReportLibrary />
+        </TabsContent>
+        <TabsContent value="briefing" className="mt-0 border-none p-0 outline-hidden">
+          <ExecutiveBriefing />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

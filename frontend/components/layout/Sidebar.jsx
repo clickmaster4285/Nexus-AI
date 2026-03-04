@@ -87,8 +87,28 @@ const modules = [
       { name: "Forecasting", route: "/m05-workforce?tab=forecasting" },
     ]
   },
-  { id: "m06", name: "CX Journey", route: "/m06-cx-journey", icon: Route },
-  { id: "m07", name: "Reporting & BI", route: "/m07-reporting", icon: BarChart3 },
+  {
+    id: "m06",
+    name: "CX Journey",
+    route: "/m06-cx-journey",
+    icon: Route,
+    subItems: [
+      { name: "Journey Mapping", route: "/m06-cx-journey?tab=journey" },
+      { name: "VoC Analytics", route: "/m06-cx-journey?tab=voc" },
+      { name: "Self-Service", route: "/m06-cx-journey?tab=deflection" }
+    ]
+  },
+  {
+    id: "m07",
+    name: "Reporting & BI",
+    route: "/m07-reporting",
+    icon: BarChart3,
+    subItems: [
+      { name: "Dashboard Builder", route: "/m07-reporting?tab=builder" },
+      { name: "Report Library", route: "/m07-reporting?tab=library" },
+      { name: "Executive Briefing", route: "/m07-reporting?tab=briefing" }
+    ]
+  },
   { id: "m08", name: "Supervisor AI", route: "/m08-supervisor-ai", icon: Bot },
   { id: "m09", name: "Recording", route: "/m09-recording", icon: PhoneCall },
   { id: "m10", name: "Telephony Hub", route: "/m10-telephony", icon: Radio },
