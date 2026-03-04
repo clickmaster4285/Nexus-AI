@@ -74,7 +74,19 @@ const modules = [
       { name: "Sales Scoring", route: "/m04-revenue?tab=sales" },
     ]
   },
-  { id: "m05", name: "Workforce Intel", route: "/m05-workforce", icon: Users },
+  {
+    id: "m05",
+    name: "Workforce Intel",
+    route: "/m05-workforce",
+    icon: Users,
+    subItems: [
+      { name: "Agent Directory", route: "/m05-workforce?tab=directory" },
+      { name: "Performance", route: "/m05-workforce?tab=performance" },
+      { name: "Gamification", route: "/m05-workforce?tab=gamification" },
+      { name: "Wellbeing", route: "/m05-workforce?tab=wellbeing" },
+      { name: "Forecasting", route: "/m05-workforce?tab=forecasting" },
+    ]
+  },
   { id: "m06", name: "CX Journey", route: "/m06-cx-journey", icon: Route },
   { id: "m07", name: "Reporting & BI", route: "/m07-reporting", icon: BarChart3 },
   { id: "m08", name: "Supervisor AI", route: "/m08-supervisor-ai", icon: Bot },
