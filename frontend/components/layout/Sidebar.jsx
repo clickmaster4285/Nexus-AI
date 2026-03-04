@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useState, useMemo } from "react";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -26,10 +26,54 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 const modules = [
-  { id: "m01", name: "Real-Time Operations", route: "/m01-realtime", icon: LayoutDashboard, },
-  { id: "m02", name: "Conversation AI", route: "/m02-conversation", icon: MessageSquare, },
-  { id: "m03", name: "QA & Compliance", route: "/m03-qa", icon: ClipboardCheck, },
-  { id: "m04", name: "Revenue Intel", route: "/m04-revenue", icon: TrendingUp },
+  {
+    id: "m01",
+    name: "Real-Time Operations",
+    route: "/m01-realtime",
+    icon: LayoutDashboard,
+    subItems: [
+      { name: "Live Operations", route: "/m01-realtime?tab=live-ops" },
+      { name: "Supervisor Tools", route: "/m01-realtime?tab=supervisor" },
+      { name: "Wallboards", route: "/m01-realtime?tab=wallboards" },
+      { name: "Alerts Engine", route: "/m01-realtime?tab=alerts" },
+    ]
+  },
+  {
+    id: "m02",
+    name: "Conversation AI",
+    route: "/m02-conversation",
+    icon: MessageSquare,
+    subItems: [
+      { name: "Transcript Viewer", route: "/m02-conversation?tab=transcript" },
+      { name: "Bulk Search", route: "/m02-conversation?tab=search" },
+      { name: "NLP Insights", route: "/m02-conversation?tab=insights" },
+      { name: "Analytics Library", route: "/m02-conversation?tab=analytics" },
+    ]
+  },
+  {
+    id: "m03",
+    name: "QA & Compliance",
+    route: "/m03-qa",
+    icon: ClipboardCheck,
+    subItems: [
+      { name: "Scorecard Builder", route: "/m03-qa?tab=scorecards" },
+      { name: "Evaluation Queue", route: "/m03-qa?tab=reviews" },
+      { name: "Compliance Monitor", route: "/m03-qa?tab=compliance" },
+      { name: "Coaching Workflow", route: "/m03-qa?tab=coaching" },
+    ]
+  },
+  {
+    id: "m04",
+    name: "Revenue Intel",
+    route: "/m04-revenue",
+    icon: TrendingUp,
+    subItems: [
+      { name: "KPI Overview", route: "/m04-revenue?tab=dashboard" },
+      { name: "Upsell & Signals", route: "/m04-revenue?tab=signals" },
+      { name: "Churn & Retention", route: "/m04-revenue?tab=churn" },
+      { name: "Sales Scoring", route: "/m04-revenue?tab=sales" },
+    ]
+  },
   { id: "m05", name: "Workforce Intel", route: "/m05-workforce", icon: Users },
   { id: "m06", name: "CX Journey", route: "/m06-cx-journey", icon: Route },
   { id: "m07", name: "Reporting & BI", route: "/m07-reporting", icon: BarChart3 },
@@ -44,17 +88,44 @@ const modules = [
 
 function SidebarContent() {
   const pathname = usePathname();
-  const [expandedModules, setExpandedModules] = useState([]);
+  const searchParams = useSearchParams();
+  const [userToggledModules, setUserToggledModules] = useState({}); // moduleId -> boolean
+
+  // Derive expanded modules from both user toggles and the current active path
+  const expandedModules = useMemo(() => {
+    const activeModule = modules.find(m =>
+      pathname.startsWith(m.route) ||
+      (m.subItems && m.subItems.some(si => {
+        const [siPath, siQuery] = si.route.split("?");
+        return pathname === siPath && searchParams.get("tab") === siQuery.split("=")[1];
+      }))
+    );
+
+    return modules.map(m => {
+      const isActive = activeModule?.id === m.id;
+      const userState = userToggledModules[m.id];
+      // Default to active module expanded, but respect user toggle if it exists
+      const isExpanded = userState !== undefined ? userState : isActive;
+      return isExpanded ? m.id : null;
+    }).filter(Boolean);
+  }, [userToggledModules, pathname, searchParams]);
 
   const toggleModule = (moduleId) => {
-    setExpandedModules((prev) =>
-      prev.includes(moduleId)
-        ? prev.filter((id) => id !== moduleId)
-        : [...prev, moduleId]
-    );
+    const isCurrentlyExpanded = expandedModules.includes(moduleId);
+    setUserToggledModules(prev => ({
+      ...prev,
+      [moduleId]: !isCurrentlyExpanded
+    }));
   };
 
-  const isActive = (route) => pathname === route || pathname.startsWith(`${route}/`);
+  const isActive = (route) => {
+    if (route.includes("?")) {
+      const [path, query] = route.split("?");
+      const tabParam = query.split("=")[1];
+      return pathname === path && searchParams.get("tab") === tabParam;
+    }
+    return pathname === route || (pathname.startsWith(route) && pathname !== "/");
+  };
 
   return (
     <div className="flex h-full flex-col bg-sidebar">
@@ -75,44 +146,56 @@ function SidebarContent() {
             const expanded = expandedModules.includes(module.id);
 
             return (
-              <div key={module.id}>
+              <div key={module.id} className="space-y-1">
                 <Link
                   href={module.route}
-                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${active
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                  onClick={() => {
+                    toggleModule(module.id);
+                  }}
+                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ${active
+                    ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                     }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="h-4 w-4" />
+                    <Icon className={`h-4 w-4 ${active ? "animate-pulse" : ""}`} />
                     <span>{module.name}</span>
                   </div>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleModule(module.id);
-                    }}
-                    className="p-1 rounded"
-                  >
-                    {expanded ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </button>
+                  {module.subItems && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleModule(module.id);
+                      }}
+                      className="p-1 rounded-md hover:bg-black/10 transition-colors"
+                    >
+                      {expanded ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </button>
+                  )}
                 </Link>
 
                 {expanded && module.subItems && (
-                  <div className="ml-6 mt-1 space-y-1">
-                    {module.subItems.map((subItem) => (
-                      <Link
-                        key={subItem.route}
-                        href={subItem.route}
-                        className="block rounded-md px-3 py-1.5 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                      >
-                        {subItem.name}
-                      </Link>
-                    ))}
+                  <div className="ml-4 pl-2 border-l border-primary/10 mt-1 space-y-1 animate-in slide-in-from-left-2 duration-200">
+                    {module.subItems.map((subItem) => {
+                      const subActive = isActive(subItem.route);
+                      return (
+                        <Link
+                          key={subItem.route}
+                          href={subItem.route}
+                          className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${subActive
+                            ? "bg-primary/10 text-primary font-bold shadow-xs"
+                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                            }`}
+                        >
+                          {subItem.name}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>

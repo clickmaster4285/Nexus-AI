@@ -111,7 +111,7 @@ function AgentCard({ agent }) {
 }
 
 export default function AgentStateBoard() {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("available");
 
   const filteredAgents = agents.filter((agent) => {
     if (filter === "all") return true;

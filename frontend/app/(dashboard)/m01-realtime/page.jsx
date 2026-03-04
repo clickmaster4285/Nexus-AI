@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import AgentStateBoard from "@/components/m01/AgentStateBoard";
 import QueueMonitoringPanel from "@/components/m01/QueueMonitoringPanel";
 import ActiveCallCards from "@/components/m01/ActiveCallCards";
@@ -9,11 +9,16 @@ import SupervisorIntervention from "@/components/m01/SupervisorIntervention";
 import AlertsPanel from "@/components/m01/AlertsPanel";
 import AlertRulesEngine from "@/components/m01/AlertRulesEngine";
 import WallboardManager from "@/components/m01/WallboardManager";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Activity, LayoutDashboard, Monitor, Bell } from "lucide-react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export default function RealtimeOpsPage() {
-  const [activeTab, setActiveTab] = useState("live-ops");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "live-ops";
+
+  const setActiveTab = (tab) => {
+    router.push(`/m01-realtime?tab=${tab}`);
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -37,30 +42,8 @@ export default function RealtimeOpsPage() {
         <KPITicker />
       </section>
 
-      {/* Tabbed Navigation */}
+      {/* Tabbed Navigation - Internal Switcher Removed as per request */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:w-150">
-          <TabsTrigger value="live-ops" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            <span className="hidden sm:inline">Live Operations</span>
-            <span className="sm:hidden">Live</span>
-          </TabsTrigger>
-          <TabsTrigger value="supervisor" className="flex items-center gap-2">
-            <LayoutDashboard className="h-4 w-4" />
-            <span className="hidden sm:inline">Supervisor</span>
-            <span className="sm:hidden">Super</span>
-          </TabsTrigger>
-          <TabsTrigger value="wallboards" className="flex items-center gap-2">
-            <Monitor className="h-4 w-4" />
-            <span className="hidden sm:inline">Wallboards</span>
-            <span className="sm:hidden">Wall</span>
-          </TabsTrigger>
-          <TabsTrigger value="alerts" className="flex items-center gap-2">
-            <Bell className="h-4 w-4" />
-            <span className="hidden sm:inline">Alerts</span>
-            <span className="sm:hidden">Alerts</span>
-          </TabsTrigger>
-        </TabsList>
 
         {/* Tab 1: Live Operations Wall */}
         <TabsContent value="live-ops" className="space-y-6">
@@ -68,12 +51,13 @@ export default function RealtimeOpsPage() {
             {/* Agent State Board - Takes 7 columns */}
             <div className="lg:col-span-7">
               <AgentStateBoard />
+              <ActiveCallCards />
+
             </div>
 
             {/* Right Column - Queue & Active Calls - Takes 5 columns */}
             <div className="lg:col-span-5 space-y-6">
               <QueueMonitoringPanel />
-              <ActiveCallCards />
             </div>
           </div>
         </TabsContent>

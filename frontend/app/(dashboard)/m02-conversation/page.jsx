@@ -3,16 +3,13 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
-  MessageSquare,
-  Search,
-  BrainCircuit,
-  Library,
-  PlayCircle,
   Clock,
   User,
   Bot,
+  PlayCircle,
+  Library
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,7 +23,7 @@ import { cn } from "@/lib/utils";
 export default function ConversationIntelligencePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "transcription";
+  const activeTab = searchParams.get("tab") || "transcript";
   const [activeTranscript, setActiveTranscript] = useState(mockTranscripts[0]);
 
   const setActiveTab = (tab) => {
@@ -56,27 +53,10 @@ export default function ConversationIntelligencePage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col gap-6">
-        <TabsList className="grid w-full max-w-2xl grid-cols-4 h-12">
-          <TabsTrigger value="transcription" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <MessageSquare className="h-4 w-4" />
-            Transcription
-          </TabsTrigger>
-          <TabsTrigger value="search" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Search className="h-4 w-4" />
-            Bulk Search
-          </TabsTrigger>
-          <TabsTrigger value="nlp" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <BrainCircuit className="h-4 w-4" />
-            NLP Insights
-          </TabsTrigger>
-          <TabsTrigger value="analytics" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Library className="h-4 w-4" />
-            Analytics
-          </TabsTrigger>
-        </TabsList>
+        {/* Internal switchers removed to favor Sidebar navigation */}
 
         {/* 2.1 Transcription Management */}
-        <TabsContent value="transcription" className="flex-1 flex flex-col min-h-0 data-[state=active]:flex">
+        <TabsContent value="transcript" className="flex-1 flex flex-col min-h-0 data-[state=active]:flex">
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 flex-1 min-h-0">
             {/* Left: Metadata & Player Sidebar */}
             <div className="xl:col-span-1 space-y-6 overflow-y-auto pr-2">
@@ -156,7 +136,7 @@ export default function ConversationIntelligencePage() {
         </TabsContent>
 
         {/* 2.2 NLP Insights Panel */}
-        <TabsContent value="nlp" className="flex-1 min-h-0 data-[state=active]:block overflow-y-auto pr-2">
+        <TabsContent value="insights" className="flex-1 min-h-0 data-[state=active]:block overflow-y-auto pr-2">
           <NLPInsights data={activeTranscript} />
         </TabsContent>
 

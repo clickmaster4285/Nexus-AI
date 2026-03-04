@@ -1,15 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
   ClipboardCheck,
-  Settings,
-  Layout,
   ShieldCheck,
-  Users,
   Download,
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { mockEvaluations, mockComplianceRules } from "@/lib/mock-data/qa";
@@ -21,7 +18,13 @@ import ComplianceMonitor from "@/components/m03/ComplianceMonitor";
 import CoachingWorkflow from "@/components/m03/CoachingWorkflow";
 
 export default function QACompliancePage() {
-  const [activeTab, setActiveTab] = useState("scorecards");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "scorecards";
+
+  const setActiveTab = (tab) => {
+    router.push(`/m03-qa?tab=${tab}`);
+  };
 
   return (
     <div className="flex flex-col gap-6 p-6 min-h-screen bg-transparent">
@@ -49,26 +52,8 @@ export default function QACompliancePage() {
         </div>
       </div>
 
-      {/* Main Tabbed Interface */}
+      {/* Main Tabbed Interface - Internal Switcher Removed */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col gap-6">
-        <TabsList className="grid w-full max-w-2xl grid-cols-4 h-12 bg-muted/30 backdrop-blur-sm border p-1 rounded-xl">
-          <TabsTrigger value="scorecards" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg transition-all">
-            <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Scorecards</span>
-          </TabsTrigger>
-          <TabsTrigger value="reviews" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg transition-all">
-            <Layout className="h-4 w-4" />
-            <span className="hidden sm:inline">Reviews</span>
-          </TabsTrigger>
-          <TabsTrigger value="compliance" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg transition-all">
-            <ShieldCheck className="h-4 w-4" />
-            <span className="hidden sm:inline">Compliance</span>
-          </TabsTrigger>
-          <TabsTrigger value="coaching" className="gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg transition-all">
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Coaching</span>
-          </TabsTrigger>
-        </TabsList>
 
         {/* Tab Contents */}
         <div className="relative flex-1">

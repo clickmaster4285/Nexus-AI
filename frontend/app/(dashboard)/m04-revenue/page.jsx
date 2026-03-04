@@ -1,15 +1,12 @@
 "use client";
 
-import { } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   TrendingUp,
   BadgeDollarSign,
-  Download,
-  Calendar,
-  Filter
+  Download
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -62,31 +59,7 @@ export default function RevenueIntelligencePage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <div className="flex items-center justify-between bg-muted/30 p-1.5 rounded-xl border">
-          <TabsList className="bg-transparent border-none">
-            <TabsTrigger value="dashboard" className="data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg px-6">
-              KPI Overview
-            </TabsTrigger>
-            <TabsTrigger value="signals" className="data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg px-6">
-              Upsell & Signals
-            </TabsTrigger>
-            <TabsTrigger value="churn" className="data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg px-6">
-              Churn & Retention
-            </TabsTrigger>
-            <TabsTrigger value="sales" className="data-[state=active]:bg-background data-[state=active]:shadow-md rounded-lg px-6">
-              Sales Scoring
-            </TabsTrigger>
-          </TabsList>
-
-          <div className="flex items-center gap-2 px-2">
-            <Button variant="ghost" size="sm" className="h-8 gap-2 text-xs opacity-70">
-              <Calendar className="h-3.5 w-3.5" /> Last 30 Days
-            </Button>
-            <Button variant="ghost" size="sm" className="h-8 gap-2 text-xs opacity-70">
-              <Filter className="h-3.5 w-3.5" /> Filter View
-            </Button>
-          </div>
-        </div>
+        {/* Internal Navigation removed in favor of Sidebar mapping */}
 
         <TabsContent value="dashboard" className="space-y-6 animate-in fade-in duration-300">
           <RevenueDashboard kpis={mockRevenueKpis} />
