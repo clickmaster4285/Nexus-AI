@@ -27,9 +27,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 const modules = [
-  { id: "m01", name: "Real-Time Operations", route: "/m01-realtime", icon: LayoutDashboard },
-  { id: "m02", name: "Conversation AI", route: "/m02-conversation", icon: MessageSquare },
-  { id: "m03", name: "QA & Compliance", route: "/m03-qa", icon: ClipboardCheck },
+  { id: "m01", name: "Real-Time Operations", route: "/m01-realtime", icon: LayoutDashboard, },
+  { id: "m02", name: "Conversation AI", route: "/m02-conversation", icon: MessageSquare, },
+  { id: "m03", name: "QA & Compliance", route: "/m03-qa", icon: ClipboardCheck, },
   { id: "m04", name: "Revenue Intel", route: "/m04-revenue", icon: TrendingUp },
   { id: "m05", name: "Workforce Intel", route: "/m05-workforce", icon: Users },
   { id: "m06", name: "CX Journey", route: "/m06-cx-journey", icon: Route },
@@ -79,11 +79,10 @@ function SidebarContent() {
               <div key={module.id}>
                 <Link
                   href={module.route}
-                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  }`}
+                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors ${active
+                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="h-4 w-4" />
@@ -104,11 +103,17 @@ function SidebarContent() {
                   </button>
                 </Link>
 
-                {expanded && (
+                {expanded && module.subItems && (
                   <div className="ml-6 mt-1 space-y-1">
-                    <div className="px-3 py-1 text-xs text-sidebar-foreground/60">
-                      Submenu items will appear here...
-                    </div>
+                    {module.subItems.map((subItem) => (
+                      <Link
+                        key={subItem.route}
+                        href={subItem.route}
+                        className="block rounded-md px-3 py-1.5 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                      >
+                        {subItem.name}
+                      </Link>
+                    ))}
                   </div>
                 )}
               </div>

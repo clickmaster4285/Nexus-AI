@@ -39,7 +39,7 @@ export default function RealtimeOpsPage() {
 
       {/* Tabbed Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[600px]">
+        <TabsList className="grid w-full grid-cols-4 lg:w-150">
           <TabsTrigger value="live-ops" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
             <span className="hidden sm:inline">Live Operations</span>
