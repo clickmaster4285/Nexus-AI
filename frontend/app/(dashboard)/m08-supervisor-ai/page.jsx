@@ -1,27 +1,39 @@
-export default function SupervisorAIPage() {
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import SupervisorMonitor from "@/components/m08/SupervisorMonitor";
+import WhisperCoaching from "@/components/m08/WhisperCoaching";
+import QueueThresholds from "@/components/m08/QueueThresholds";
+import InteractionMonitoring from "@/components/m08/InteractionMonitoring";
+
+export default function SupervisorAIConsolePage() {
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "monitor";
+
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold">AI Supervisor Copilot</h1>
-      <p className="text-muted-foreground">Real-time assist, coaching AI, NL query, shift briefings, and alerts</p>
-
-      <div className="p-4 bg-card rounded-lg border">
-        <h2 className="text-lg font-semibold mb-4">Copilot Chat Interface</h2>
-        <div className="space-y-4">
-          <div className="flex gap-2">
-            {['Who needs help right now?', 'What is my SLA risk this hour?', 'Show me top performers'].map((query) => (
-              <button
-                key={query}
-                className="px-3 py-1 text-sm bg-secondary rounded-full hover:bg-secondary/80 transition-colors"
-              >
-                {query}
-              </button>
-            ))}
-          </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <p className="text-muted-foreground">Ask me anything about your contact center operations...</p>
-          </div>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tighter uppercase">Supervisor AI Console</h1>
+          <p className="text-muted-foreground">Real-time command center for team performance and AI coaching.</p>
         </div>
       </div>
+
+      <Tabs value={activeTab} className="w-full">
+        <TabsContent value="monitor" className="mt-0 border-none p-0 outline-hidden">
+          <SupervisorMonitor />
+        </TabsContent>
+        <TabsContent value="coaching" className="mt-0 border-none p-0 outline-hidden">
+          <WhisperCoaching />
+        </TabsContent>
+        <TabsContent value="queues" className="mt-0 border-none p-0 outline-hidden">
+          <QueueThresholds />
+        </TabsContent>
+        <TabsContent value="interactions" className="mt-0 border-none p-0 outline-hidden">
+          <InteractionMonitoring />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

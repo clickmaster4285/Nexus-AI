@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const StatBox = ({ label, value, subtext, icon: Icon, color }) => (
    <div className="p-6 rounded-2xl bg-card border border-primary/10 shadow-sm space-y-3 relative overflow-hidden group">
-      <div className={cn("absolute top-0 right-0 p-4 group-hover:opacity-10 transition-opacity", color)}>
+      <div className={cn("absolute top-0 right-0 p-4 opacity-70 group-hover:opacity-95 transition-opacity", color)}>
          <Icon className="h-16 w-16" />
       </div>
       <div className="relative z-10">

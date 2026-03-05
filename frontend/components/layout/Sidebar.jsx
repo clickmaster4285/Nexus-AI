@@ -14,7 +14,7 @@ import {
   Bot,
   PhoneCall,
   Radio,
-  Plug,
+  Link2,
   Settings,
   UserCircle,
   Shield,
@@ -109,13 +109,88 @@ const modules = [
       { name: "Executive Briefing", route: "/m07-reporting?tab=briefing" }
     ]
   },
-  { id: "m08", name: "Supervisor AI", route: "/m08-supervisor-ai", icon: Bot },
-  { id: "m09", name: "Recording", route: "/m09-recording", icon: PhoneCall },
-  { id: "m10", name: "Telephony Hub", route: "/m10-telephony", icon: Radio },
-  { id: "m11", name: "Integrations", route: "/m11-integrations", icon: Plug },
-  { id: "m12", name: "Admin Settings", route: "/m12-admin", icon: Settings },
-  { id: "m13", name: "Agent Portal", route: "/m13-agent-portal", icon: UserCircle },
-  { id: "m14", name: "Security", route: "/m14-security", icon: Shield },
+  {
+    id: "m08",
+    name: "Supervisor AI",
+    route: "/m08-supervisor-ai",
+    icon: Bot,
+    subItems: [
+      { name: "Live Monitor", route: "/m08-supervisor-ai?tab=monitor" },
+      { name: "Whisper Coaching", route: "/m08-supervisor-ai?tab=coaching" },
+      { name: "Queue Health", route: "/m08-supervisor-ai?tab=queues" },
+      { name: "Interactions", route: "/m08-supervisor-ai?tab=interactions" }
+    ]
+  },
+  {
+    id: "m09",
+    name: "Recording",
+    route: "/m09-recording",
+    icon: PhoneCall,
+    subItems: [
+      { name: "Recording Browser", route: "/m09-recording?tab=browser" },
+      { name: "Media Player", route: "/m09-recording?tab=player" },
+      { name: "Lifecycle Management", route: "/m09-recording?tab=lifecycle" }
+    ]
+  },
+  {
+    id: "m10",
+    name: "Telephony Hub",
+    route: "/m10-telephony",
+    icon: Radio,
+    subItems: [
+      { name: "Connectivity", route: "/m10-telephony?tab=connectivity" },
+      { name: "Numbers", route: "/m10-telephony?tab=numbers" },
+      { name: "IVR Flows", route: "/m10-telephony?tab=ivr" },
+      { name: "Health", route: "/m10-telephony?tab=health" }
+    ]
+  },
+  {
+    id: "m11",
+    name: "Integrations",
+    route: "/m11-integrations",
+    icon: Link2,
+    subItems: [
+      { name: "CRM Connectors", route: "/m11-integrations?tab=crm" },
+      { name: "Webhooks", route: "/m11-integrations?tab=webhooks" },
+      { name: "API Management", route: "/m11-integrations?tab=api" },
+    ]
+  },
+  {
+    id: "m12",
+    name: "Admin Settings",
+    route: "/m12-admin",
+    icon: Settings,
+    subItems: [
+      { name: "User Management", route: "/m12-admin?tab=users" },
+      { name: "Role Permissions", route: "/m12-admin?tab=roles" },
+      { name: "Audit Trails", route: "/m12-admin?tab=audit" },
+      { name: "Account Usage", route: "/m12-admin?tab=usage" },
+    ]
+  },
+  {
+    id: "m13",
+    name: "Agent Portal",
+    route: "/m13-agent-portal",
+    icon: UserCircle,
+    subItems: [
+      { name: "My Dashboard", route: "/m13-agent-portal?tab=dashboard" },
+      { name: "Interaction Room", route: "/m13-agent-portal?tab=workspace" },
+      { name: "My Performance", route: "/m13-agent-portal?tab=performance" },
+      { name: "Support & KB", route: "/m13-agent-portal?tab=support" },
+    ]
+  },
+  {
+    id: "m14",
+    name: "Security",
+    route: "/m14-security",
+    icon: Shield,
+    subItems: [
+      { name: "Threat Monitor", route: "/m14-security?tab=monitor" },
+      { name: "Compliance Hub", route: "/m14-security?tab=compliance" },
+      { name: "Data Privacy", route: "/m14-security?tab=privacy" },
+      { name: "Encryption", route: "/m14-security?tab=encryption" },
+    ]
+  },
 ];
 
 function SidebarContent() {

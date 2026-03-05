@@ -1,25 +1,39 @@
-export default function SecurityPage() {
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import SecurityMonitoring from "@/components/m14/SecurityMonitoring";
+import ComplianceFrameworks from "@/components/m14/ComplianceFrameworks";
+import PrivacyDataProtection from "@/components/m14/PrivacyDataProtection";
+import EncryptionManagement from "@/components/m14/EncryptionManagement";
+
+export default function SecurityCompliancePage() {
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "monitor";
+
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Security & Compliance Center</h1>
-      <p className="text-muted-foreground">Access logs, data governance, privacy controls, DLP, and certifications</p>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="p-4 bg-card rounded-lg border">
-          <h2 className="text-lg font-semibold mb-4">Data Privacy Controls</h2>
-          <p className="text-muted-foreground">Manage privacy requests and data subject rights...</p>
-        </div>
-
-        <div className="p-4 bg-card rounded-lg border">
-          <h2 className="text-lg font-semibold mb-4">Security Settings</h2>
-          <p className="text-muted-foreground">Configure MFA, access policies, and encryption...</p>
-        </div>
-
-        <div className="p-4 bg-card rounded-lg border">
-          <h2 className="text-lg font-semibold mb-4">Compliance Certifications</h2>
-          <p className="text-muted-foreground">Track SOC 2, PCI-DSS, HIPAA, GDPR status...</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tighter uppercase">Security & Compliance Hub</h1>
+          <p className="text-muted-foreground">Global oversight for platform integrity, regulatory compliance, and data privacy.</p>
         </div>
       </div>
+
+      <Tabs value={activeTab} className="w-full">
+        <TabsContent value="monitor" className="mt-0 border-none p-0 outline-hidden">
+          <SecurityMonitoring />
+        </TabsContent>
+        <TabsContent value="compliance" className="mt-0 border-none p-0 outline-hidden">
+          <ComplianceFrameworks />
+        </TabsContent>
+        <TabsContent value="privacy" className="mt-0 border-none p-0 outline-hidden">
+          <PrivacyDataProtection />
+        </TabsContent>
+        <TabsContent value="encryption" className="mt-0 border-none p-0 outline-hidden">
+          <EncryptionManagement />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
