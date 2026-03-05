@@ -1,15 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Radio, Plus, Play, Pause, Trash2, Terminal } from "lucide-react";
+import { Plus, Trash2, Pause, Terminal, Radio, Play } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { webhooks, webhookLogs } from "@/lib/mock-data/integrations";
+import { webhooks } from "@/lib/mock-data/integrations";
 import { cn } from "@/lib/utils";
+import WebhookAddForm from "./WebhookAddForm";
 
 export default function WebhookStreams() {
+   const [isAdding, setIsAdding] = useState(false);
    const [streams, setStreams] = useState(webhooks);
+
+   if (isAdding) {
+      return <WebhookAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+   }
 
    const toggleStatus = (id) => {
       setStreams(prev => prev.map(s =>
@@ -27,7 +33,7 @@ export default function WebhookStreams() {
                      <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Outbound Streams</h2>
                      <p className="text-[10px] text-muted-foreground font-medium italic">Push real-time interaction events to your custom endpoints.</p>
                   </div>
-                  <Button size="sm" className="h-9 gap-2 text-[10px] font-black bg-primary">
+                  <Button size="sm" onClick={() => setIsAdding(true)} className="h-9 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
                      <Plus className="h-4 w-4" /> Create Webhook
                   </Button>
                </div>

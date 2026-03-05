@@ -29,12 +29,18 @@ import {
    TableHeader,
    TableRow,
 } from "@/components/ui/table";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"; 
-import {Textarea} from "@/components/ui/textarea"; 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+
+import CoachingAddForm from "./CoachingAddForm";
 
 export default function CoachingWorkflow() {
    const [isCreating, setIsCreating] = useState(false);
+
+   if (isCreating) {
+      return <CoachingAddForm onCancel={() => setIsCreating(false)} onSave={() => setIsCreating(false)} />;
+   }
 
    return (
       <div className="space-y-6">

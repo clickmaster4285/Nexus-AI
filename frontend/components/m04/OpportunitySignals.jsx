@@ -39,8 +39,14 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
+import SignalAddForm from "./SignalAddForm";
+
 export default function OpportunitySignals({ opportunities }) {
    const [isBuilding, setIsBuilding] = useState(false);
+
+   if (isBuilding) {
+      return <SignalAddForm onCancel={() => setIsBuilding(false)} onSave={() => setIsBuilding(false)} />;
+   }
 
    return (
       <div className="space-y-6">

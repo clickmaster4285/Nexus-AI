@@ -8,8 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { privacyRules } from "@/lib/mock-data/security";
 
+import PrivacyRuleAddForm from "./PrivacyRuleAddForm";
+
 export default function PrivacyDataProtection() {
    const [rules, setRules] = useState(privacyRules);
+   const [isAdding, setIsAdding] = useState(false);
+
+   if (isAdding) {
+      return <PrivacyRuleAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+   }
 
    return (
       <div className="space-y-6 animate-in fade-in duration-500">
@@ -25,7 +32,10 @@ export default function PrivacyDataProtection() {
                <Card className="border-primary/10 shadow-lg overflow-hidden bg-card/30 backdrop-blur-sm">
                   <CardHeader className="p-6 border-b bg-primary/2 flex flex-row items-center justify-between">
                      <CardTitle className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Active Masking Rules</CardTitle>
-                     <Button size="sm" className="h-8 px-4 bg-primary text-[9px] font-black uppercase gap-2 shadow-lg shadow-primary/20">
+                     <Button
+                        onClick={() => setIsAdding(true)}
+                        size="sm" className="h-8 px-4 bg-primary text-[9px] font-black uppercase gap-2 shadow-lg shadow-primary/20"
+                     >
                         <Plus className="h-3 w-3" /> New Pattern
                      </Button>
                   </CardHeader>

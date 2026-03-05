@@ -7,7 +7,14 @@ import { Button } from "@/components/ui/button";
 import { encryptionStatus } from "@/lib/mock-data/security";
 import { cn } from "@/lib/utils";
 
+import CertificateProvisionForm from "./CertificateProvisionForm";
+
 export default function EncryptionManagement() {
+   const [isAddingCert, setIsAddingCert] = useState(false);
+
+   if (isAddingCert) {
+      return <CertificateProvisionForm onCancel={() => setIsAddingCert(false)} onSave={() => setIsAddingCert(false)} />;
+   }
    return (
       <div className="space-y-8 animate-in fade-in duration-500">
          {/* Top Level Encryption Logic */}
@@ -46,7 +53,10 @@ export default function EncryptionManagement() {
                         </CardTitle>
                         <p className="text-[10px] text-muted-foreground font-medium italic">SSL/TLS profiles for platform subdomains and internal API endpoints.</p>
                      </div>
-                     <Button className="h-10 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                     <Button
+                        onClick={() => setIsAddingCert(true)}
+                        className="h-10 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20"
+                     >
                         Provision New Certificate
                      </Button>
                   </div>

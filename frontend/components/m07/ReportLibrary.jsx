@@ -1,21 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { FileText, Calendar, Plus, Search, Mail, Slack, Terminal, CheckCircle2, Clock, MoreVertical, FileDown, Layers, Settings } from "lucide-react";
+import { Search, FileText, Calendar, Plus, Clock, FileDown, Settings, Layers, Terminal, MoreVertical, CheckCircle2, Mail, Slack } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { reports, schedules } from "@/lib/mock-data/reporting";
 import { cn } from "@/lib/utils";
+import ReportAddForm from "./ReportAddForm";
+import { useState } from "react";
 
 export default function ReportLibrary() {
    const [searchTerm, setSearchTerm] = useState("");
+   const [isAdding, setIsAdding] = useState(false);
 
    const filteredReports = reports.filter(r =>
       r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       r.category.toLowerCase().includes(searchTerm.toLowerCase())
    );
+
+   if (isAdding) {
+      return <ReportAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+   }
 
    return (
       <div className="space-y-6">
@@ -34,7 +40,7 @@ export default function ReportLibrary() {
                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                      </div>
-                     <Button size="sm" className="h-8 gap-2 text-[10px] font-black shadow-md">
+                     <Button onClick={() => setIsAdding(true)} size="sm" className="h-9 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20 transition-all">
                         <Plus className="h-3.5 w-3.5" /> Create Report
                      </Button>
                   </div>

@@ -1,15 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { GitBranch, Plus, Play, MoreVertical, Zap, Clock, ChevronRight, Edit3, Layers } from "lucide-react";
+import { Plus, Play, ChevronRight, GitBranch, Zap, Clock, Edit3, Layers, MoreVertical } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ivrFlows } from "@/lib/mock-data/telephony";
 import { cn } from "@/lib/utils";
+import IVRFlowAddForm from "./IVRFlowAddForm";
 
 export default function IVRFlowBuilder() {
+   const [isAdding, setIsAdding] = useState(false);
    const [flows, setFlows] = useState(ivrFlows);
+
+   if (isAdding) {
+      return <IVRFlowAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+   }
 
    const toggleStatus = (id) => {
       setFlows(prev => prev.map(f =>
@@ -24,7 +30,7 @@ export default function IVRFlowBuilder() {
                <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">IVR Routing Strategy</h3>
                <p className="text-[10px] text-muted-foreground font-medium italic mt-1">Design and deploy high-conversion voice navigation flows.</p>
             </div>
-            <Button size="sm" className="h-9 gap-2 text-[10px] font-black shadow-lg bg-primary hover:bg-primary/90">
+            <Button onClick={() => setIsAdding(true)} className="h-10 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
                <Plus className="h-4 w-4" /> Create New Flow
             </Button>
          </div>

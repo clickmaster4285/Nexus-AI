@@ -4,13 +4,19 @@ import { useState } from "react";
 import { Shield, Lock, CheckCircle2, XCircle, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { roles as initialRoles } from "@/lib/mock-data/admin";
+import { roles } from "@/lib/mock-data/admin";
 import { cn } from "@/lib/utils";
+import RoleAddForm from "./RoleAddForm";
 
 export default function RolePermissions() {
-   const [selectedRole, setSelectedRole] = useState(initialRoles[0].id);
+   const [isAddingRole, setIsAddingRole] = useState(false);
+   const [selectedRole, setSelectedRole] = useState(roles[0].id);
 
-   const activeRoleData = initialRoles.find(r => r.id === selectedRole);
+   if (isAddingRole) {
+      return <RoleAddForm onCancel={() => setIsAddingRole(false)} onSave={() => setIsAddingRole(false)} />;
+   }
+
+   const activeRoleData = roles.find(r => r.id === selectedRole);
 
    const permissionCategories = [
       { name: "Telephony Hub", perms: ["Trunk Management", "DID Inventory", "IVR Flow Builder", "Health QoS"] },

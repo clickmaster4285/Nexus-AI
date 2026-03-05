@@ -1,7 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import { Trophy, Flame, Settings, Plus } from "lucide-react";
+import { Trophy, Flame, Settings, Plus, Star } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,9 +8,15 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { achievements, workforceAgents } from "@/lib/mock-data/workforce";
 import { cn } from "@/lib/utils";
+import AchievementAddForm from "./AchievementAddForm";
 
 export default function GamificationEngine() {
    const [view, setView] = useState("builder"); // builder | leaderboards
+   const [isAdding, setIsAdding] = useState(false);
+
+   if (isAdding) {
+      return <AchievementAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+   }
 
    return (
       <div className="space-y-6">
@@ -74,7 +77,10 @@ export default function GamificationEngine() {
                            </CardContent>
                         </Card>
                      ))}
-                     <Card className="border-dashed border-2 border-primary/20 flex items-center justify-center p-6 bg-primary/2 hover:bg-primary/4 cursor-pointer transition-colors group">
+                     <Card
+                        onClick={() => setIsAdding(true)}
+                        className="border-dashed border-2 border-primary/20 flex items-center justify-center p-6 bg-primary/2 hover:bg-primary/4 cursor-pointer transition-colors group"
+                     >
                         <div className="text-center space-y-2">
                            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
                               <Plus className="h-6 w-6 text-primary" />
@@ -85,72 +91,28 @@ export default function GamificationEngine() {
                   </div>
                </div>
 
-               {/* Config Panel (Simplified) */}
-               <div className="xl:col-span-1">
-                  <Card className="border-primary/10 shadow-xl sticky top-4">
-                     <CardHeader className="bg-primary/5">
-                        <CardTitle className="text-sm font-bold">Achievement Builder</CardTitle>
-                        <CardDescription className="text-[10px]">Configure triggers and rewards</CardDescription>
+               {/* Info Panel instead of Builder */}
+               <div className="xl:col-span-1 space-y-6">
+                  <Card className="border-primary/10 shadow-xl bg-linear-to-br from-primary/5 to-transparent overflow-hidden">
+                     <CardHeader className="border-b bg-white/50 backdrop-blur-sm">
+                        <CardTitle className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                           <Star className="h-4 w-4 fill-primary" /> Gamification Protocol
+                        </CardTitle>
                      </CardHeader>
-                     <CardContent className="p-6 space-y-6">
-                        <div className="space-y-2">
-                           <Label className="text-xs font-bold">Achievement Name</Label>
-                           <Input placeholder="e.g. Speed Demon" className="h-9 text-sm" />
-                        </div>
-
-                        <div className="space-y-2">
-                           <Label className="text-xs font-bold">Trigger Event</Label>
-                           <Select>
-                              <SelectTrigger className="h-9 text-sm">
-                                 <SelectValue placeholder="Select Trigger" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 <SelectItem value="csat">CSAT Threshold</SelectItem>
-                                 <SelectItem value="aht">AHT Threshold</SelectItem>
-                                 <SelectItem value="fcr">FCR Threshold</SelectItem>
-                                 <SelectItem value="training">Training Complete</SelectItem>
-                              </SelectContent>
-                           </Select>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                           <div className="space-y-2">
-                              <Label className="text-xs font-bold">Points</Label>
-                              <Input type="number" placeholder="500" className="h-9 text-sm" />
+                     <CardContent className="p-6 space-y-4">
+                        <p className="text-[11px] text-muted-foreground font-medium italic leading-relaxed">
+                           The Nexus Gamification Engine uses real-time event analytics to dynamically award points and badges. High-engagement achievements boost agent morale and visibility on global leaderboards.
+                        </p>
+                        <div className="pt-4 border-t border-dashed border-primary/10">
+                           <div className="flex items-center justify-between py-2">
+                              <span className="text-[10px] font-black uppercase text-muted-foreground">Active Drivers</span>
+                              <Badge className="bg-primary/10 text-primary border-none text-[9px]">4 REW</Badge>
                            </div>
-                           <div className="space-y-2">
-                              <Label className="text-xs font-bold">Freq. Cap</Label>
-                              <Select>
-                                 <SelectTrigger className="h-9 text-sm">
-                                    <SelectValue placeholder="Once" />
-                                 </SelectTrigger>
-                                 <SelectContent>
-                                    <SelectItem value="once">Once</SelectItem>
-                                    <SelectItem value="daily">Daily</SelectItem>
-                                    <SelectItem value="monthly">Monthly</SelectItem>
-                                 </SelectContent>
-                              </Select>
+                           <div className="flex items-center justify-between py-2">
+                              <span className="text-[10px] font-black uppercase text-muted-foreground">Avg. Reward Rate</span>
+                              <span className="text-[10px] font-bold">1.2 / interaction</span>
                            </div>
                         </div>
-
-                        <div className="space-y-4 pt-4 border-t border-dashed">
-                           <div className="flex items-center justify-between">
-                              <div className="space-y-1">
-                                 <Label className="text-xs font-bold">Global Announcement</Label>
-                                 <p className="text-[10px] text-muted-foreground">Notify team on achievement</p>
-                              </div>
-                              <Switch />
-                           </div>
-                           <div className="flex items-center justify-between">
-                              <div className="space-y-1">
-                                 <Label className="text-xs font-bold">Team Challenge Eligible</Label>
-                                 <p className="text-[10px] text-muted-foreground">Include in collective goals</p>
-                              </div>
-                              <Switch />
-                           </div>
-                        </div>
-
-                        <Button className="w-full font-bold shadow-md">Deploy Achievement</Button>
                      </CardContent>
                   </Card>
                </div>
