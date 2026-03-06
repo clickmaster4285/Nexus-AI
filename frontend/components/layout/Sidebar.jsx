@@ -141,6 +141,7 @@ const modules = [
       { name: "Connectivity", route: "/m10-telephony?tab=connectivity" },
       { name: "Numbers", route: "/m10-telephony?tab=numbers" },
       { name: "IVR Flows", route: "/m10-telephony?tab=ivr" },
+      { name: "AI Connectors", route: "/m10-telephony?tab=ai" },
       { name: "Health", route: "/m10-telephony?tab=health" }
     ]
   },

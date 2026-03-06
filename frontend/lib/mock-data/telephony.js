@@ -100,6 +100,36 @@ export const ivrFlows = [
    }
 ];
 
+export const aiConnectors = [
+   {
+      id: "AI-001",
+      provider: "Amazon Lex",
+      type: "Conversational AI",
+      status: "Connected",
+      lastUsed: "2 mins ago",
+      region: "us-east-1",
+      latency: "145ms"
+   },
+   {
+      id: "AI-002",
+      provider: "Google Dialogflow",
+      type: "NLU Engine",
+      status: "Active",
+      lastUsed: "15 mins ago",
+      region: "global",
+      latency: "210ms"
+   },
+   {
+      id: "AI-003",
+      provider: "Azure Bot Service",
+      type: "Virtual Assistant",
+      status: "Disconnected",
+      lastUsed: "2 days ago",
+      region: "westeurope",
+      latency: "N/A"
+   }
+];
+
 export const qosMetrics = [
    { time: "10:00", mos: 4.4, jitter: 12, latency: 25 },
    { time: "10:15", mos: 4.2, jitter: 15, latency: 28 },
