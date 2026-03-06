@@ -33,7 +33,7 @@ export default function RolePermissions() {
                <div className="px-2 mb-4">
                   <h3 className="text-[10px] font-black uppercase tracking-tight text-muted-foreground">Access Blueprints</h3>
                </div>
-               {initialRoles.map((role) => (
+               {roles.map((role) => (
                   <button
                      key={role.id}
                      onClick={() => setSelectedRole(role.id)}

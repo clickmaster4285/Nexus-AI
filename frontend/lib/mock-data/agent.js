@@ -31,6 +31,33 @@ export const activeInteractions = [
    }
 ];
 
+export const outboundLeads = [
+   {
+      id: "lead-001",
+      customer: "Robert Smith",
+      phone: "+1 (555) 123-4567",
+      tier: "Silver",
+      lastContact: "2 days ago",
+      reason: "Subscription Renewal"
+   },
+   {
+      id: "lead-002",
+      customer: "Alice Cooper",
+      phone: "+1 (555) 987-6543",
+      tier: "Platinum",
+      lastContact: "1 week ago",
+      reason: "Upsell Opportunity"
+   },
+   {
+      id: "lead-003",
+      customer: "Charlie Brown",
+      phone: "+1 (555) 555-0199",
+      tier: "Gold",
+      lastContact: "Yesterday",
+      reason: "Billing Follow-up"
+   }
+];
+
 export const badges = [
    { id: "b1", name: "Fast Responder", icon: "Zap", color: "text-amber-500", date: "May 12" },
    { id: "b2", name: "Sentiment Master", icon: "Smile", color: "text-green-500", date: "May 15" },

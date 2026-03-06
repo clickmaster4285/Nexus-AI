@@ -16,14 +16,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const initialKPIs = [
-  { id: 1, name: "Service Level", value: 94.5, target: 90, unit: "%", trend: "up", inverse: false },
-  { id: 2, name: "Abandonment Rate", value: 4.2, target: 5, unit: "%", trend: "down", inverse: true },
-  { id: 3, name: "Avg Handle Time", value: 245, target: 240, unit: "s", trend: "stable", inverse: true },
-  { id: 4, name: "CSAT Score", value: 87.3, target: 85, unit: "%", trend: "up", inverse: false },
-  { id: 5, name: "Occupancy Rate", value: 82.1, target: 80, unit: "%", trend: "up", inverse: false },
-  { id: 6, name: "First Call Resolution", value: 78.5, target: 75, unit: "%", trend: "up", inverse: false },
-  { id: 7, name: "Calls in Queue", value: 24, target: 20, unit: "", trend: "up", inverse: true },
-  { id: 8, name: "Avg Wait Time", value: 187, target: 180, unit: "s", trend: "up", inverse: true },
+  { id: 1, name: "Service Level", value: 94.5, target: 90, unit: "%", trend: "up", inverse: false, precision: 1 },
+  { id: 2, name: "Abandonment Rate", value: 4.2, target: 5, unit: "%", trend: "down", inverse: true, precision: 1 },
+  { id: 3, name: "Avg Handle Time", value: 245, target: 240, unit: "s", trend: "stable", inverse: true, precision: 0 },
+  { id: 4, name: "CSAT Score", value: 87.3, target: 85, unit: "%", trend: "up", inverse: false, precision: 1 },
+  { id: 5, name: "Occupancy Rate", value: 82.1, target: 80, unit: "%", trend: "up", inverse: false, precision: 1 },
+  { id: 6, name: "First Call Resolution", value: 78.5, target: 75, unit: "%", trend: "up", inverse: false, precision: 1 },
+  { id: 7, name: "Calls in Queue", value: 24, target: 20, unit: "", trend: "up", inverse: true, precision: 0 },
+  { id: 8, name: "Avg Wait Time", value: 187, target: 180, unit: "s", trend: "up", inverse: true, precision: 0 },
 ];
 
 function getKPIStatus(value, target, inverse = false) {
@@ -39,13 +39,15 @@ function KPICard({ kpi }) {
     // Simulate live updates
     const interval = setInterval(() => {
       setCurrentValue((prev) => {
-        const change = (Math.random() - 0.5) * 0.5;
-        return Math.max(0, Number((prev + change).toFixed(1)));
+        const step = kpi.precision === 0 ? 1 : 0.1;
+        const change = (Math.random() - 0.5) * (step * 5);
+        const newValue = prev + change;
+        return Math.max(0, Number(newValue.toFixed(kpi.precision)));
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [kpi.precision]);
 
   const status = getKPIStatus(currentValue, kpi.target, kpi.inverse);
 
@@ -64,7 +66,7 @@ function KPICard({ kpi }) {
         <p className="text-xs text-muted-foreground">{kpi.name}</p>
         <div className="flex items-baseline gap-1">
           <span className="text-lg font-bold">
-            {currentValue.toFixed(1)}
+            {currentValue.toFixed(kpi.precision)}
             <span className="text-xs font-normal">{kpi.unit}</span>
           </span>
         </div>
