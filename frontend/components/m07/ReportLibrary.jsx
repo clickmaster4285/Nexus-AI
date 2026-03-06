@@ -8,11 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { reports, schedules } from "@/lib/mock-data/reporting";
 import { cn } from "@/lib/utils";
 import ReportAddForm from "./ReportAddForm";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function ReportLibrary() {
    const [searchTerm, setSearchTerm] = useState("");
    const [isAdding, setIsAdding] = useState(false);
+
+   const handleCancel = useCallback(() => setIsAdding(false), []);
+   const handleSave = useCallback(() => setIsAdding(false), []);
 
    const filteredReports = reports.filter(r =>
       r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -20,13 +23,12 @@ export default function ReportLibrary() {
    );
 
    if (isAdding) {
-      return <ReportAddForm onCancel={() => setIsAdding(false)} onSave={() => setIsAdding(false)} />;
+      return <ReportAddForm onCancel={handleCancel} onSave={handleSave} />;
    }
 
    return (
       <div className="space-y-6">
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Reports Management */}
             <div className="lg:col-span-2 space-y-4">
                <div className="flex items-center justify-between px-1">
                   <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Master Report Library</h3>
@@ -90,7 +92,6 @@ export default function ReportLibrary() {
                </div>
             </div>
 
-            {/* Delivery Schedules */}
             <div className="space-y-4">
                <div className="px-1">
                   <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Automated Delivery</h3>

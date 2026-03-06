@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { BarChart, ArrowLeft, Save, X, Info, Calendar } from "lucide-react";
+import { useState, useCallback, useMemo } from "react";
+import { ArrowLeft, Save, X, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
 export default function ReportAddForm({ onCancel, onSave }) {
@@ -18,20 +16,24 @@ export default function ReportAddForm({ onCancel, onSave }) {
       metrics: ["CSAT", "AHT", "Volume"]
    });
 
-   const reportTypes = ["Standard Portfolio", "Executive KPI", "Regulatory Audit", "Anomaly Detection"];
-   const metrics = ["CSAT", "AHT", "Volume", "FCR", "Cost per Interaction", "NPS", "Revenue Signal Rate"];
+   const reportTypes = useMemo(() => ["Standard Portfolio", "Executive KPI", "Regulatory Audit", "Anomaly Detection"], []);
+   const metrics = useMemo(() => ["CSAT", "AHT", "Volume", "FCR", "Cost per Interaction", "NPS", "Revenue Signal Rate"], []);
 
-   const toggleMetric = (metric) => {
-      const updated = formData.metrics.includes(metric)
-         ? formData.metrics.filter(m => m !== metric)
-         : [...formData.metrics, metric];
-      setFormData({ ...formData, metrics: updated });
-   };
+   const toggleMetric = useCallback((metric) => {
+      setFormData(prev => {
+         const updated = prev.metrics.includes(metric)
+            ? prev.metrics.filter(m => m !== metric)
+            : [...prev.metrics, metric];
+         return { ...prev, metrics: updated };
+      });
+   }, []);
 
    const handleSubmit = (e) => {
       e.preventDefault();
       onSave(formData);
    };
+
+   const selectClass = "w-full h-11 rounded-md border border-primary/10 bg-background px-3 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer";
 
    return (
       <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -65,19 +67,18 @@ export default function ReportAddForm({ onCancel, onSave }) {
                               placeholder="e.g. Q4 Executive Operations Summary"
                               className="h-11 bg-background border-primary/10 text-sm font-medium focus:ring-primary/20"
                               value={formData.title}
-                              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                            />
                         </div>
                         <div className="space-y-2">
                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Architectural Type</label>
-                           <Select value={formData.type} onValueChange={(v) => setFormData({ ...formData, type: v })}>
-                              <SelectTrigger className="h-11 bg-background border-primary/10 text-sm font-medium">
-                                 <SelectValue placeholder="Select type" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 {reportTypes.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-                              </SelectContent>
-                           </Select>
+                           <select
+                              value={formData.type}
+                              onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                              className={selectClass}
+                           >
+                              {reportTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                           </select>
                         </div>
                      </div>
 
@@ -95,11 +96,16 @@ export default function ReportAddForm({ onCancel, onSave }) {
                                        : "bg-background border-primary/5 text-muted-foreground hover:border-primary/20"
                                  )}
                               >
-                                 <Checkbox
-                                    checked={formData.metrics.includes(metric)}
-                                    onCheckedChange={() => toggleMetric(metric)}
-                                    className="border-white/50 data-[state=checked]:bg-white data-[state=checked]:text-primary"
-                                 />
+                                 <div className={cn(
+                                    "h-4 w-4 rounded-sm border-2 flex items-center justify-center shrink-0",
+                                    formData.metrics.includes(metric) ? "border-white bg-white" : "border-current"
+                                 )}>
+                                    {formData.metrics.includes(metric) && (
+                                       <svg className="h-2.5 w-2.5 text-primary" viewBox="0 0 10 10" fill="none">
+                                          <path d="M1.5 5l2.5 2.5 4.5-4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                       </svg>
+                                    )}
+                                 </div>
                                  <span className="truncate">{metric}</span>
                               </div>
                            ))}
@@ -128,33 +134,29 @@ export default function ReportAddForm({ onCancel, onSave }) {
                      <div className="space-y-4">
                         <div className="space-y-2">
                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Cadence</label>
-                           <Select value={formData.frequency} onValueChange={(v) => setFormData({ ...formData, frequency: v })}>
-                              <SelectTrigger className="h-10 bg-background border-primary/10 text-xs font-bold">
-                                 <Calendar className="h-3.5 w-3.5 mr-2 text-primary" />
-                                 <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 <SelectItem value="Daily">Daily Summary</SelectItem>
-                                 <SelectItem value="Weekly">Weekly Digest</SelectItem>
-                                 <SelectItem value="Monthly">Monthly Deep Dive</SelectItem>
-                                 <SelectItem value="On-Demand">On-Demand Only</SelectItem>
-                              </SelectContent>
-                           </Select>
+                           <select
+                              value={formData.frequency}
+                              onChange={(e) => setFormData(prev => ({ ...prev, frequency: e.target.value }))}
+                              className={selectClass}
+                           >
+                              <option value="Daily">Daily Summary</option>
+                              <option value="Weekly">Weekly Digest</option>
+                              <option value="Monthly">Monthly Deep Dive</option>
+                              <option value="On-Demand">On-Demand Only</option>
+                           </select>
                         </div>
 
                         <div className="space-y-2">
                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Output Pipeline</label>
-                           <Select value={formData.format} onValueChange={(v) => setFormData({ ...formData, format: v })}>
-                              <SelectTrigger className="h-10 bg-background border-primary/10 text-xs font-bold">
-                                 <BarChart className="h-3.5 w-3.5 mr-2 text-primary" />
-                                 <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 <SelectItem value="PDF">Encrypted PDF</SelectItem>
-                                 <SelectItem value="CSV">Raw CSV Stream</SelectItem>
-                                 <SelectItem value="JSON">API Shard (JSON)</SelectItem>
-                              </SelectContent>
-                           </Select>
+                           <select
+                              value={formData.format}
+                              onChange={(e) => setFormData(prev => ({ ...prev, format: e.target.value }))}
+                              className={selectClass}
+                           >
+                              <option value="PDF">Encrypted PDF</option>
+                              <option value="CSV">Raw CSV Stream</option>
+                              <option value="JSON">API Shard (JSON)</option>
+                           </select>
                         </div>
                      </div>
 

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { achievements, workforceAgents } from "@/lib/mock-data/workforce";
 import { cn } from "@/lib/utils";
 import AchievementAddForm from "./AchievementAddForm";
+import { useState } from "react";
 
 export default function GamificationEngine() {
    const [view, setView] = useState("builder"); // builder | leaderboards
