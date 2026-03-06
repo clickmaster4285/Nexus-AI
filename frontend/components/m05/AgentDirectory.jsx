@@ -1,24 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import { Search, MapPin, Calendar, Award, Star, Mail as MailIcon, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, MapPin, Calendar, Award, Star, Mail as MailIcon, Heart, Phone, PhoneOff, X, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { workforceAgents } from "@/lib/mock-data/workforce";
 import { cn } from "@/lib/utils";
 
 export default function AgentDirectory() {
    const [searchTerm, setSearchTerm] = useState("");
    const [selectedAgent, setSelectedAgent] = useState(workforceAgents[0]);
+   const [isDialing, setIsDialing] = useState(false);
+   const [callStatus, setCallStatus] = useState("Connecting...");
 
    const filteredAgents = workforceAgents.filter(agent =>
       agent.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       agent.id.toLowerCase().includes(searchTerm.toLowerCase())
    );
+
+   const startInternalCall = () => {
+      setIsDialing(true);
+      setCallStatus("Connecting...");
+      setTimeout(() => setCallStatus("Ringing..."), 1500);
+      setTimeout(() => setCallStatus("On Call"), 3000);
+   };
 
    return (
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 h-[calc(100vh-220px)] overflow-hidden">
@@ -89,11 +99,15 @@ export default function AgentDirectory() {
                            <p className="text-muted-foreground font-mono text-sm">{selectedAgent.id} • {selectedAgent.employeeId}</p>
                         </div>
                         <div className="flex gap-2">
-                           <Button variant="outline" size="sm" className="gap-2">
-                              <MailIcon className="h-4 w-4" /> Message
+                           <Button variant="outline" size="sm" className="h-10 gap-2 border-primary/20 text-primary hover:bg-primary/5">
+                              <MessageSquare className="h-4 w-4" /> Message
                            </Button>
-                           <Button size="sm" className="gap-2 font-bold shadow-md">
-                              Edit Profile
+                           <Button 
+                              onClick={startInternalCall}
+                              size="sm" 
+                              className="h-10 gap-2 font-black uppercase tracking-widest bg-primary text-white shadow-lg shadow-primary/20"
+                           >
+                              <Phone className="h-4 w-4" /> Call Agent
                            </Button>
                         </div>
                      </div>
@@ -251,6 +265,37 @@ export default function AgentDirectory() {
                </div>
             </CardContent>
          </Card>
+
+         {/* Dialing Dialog */}
+         <Dialog open={isDialing} onOpenChange={setIsDialing}>
+            <DialogContent className="max-w-xs p-8 flex flex-col items-center text-center space-y-6">
+               <DialogHeader>
+                  <DialogTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">Internal Link Established</DialogTitle>
+               </DialogHeader>
+               
+               <div className="relative">
+                  <div className="h-24 w-24 rounded-full border-4 border-primary/10 flex items-center justify-center bg-primary/5">
+                     <Phone className={cn("h-10 w-10 text-primary", callStatus !== "On Call" && "animate-pulse")} />
+                  </div>
+                  <div className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-green-500 border-2 border-background" />
+               </div>
+
+               <div className="space-y-1">
+                  <p className="text-xl font-black tracking-tighter uppercase">{selectedAgent.fullName}</p>
+                  <p className="text-[10px] font-bold text-primary uppercase tracking-widest animate-pulse">{callStatus}</p>
+               </div>
+
+               <div className="flex gap-4 w-full pt-4">
+                  <Button 
+                     variant="destructive" 
+                     className="flex-1 h-12 rounded-2xl shadow-lg shadow-red-500/20 gap-2"
+                     onClick={() => setIsDialing(false)}
+                  >
+                     <PhoneOff className="h-4 w-4" /> End
+                  </Button>
+               </div>
+            </DialogContent>
+         </Dialog>
       </div>
    );
 }

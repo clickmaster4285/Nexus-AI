@@ -5,7 +5,7 @@ import { Plus, Trash2, Pause, Terminal, Radio, Play } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { webhooks } from "@/lib/mock-data/integrations";
+import { webhooks, webhookLogs } from "@/lib/mock-data/integrations";
 import { cn } from "@/lib/utils";
 import WebhookAddForm from "./WebhookAddForm";
 

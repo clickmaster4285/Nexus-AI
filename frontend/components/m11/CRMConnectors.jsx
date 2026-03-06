@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Link2, RefreshCw, Settings2, ShieldCheck, Plus, XCircle, Cloud, ChevronRight } from "lucide-react";
+import { Link2, RefreshCw, Settings2, ShieldCheck, Plus, XCircle, Cloud, ChevronRight, UserPlus, Database, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { crmConnectors } from "@/lib/mock-data/integrations";
 import { cn } from "@/lib/utils";
 
 export default function CRMConnectors() {
    const [connectors, setConnectors] = useState(crmConnectors);
+   const [configTarget, setConfigTarget] = useState(null);
 
    const toggleConnection = (id) => {
       setConnectors(prev => prev.map(c => {
@@ -80,7 +85,10 @@ export default function CRMConnectors() {
                               crm.status === "Connected" ? "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20" : "bg-primary text-white"
                            )}
                            variant={crm.status === "Connected" ? "outline" : "default"}
-                           onClick={() => toggleConnection(crm.id)}
+                           onClick={() => {
+                              if (crm.status === "Connected") setConfigTarget(crm);
+                              else toggleConnection(crm.id);
+                           }}
                         >
                            {crm.status === "Connected" ? (
                               <>
@@ -127,6 +135,116 @@ export default function CRMConnectors() {
                </Button>
             </div>
          </div>
+
+         {/* Configuration Dialog */}
+         <Dialog open={!!configTarget} onOpenChange={() => setConfigTarget(null)}>
+            <DialogContent className="min-w-4xl p-0 overflow-hidden border-primary/20 shadow-2xl">
+               <DialogHeader className="p-8 bg-primary/5 border-b flex flex-row items-center justify-between space-y-0">
+                  <div className="flex items-center gap-4">
+                     <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center text-xl font-black text-white shadow-xl">
+                        {configTarget?.name[0]}
+                     </div>
+                     <div>
+                        <DialogTitle className="text-2xl font-black tracking-tighter uppercase">{configTarget?.name} <span className="text-muted-foreground/50 font-mono ml-2">V2.4</span></DialogTitle>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Advanced Configuration Framework</p>
+                     </div>
+                  </div>
+                  <Badge className="bg-green-500/10 text-green-600 border-none font-black uppercase text-[10px]">Active Node</Badge>
+               </DialogHeader>
+
+               <div className="p-8 space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                     <div className="space-y-6">
+                        <div className="space-y-4">
+                           <h4 className="text-[11px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <UserPlus className="h-4 w-4" /> Contact Synchronization
+                           </h4>
+                           <div className="space-y-4 p-4 rounded-2xl bg-muted/30 border border-primary/5">
+                              <div className="flex items-center justify-between">
+                                 <div className="space-y-0.5">
+                                    <Label className="text-[11px] font-black uppercase">Enable Auto-Sync</Label>
+                                    <p className="text-[10px] text-muted-foreground font-medium italic">Bi-directional contact mirroring</p>
+                                 </div>
+                                 <Switch defaultChecked />
+                              </div>
+                              <div className="flex items-center justify-between">
+                                 <div className="space-y-0.5">
+                                    <Label className="text-[11px] font-black uppercase">Conflict Resolution</Label>
+                                    <p className="text-[10px] text-muted-foreground font-medium italic">Logic for duplicate records</p>
+                                 </div>
+                                 <Select defaultValue="nexus">
+                                    <SelectTrigger className="w-24 h-8 text-[10px] font-bold">
+                                       <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                       <SelectItem value="nexus">Nexus Win</SelectItem>
+                                       <SelectItem value="crm">CRM Win</SelectItem>
+                                    </SelectContent>
+                                 </Select>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div className="space-y-4">
+                           <h4 className="text-[11px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+                              <Database className="h-4 w-4" /> Lead Management
+                           </h4>
+                           <div className="space-y-4 p-4 rounded-2xl bg-muted/30 border border-primary/5">
+                              <div className="flex items-center justify-between">
+                                 <div className="space-y-0.5">
+                                    <Label className="text-[11px] font-black uppercase">Pull Outbound Leads</Label>
+                                    <p className="text-[10px] text-muted-foreground font-medium italic">Import leads from CRM to dialer</p>
+                                 </div>
+                                 <Switch defaultChecked />
+                              </div>
+                              <div className="flex items-center justify-between">
+                                 <div className="space-y-0.5">
+                                    <Label className="text-[11px] font-black uppercase">Status Mapping</Label>
+                                    <p className="text-[10px] text-muted-foreground font-medium italic">Map dialer outcomes to CRM</p>
+                                 </div>
+                                 <Button variant="outline" size="sm" className="h-8 text-[10px] font-bold">Map Fields</Button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className="space-y-6">
+                        <div className="space-y-4">
+                           <h4 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">Field Logic Mapping</h4>
+                           <div className="space-y-3">
+                              {[
+                                 { nexus: "Customer ID", crm: "External_ID__c" },
+                                 { nexus: "Phone", crm: "PersonMobilePhone" },
+                                 { nexus: "Sentiment", crm: "CSAT_Score__c" },
+                                 { nexus: "Transcript", crm: "Interaction_Logs__c" },
+                              ].map((field, i) => (
+                                 <div key={i} className="flex items-center gap-3 text-xs p-2 rounded-xl border border-dashed border-primary/10">
+                                    <div className="flex-1 font-bold text-primary">{field.nexus}</div>
+                                    <ChevronRight className="h-3 w-3 text-muted-foreground" />
+                                    <div className="flex-1 font-mono text-[10px] text-muted-foreground">{field.crm}</div>
+                                 </div>
+                              ))}
+                           </div>
+                        </div>
+                        
+                        <div className="p-4 rounded-2xl bg-linear-to-r from-primary/5 to-primary/10 border border-primary/10 flex items-start gap-4">
+                           <ShieldCheck className="h-5 w-5 text-primary mt-1" />
+                           <p className="text-[10px] text-muted-foreground font-medium italic leading-relaxed">
+                              Changes to mapping logic will require a <span className="text-foreground font-black">Full Re-sync</span> (approx. 12 mins for 50k records).
+                           </p>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="flex justify-end gap-3 pt-4 border-t border-dashed border-primary/10">
+                     <Button variant="ghost" onClick={() => setConfigTarget(null)} className="h-10 text-[10px] font-black uppercase tracking-widest">Cancel</Button>
+                     <Button onClick={() => setConfigTarget(null)} className="h-10 px-8 bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary/20 gap-2">
+                        <Check className="h-4 w-4" /> Commit Changes
+                     </Button>
+                  </div>
+               </div>
+            </DialogContent>
+         </Dialog>
       </div>
    );
 }
