@@ -1,30 +1,33 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import DispositionCodes from '@/components/acw-disposition/DispositionCodes';
+import AcwTimers from '@/components/acw-disposition/AcwTimers';
 
 export default function ACWAndDispositionPage() {
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "overview";
+  const activeTab = searchParams.get("tab") || "codes";
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">ACW & Disposition</h1>
-        <p className="text-muted-foreground mt-2">
-          Module interface for ACW & Disposition. Currently viewing {activeTab} tab.
-        </p>
-      </div>
-      
-      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
-        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <span className="text-primary font-bold text-xl">!</span>
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tighter uppercase">ACW & Disposition</h1>
+          <p className="text-muted-foreground mt-1">
+            Comprehensive interface for ACW & Disposition. Currently viewing {activeTab} tab.
+          </p>
         </div>
-        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
-        <p className="text-muted-foreground max-w-md">
-          The full interface for ACW & Disposition is currently being developed. 
-          Please check back later for the complete set of features and analytics.
-        </p>
       </div>
+
+      <Tabs value={activeTab} className="w-full">
+        <TabsContent value="codes" className="mt-0 border-none p-0 outline-hidden">
+          <DispositionCodes />
+        </TabsContent>
+        <TabsContent value="timers" className="mt-0 border-none p-0 outline-hidden">
+          <AcwTimers />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

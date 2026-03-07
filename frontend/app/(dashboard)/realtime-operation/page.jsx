@@ -1,30 +1,88 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import AgentStateBoard from "@/components/realtime-operation/AgentStateBoard";
+import QueueMonitoringPanel from "@/components/realtime-operation/QueueMonitoringPanel";
+import ActiveCallCards from "@/components/realtime-operation/ActiveCallCards";
+import KPITicker from "@/components/realtime-operation/KPITicker";
+import SupervisorIntervention from "@/components/realtime-operation/SupervisorIntervention";
+import AlertsPanel from "@/components/realtime-operation/AlertsPanel";
+import AlertRulesEngine from "@/components/realtime-operation/AlertRulesEngine";
+import WallboardManager from "@/components/realtime-operation/WallboardManager";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
-export default function RealTimeOperationsPage() {
+export default function RealtimeOpsPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "overview";
+  const activeTab = searchParams.get("tab") || "live-ops";
+
+  const setActiveTab = (tab) => {
+    router.push(`/realtime-operation?tab=${tab}`);
+  };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Real-Time Operations</h1>
-        <p className="text-muted-foreground mt-2">
-          Module interface for Real-Time Operations. Currently viewing {activeTab} tab.
-        </p>
-      </div>
-      
-      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
-        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <span className="text-primary font-bold text-xl">!</span>
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Real-Time Operations Dashboard</h1>
+          <p className="text-muted-foreground mt-1">
+            Live monitoring, queue management, and supervisor command center
+          </p>
         </div>
-        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
-        <p className="text-muted-foreground max-w-md">
-          The full interface for Real-Time Operations is currently being developed. 
-          Please check back later for the complete set of features and analytics.
-        </p>
+        <div className="flex items-center gap-2">
+          <span className="flex h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
+          <span className="text-sm text-muted-foreground">Live</span>
+        </div>
       </div>
+
+      {/* KPI Ticker - Always visible */}
+      <section>
+        <h2 className="text-sm font-medium text-muted-foreground mb-3">Real-Time KPIs</h2>
+        <KPITicker />
+      </section>
+
+      {/* Tabbed Navigation - Internal Switcher Removed as per request */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+
+        {/* Tab 1: Live Operations Wall */}
+        <TabsContent value="live-ops" className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-12">
+            {/* Agent State Board - Takes 7 columns */}
+            <div className="lg:col-span-7">
+              <AgentStateBoard />
+              <ActiveCallCards />
+
+            </div>
+
+            {/* Right Column - Queue & Active Calls - Takes 5 columns */}
+            <div className="lg:col-span-5 space-y-6">
+              <QueueMonitoringPanel />
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* Tab 2: Supervisor Tools */}
+        <TabsContent value="supervisor" className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <SupervisorIntervention />
+            <AlertsPanel />
+          </div>
+        </TabsContent>
+
+        {/* Tab 3: Wallboard Manager */}
+        <TabsContent value="wallboards" className="space-y-6">
+          <WallboardManager />
+        </TabsContent>
+
+        {/* Tab 4: Alerts Engine */}
+        <TabsContent value="alerts" className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <AlertRulesEngine />
+            <AlertsPanel />
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

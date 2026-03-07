@@ -1,30 +1,82 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import {
+  TrendingUp,
+  BadgeDollarSign,
+  Download
+} from "lucide-react";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+// Components
+import RevenueDashboard from "@/components/revenue-intelligence/RevenueDashboard";
+import OpportunitySignals from "@/components/revenue-intelligence/OpportunitySignals";
+import ChurnRetention from "@/components/revenue-intelligence/ChurnRetention";
+import SalesScorecards from "@/components/revenue-intelligence/SalesScorecards";
+
+// Mock Data
+import {
+  mockRevenueKpis,
+  mockOpportunitySignals,
+  mockOpportunities,
+  mockChurnRisks,
+  mockPlaybooks,
+  mockSalesScores
+} from "@/lib/mock-data/revenue";
 
 export default function RevenueIntelligencePage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "overview";
+  const activeTab = searchParams.get("tab") || "dashboard";
+
+  const setActiveTab = (tab) => {
+    router.push(`/revenue-intelligence?tab=${tab}`);
+  };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Revenue Intelligence</h1>
-        <p className="text-muted-foreground mt-2">
-          Module interface for Revenue Intelligence. Currently viewing {activeTab} tab.
-        </p>
-      </div>
-      
-      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
-        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <span className="text-primary font-bold text-xl">!</span>
+    <div className="flex-1 space-y-8 p-8 pt-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
+              <TrendingUp className="h-5 w-5" />
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight">Revenue Intelligence</h2>
+          </div>
+          <p className="text-muted-foreground">Maximize conversion and minimize churn with AI-driven insights.</p>
         </div>
-        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
-        <p className="text-muted-foreground max-w-md">
-          The full interface for Revenue Intelligence is currently being developed. 
-          Please check back later for the complete set of features and analytics.
-        </p>
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className="bg-background/50 backdrop-blur-sm border-primary/20 text-primary font-bold px-3 py-1">
+            <BadgeDollarSign className="h-3 w-3 mr-1.5" /> $450k REVENUE AT RISK
+          </Badge>
+          <div className="h-10 w-px bg-border/50 mx-2" />
+          <Button variant="outline" size="sm" className="h-10 px-4 gap-2 font-bold backdrop-blur-sm bg-background/50">
+            <Download className="h-4 w-4" /> Export Revenue Report
+          </Button>
+        </div>
       </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        {/* Internal Navigation removed in favor of Sidebar mapping */}
+
+        <TabsContent value="dashboard" className="space-y-6 animate-in fade-in duration-300">
+          <RevenueDashboard kpis={mockRevenueKpis} />
+        </TabsContent>
+
+        <TabsContent value="signals" className="space-y-6 animate-in fade-in duration-300">
+          <OpportunitySignals signals={mockOpportunitySignals} opportunities={mockOpportunities} />
+        </TabsContent>
+
+        <TabsContent value="churn" className="space-y-6 animate-in fade-in duration-300">
+          <ChurnRetention risks={mockChurnRisks} playbooks={mockPlaybooks} />
+        </TabsContent>
+
+        <TabsContent value="sales" className="space-y-6 animate-in fade-in duration-300">
+          <SalesScorecards scores={mockSalesScores} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

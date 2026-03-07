@@ -1,30 +1,39 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import SupervisorMonitor from "@/components/supervisor-ai/SupervisorMonitor";
+import WhisperCoaching from "@/components/supervisor-ai/WhisperCoaching";
+import QueueThresholds from "@/components/supervisor-ai/QueueThresholds";
+import InteractionMonitoring from "@/components/supervisor-ai/InteractionMonitoring";
 
-export default function AISupervisorPage() {
+export default function SupervisorAIConsolePage() {
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "overview";
+  const activeTab = searchParams.get("tab") || "monitor";
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">AI Supervisor</h1>
-        <p className="text-muted-foreground mt-2">
-          Module interface for AI Supervisor. Currently viewing {activeTab} tab.
-        </p>
-      </div>
-      
-      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
-        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-          <span className="text-primary font-bold text-xl">!</span>
+    <div className="p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black tracking-tighter uppercase">Supervisor AI Console</h1>
+          <p className="text-muted-foreground">Real-time command center for team performance and AI coaching.</p>
         </div>
-        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
-        <p className="text-muted-foreground max-w-md">
-          The full interface for AI Supervisor is currently being developed. 
-          Please check back later for the complete set of features and analytics.
-        </p>
       </div>
+
+      <Tabs value={activeTab} className="w-full">
+        <TabsContent value="monitor" className="mt-0 border-none p-0 outline-hidden">
+          <SupervisorMonitor />
+        </TabsContent>
+        <TabsContent value="coaching" className="mt-0 border-none p-0 outline-hidden">
+          <WhisperCoaching />
+        </TabsContent>
+        <TabsContent value="queues" className="mt-0 border-none p-0 outline-hidden">
+          <QueueThresholds />
+        </TabsContent>
+        <TabsContent value="interactions" className="mt-0 border-none p-0 outline-hidden">
+          <InteractionMonitoring />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
