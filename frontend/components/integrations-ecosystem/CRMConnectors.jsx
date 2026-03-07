@@ -60,14 +60,21 @@ export default function CRMConnectors() {
                      </div>
                   </CardHeader>
                   <CardContent className="p-6 pt-4 space-y-6">
-                     <div className="space-y-3">
-                        <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Active Objects</p>
-                        <div className="flex flex-wrap gap-1.5">
-                           {crm.objects.length > 0 ? crm.objects.map((obj, i) => (
-                              <Badge key={i} variant="secondary" className="text-[8px] font-bold h-5 px-2 bg-primary/10 border-none text-primary">
-                                 {obj}
-                              </Badge>
-                           )) : <span className="text-[10px] italic text-muted-foreground/60">No objects mapped</span>}
+                     <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                           <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Active Objects</p>
+                           <div className="flex flex-wrap gap-1.5">
+                              {crm.objects.length > 0 ? crm.objects.map((obj, i) => (
+                                 <Badge key={i} variant="secondary" className="text-[8px] font-bold h-5 px-2 bg-primary/10 border-none text-primary">
+                                    {obj}
+                                 </Badge>
+                              )) : <span className="text-[10px] italic text-muted-foreground/60">No objects mapped</span>}
+                           </div>
+                        </div>
+                        <div className="space-y-1 text-right">
+                           <p className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Leads Transferred</p>
+                           <p className="text-sm font-black text-primary">{crm.leadsTransferred?.toLocaleString() || 0}</p>
+                           <p className="text-[8px] text-muted-foreground italic font-bold">Last 24h</p>
                         </div>
                      </div>
 
