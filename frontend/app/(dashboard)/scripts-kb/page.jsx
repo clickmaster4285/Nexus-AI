@@ -2,16 +2,16 @@
 
 import { useSearchParams } from "next/navigation";
 
-export default function RealTimeOperationsPage() {
+export default function ScriptAndKBBuilderPage() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "overview";
 
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Real-Time Operations</h1>
+        <h1 className="text-3xl font-bold">Script & KB Builder</h1>
         <p className="text-muted-foreground mt-2">
-          Module interface for Real-Time Operations. Currently viewing {activeTab} tab.
+          Module interface for Script & KB Builder. Currently viewing {activeTab} tab.
         </p>
       </div>
       
@@ -21,7 +21,7 @@ export default function RealTimeOperationsPage() {
         </div>
         <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
         <p className="text-muted-foreground max-w-md">
-          The full interface for Real-Time Operations is currently being developed. 
+          The full interface for Script & KB Builder is currently being developed. 
           Please check back later for the complete set of features and analytics.
         </p>
       </div>

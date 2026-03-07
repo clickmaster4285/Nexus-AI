@@ -21,6 +21,18 @@ import {
   ChevronRight,
   ChevronDown,
   Menu,
+  BookUser,
+  Monitor,
+  PhoneForwarded,
+  GitMerge,
+  Upload,
+  BrainCircuit,
+  Cpu,
+  FileText,
+  Megaphone,
+  Clock,
+  Ban,
+  Shuffle
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -29,167 +41,301 @@ const modules = [
   {
     id: "m01",
     name: "Real-Time Operations",
-    route: "/m01-realtime",
+    route: "/realtime-operation",
     icon: LayoutDashboard,
     subItems: [
-      { name: "Live Operations", route: "/m01-realtime?tab=live-ops" },
-      { name: "Supervisor Tools", route: "/m01-realtime?tab=supervisor" },
-      { name: "Wallboards", route: "/m01-realtime?tab=wallboards" },
-      { name: "Alerts Engine", route: "/m01-realtime?tab=alerts" },
+      { name: "Live Operations", route: "/realtime-operation?tab=live-ops" },
+      { name: "Supervisor Tools", route: "/realtime-operation?tab=supervisor" },
+      { name: "Wallboards", route: "/realtime-operation?tab=wallboards" },
+      { name: "Alerts Engine", route: "/realtime-operation?tab=alerts" },
     ]
   },
   {
     id: "m02",
-    name: "Conversation AI",
-    route: "/m02-conversation",
+    name: "AI Conversation Intelligence",
+    route: "/ai-conversation",
     icon: MessageSquare,
     subItems: [
-      { name: "Transcript Viewer", route: "/m02-conversation?tab=transcript" },
-      { name: "Bulk Search", route: "/m02-conversation?tab=search" },
-      { name: "NLP Insights", route: "/m02-conversation?tab=insights" },
-      { name: "Analytics Library", route: "/m02-conversation?tab=analytics" },
+      { name: "Transcript Viewer", route: "/ai-conversation?tab=transcript" },
+      { name: "Bulk Search", route: "/ai-conversation?tab=search" },
+      { name: "NLP Insights", route: "/ai-conversation?tab=insights" },
+      { name: "Analytics Library", route: "/ai-conversation?tab=analytics" },
     ]
   },
   {
     id: "m03",
     name: "QA & Compliance",
-    route: "/m03-qa",
+    route: "/qa-compliance",
     icon: ClipboardCheck,
     subItems: [
-      { name: "Scorecard Builder", route: "/m03-qa?tab=scorecards" },
-      { name: "Evaluation Queue", route: "/m03-qa?tab=reviews" },
-      { name: "Compliance Monitor", route: "/m03-qa?tab=compliance" },
-      { name: "Coaching Workflow", route: "/m03-qa?tab=coaching" },
+      { name: "Scorecard Builder", route: "/qa-compliance?tab=scorecards" },
+      { name: "Evaluation Queue", route: "/qa-compliance?tab=reviews" },
+      { name: "Compliance Monitor", route: "/qa-compliance?tab=compliance" },
+      { name: "Coaching Workflow", route: "/qa-compliance?tab=coaching" },
     ]
   },
   {
     id: "m04",
-    name: "Revenue Intel",
-    route: "/m04-revenue",
+    name: "Revenue Intelligence",
+    route: "/revenue-intelligence",
     icon: TrendingUp,
     subItems: [
-      { name: "KPI Overview", route: "/m04-revenue?tab=dashboard" },
-      { name: "Upsell & Signals", route: "/m04-revenue?tab=signals" },
-      { name: "Churn & Retention", route: "/m04-revenue?tab=churn" },
-      { name: "Sales Scoring", route: "/m04-revenue?tab=sales" },
+      { name: "KPI Overview", route: "/revenue-intelligence?tab=dashboard" },
+      { name: "Upsell & Signals", route: "/revenue-intelligence?tab=signals" },
+      { name: "Churn & Retention", route: "/revenue-intelligence?tab=churn" },
+      { name: "Sales Scoring", route: "/revenue-intelligence?tab=sales" },
     ]
   },
   {
     id: "m05",
-    name: "Workforce Intel",
-    route: "/m05-workforce",
+    name: "Workforce Intelligence",
+    route: "/workforce-intelligence",
     icon: Users,
     subItems: [
-      { name: "Agent Directory", route: "/m05-workforce?tab=directory" },
-      { name: "Performance", route: "/m05-workforce?tab=performance" },
-      { name: "Gamification", route: "/m05-workforce?tab=gamification" },
-      { name: "Wellbeing", route: "/m05-workforce?tab=wellbeing" },
-      { name: "Forecasting", route: "/m05-workforce?tab=forecasting" },
+      { name: "Agent Directory", route: "/workforce-intelligence?tab=directory" },
+      { name: "Performance", route: "/workforce-intelligence?tab=performance" },
+      { name: "Gamification", route: "/workforce-intelligence?tab=gamification" },
+      { name: "Wellbeing", route: "/workforce-intelligence?tab=wellbeing" },
+      { name: "Forecasting", route: "/workforce-intelligence?tab=forecasting" },
     ]
   },
   {
     id: "m06",
-    name: "CX Journey",
-    route: "/m06-cx-journey",
+    name: "CX & Journey",
+    route: "/cx-journey",
     icon: Route,
     subItems: [
-      { name: "Journey Mapping", route: "/m06-cx-journey?tab=journey" },
-      { name: "VoC Analytics", route: "/m06-cx-journey?tab=voc" },
-      { name: "Self-Service", route: "/m06-cx-journey?tab=deflection" }
+      { name: "Journey Mapping", route: "/cx-journey?tab=journey" },
+      { name: "VoC Analytics", route: "/cx-journey?tab=voc" },
+      { name: "Self-Service", route: "/cx-journey?tab=deflection" }
     ]
   },
   {
     id: "m07",
     name: "Reporting & BI",
-    route: "/m07-reporting",
+    route: "/reporting-bi",
     icon: BarChart3,
     subItems: [
-      { name: "Dashboard Builder", route: "/m07-reporting?tab=builder" },
-      { name: "Report Library", route: "/m07-reporting?tab=library" },
-      { name: "Executive Briefing", route: "/m07-reporting?tab=briefing" }
+      { name: "Dashboard Builder", route: "/reporting-bi?tab=builder" },
+      { name: "Report Library", route: "/reporting-bi?tab=library" },
+      { name: "Executive Briefing", route: "/reporting-bi?tab=briefing" }
     ]
   },
   {
     id: "m08",
-    name: "Supervisor AI",
-    route: "/m08-supervisor-ai",
+    name: "AI Supervisor",
+    route: "/supervisor-ai",
     icon: Bot,
     subItems: [
-      { name: "Live Monitor", route: "/m08-supervisor-ai?tab=monitor" },
-      { name: "Whisper Coaching", route: "/m08-supervisor-ai?tab=coaching" },
-      { name: "Queue Health", route: "/m08-supervisor-ai?tab=queues" },
-      { name: "Interactions", route: "/m08-supervisor-ai?tab=interactions" }
+      { name: "Live Monitor", route: "/supervisor-ai?tab=monitor" },
+      { name: "Whisper Coaching", route: "/supervisor-ai?tab=coaching" },
+      { name: "Queue Health", route: "/supervisor-ai?tab=queues" },
+      { name: "Interactions", route: "/supervisor-ai?tab=interactions" }
     ]
   },
   {
     id: "m09",
-    name: "Recording",
-    route: "/m09-recording",
+    name: "Call Recording & Playback",
+    route: "/recording-playback",
     icon: PhoneCall,
     subItems: [
-      { name: "Recording Browser", route: "/m09-recording?tab=browser" },
-      { name: "Media Player", route: "/m09-recording?tab=player" },
-      { name: "Lifecycle Management", route: "/m09-recording?tab=lifecycle" }
+      { name: "Recording Browser", route: "/recording-playback?tab=browser" },
+      { name: "Media Player", route: "/recording-playback?tab=player" },
+      { name: "Lifecycle Management", route: "/recording-playback?tab=lifecycle" }
     ]
   },
   {
     id: "m10",
-    name: "Telephony Hub",
-    route: "/m10-telephony",
+    name: "Telephony Integration",
+    route: "/telephony-hub",
     icon: Radio,
     subItems: [
-      { name: "Connectivity", route: "/m10-telephony?tab=connectivity" },
-      { name: "Numbers", route: "/m10-telephony?tab=numbers" },
-      { name: "IVR Flows", route: "/m10-telephony?tab=ivr" },
-      { name: "AI Connectors", route: "/m10-telephony?tab=ai" },
-      { name: "Health", route: "/m10-telephony?tab=health" }
+      { name: "Connectivity", route: "/telephony-hub?tab=connectivity" },
+      { name: "Numbers", route: "/telephony-hub?tab=numbers" },
+      { name: "IVR Flows", route: "/telephony-hub?tab=ivr" },
+      { name: "AI Connectors", route: "/telephony-hub?tab=ai" },
+      { name: "Health", route: "/telephony-hub?tab=health" }
     ]
   },
   {
     id: "m11",
-    name: "Integrations",
-    route: "/m11-integrations",
+    name: "Integrations & Ecosystem",
+    route: "/integrations-ecosystem",
     icon: Link2,
     subItems: [
-      { name: "CRM Connectors", route: "/m11-integrations?tab=crm" },
-      { name: "Webhooks", route: "/m11-integrations?tab=webhooks" },
-      { name: "API Management", route: "/m11-integrations?tab=api" },
+      { name: "CRM Connectors", route: "/integrations-ecosystem?tab=crm" },
+      { name: "Webhooks", route: "/integrations-ecosystem?tab=webhooks" },
+      { name: "API Management", route: "/integrations-ecosystem?tab=api" },
     ]
   },
   {
     id: "m12",
-    name: "Admin Settings",
-    route: "/m12-admin",
+    name: "Administration & Settings",
+    route: "/admin-settings",
     icon: Settings,
     subItems: [
-      { name: "User Management", route: "/m12-admin?tab=users" },
-      { name: "Role Permissions", route: "/m12-admin?tab=roles" },
-      { name: "Audit Trails", route: "/m12-admin?tab=audit" },
-      { name: "Account Usage", route: "/m12-admin?tab=usage" },
+      { name: "User Management", route: "/admin-settings?tab=users" },
+      { name: "Role Permissions", route: "/admin-settings?tab=roles" },
+      { name: "Audit Trails", route: "/admin-settings?tab=audit" },
+      { name: "Account Usage", route: "/admin-settings?tab=usage" },
     ]
   },
   {
     id: "m13",
-    name: "Agent Portal",
-    route: "/m13-agent-portal",
+    name: "Agent Self-Service Portal",
+    route: "/agent-portal",
     icon: UserCircle,
     subItems: [
-      { name: "My Dashboard", route: "/m13-agent-portal?tab=dashboard" },
-      { name: "Interaction Room", route: "/m13-agent-portal?tab=workspace" },
-      { name: "My Performance", route: "/m13-agent-portal?tab=performance" },
-      { name: "Support & KB", route: "/m13-agent-portal?tab=support" },
+      { name: "My Dashboard", route: "/agent-portal?tab=dashboard" },
+      { name: "Interaction Room", route: "/agent-portal?tab=workspace" },
+      { name: "My Performance", route: "/agent-portal?tab=performance" },
+      { name: "Support & KB", route: "/agent-portal?tab=support" },
     ]
   },
   {
     id: "m14",
-    name: "Security",
-    route: "/m14-security",
+    name: "Security & Compliance",
+    route: "/security-compliance",
     icon: Shield,
     subItems: [
-      { name: "Threat Monitor", route: "/m14-security?tab=monitor" },
-      { name: "Compliance Hub", route: "/m14-security?tab=compliance" },
-      { name: "Data Privacy", route: "/m14-security?tab=privacy" },
-      { name: "Encryption", route: "/m14-security?tab=encryption" },
+      { name: "Threat Monitor", route: "/security-compliance?tab=monitor" },
+      { name: "Compliance Hub", route: "/security-compliance?tab=compliance" },
+      { name: "Data Privacy", route: "/security-compliance?tab=privacy" },
+      { name: "Encryption", route: "/security-compliance?tab=encryption" },
+    ]
+  },
+  {
+    id: "m15",
+    name: "Native CRM Management",
+    route: "/crm-native",
+    icon: BookUser,
+    subItems: [
+      { name: "Contacts", route: "/crm-native?tab=contacts" },
+      { name: "Accounts", route: "/crm-native?tab=accounts" },
+      { name: "Leads", route: "/crm-native?tab=leads" },
+      { name: "Pipeline", route: "/crm-native?tab=pipeline" },
+      { name: "Tasks", route: "/crm-native?tab=tasks" },
+    ]
+  },
+  {
+    id: "m16",
+    name: "Agent Desktop",
+    route: "/agent-desktop",
+    icon: Monitor,
+    subItems: [
+      { name: "Softphone", route: "/agent-desktop?tab=phone" },
+      { name: "Screen Pop", route: "/agent-desktop?tab=pop" },
+      { name: "Live Script", route: "/agent-desktop?tab=script" },
+      { name: "KB Search", route: "/agent-desktop?tab=kb" },
+      { name: "AI Assist", route: "/agent-desktop?tab=assist" },
+      { name: "ACW Panel", route: "/agent-desktop?tab=acw" },
+    ]
+  },
+  {
+    id: "m17",
+    name: "Outbound Dialer",
+    route: "/outbound-dialer",
+    icon: PhoneForwarded,
+    subItems: [
+      { name: "Campaign Builder", route: "/outbound-dialer?tab=builder" },
+      { name: "Call List Management", route: "/outbound-dialer?tab=list" },
+      { name: "Pacing Control", route: "/outbound-dialer?tab=pacing" },
+    ]
+  },
+  {
+    id: "m18",
+    name: "Inbound Routing & IVR",
+    route: "/inbound-ivr",
+    icon: GitMerge,
+    subItems: [
+      { name: "IVR Builder", route: "/inbound-ivr?tab=ivr" },
+      { name: "Queue Config", route: "/inbound-ivr?tab=queue" },
+      { name: "Routing Rules", route: "/inbound-ivr?tab=routing" },
+      { name: "Callback Manager", route: "/inbound-ivr?tab=callback" },
+    ]
+  },
+  {
+    id: "m19",
+    name: "Data Upload Engine",
+    route: "/data-upload",
+    icon: Upload,
+    subItems: [
+      { name: "File Wizard", route: "/data-upload?tab=wizard" },
+      { name: "Import History", route: "/data-upload?tab=history" },
+    ]
+  },
+  {
+    id: "m20",
+    name: "Agentic Automation",
+    route: "/supervisor-agentic",
+    icon: BrainCircuit,
+    subItems: [
+      { name: "Action Center", route: "/supervisor-agentic?tab=actions" },
+      { name: "Decision Log", route: "/supervisor-agentic?tab=log" },
+      { name: "Escalation Chain", route: "/supervisor-agentic?tab=chain" },
+    ]
+  },
+  {
+    id: "m21",
+    name: "Asterisk Deep-Dive",
+    route: "/asterisk-config",
+    icon: Cpu,
+    subItems: [
+      { name: "AMI/ARI Config", route: "/asterisk-config?tab=connection" },
+      { name: "PJSIP Trunks", route: "/asterisk-config?tab=trunks" },
+      { name: "WebRTC Gateway", route: "/asterisk-config?tab=webrtc" },
+      { name: "Dialplan Mapping", route: "/asterisk-config?tab=dialplan" },
+    ]
+  },
+  {
+    id: "m22",
+    name: "Script & KB Builder",
+    route: "/scripts-kb",
+    icon: FileText,
+    subItems: [
+      { name: "Script Builder", route: "/scripts-kb?tab=scripts" },
+      { name: "KB Manager", route: "/scripts-kb?tab=kb" },
+    ]
+  },
+  {
+    id: "m23",
+    name: "Robocall Campaign",
+    route: "/robocall-engine",
+    icon: Megaphone,
+    subItems: [
+      { name: "Campaign Config", route: "/robocall-engine?tab=config" },
+      { name: "Delivery Analytics", route: "/robocall-engine?tab=analytics" },
+    ]
+  },
+  {
+    id: "m24",
+    name: "ACW & Disposition",
+    route: "/acw-disposition",
+    icon: Clock,
+    subItems: [
+      { name: "Disposition Codes", route: "/acw-disposition?tab=codes" },
+      { name: "ACW Timers", route: "/acw-disposition?tab=timers" },
+    ]
+  },
+  {
+    id: "m25",
+    name: "DNC & Compliance",
+    route: "/dnc-management",
+    icon: Ban,
+    subItems: [
+      { name: "Internal DNC", route: "/dnc-management?tab=internal" },
+      { name: "National Registry", route: "/dnc-management?tab=national" },
+      { name: "Calling Windows", route: "/dnc-management?tab=compliance" },
+    ]
+  },
+  {
+    id: "m26",
+    name: "Transfer & Conference",
+    route: "/transfer-conference",
+    icon: Shuffle,
+    subItems: [
+      { name: "Transfer Panel", route: "/transfer-conference?tab=transfer" },
+      { name: "Conference Bridge", route: "/transfer-conference?tab=conference" },
     ]
   },
 ];
@@ -349,3 +495,4 @@ export default function Sidebar() {
     </>
   );
 }
+

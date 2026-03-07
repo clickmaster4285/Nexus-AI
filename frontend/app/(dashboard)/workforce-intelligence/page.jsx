@@ -1,67 +1,30 @@
 "use client";
 
-import { useSearchParams, useRouter } from "next/navigation";
-import { Users} from "lucide-react";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import AgentDirectory from "@/components/m05/AgentDirectory";
-import PerformanceAnalytics from "@/components/m05/PerformanceAnalytics";
-import GamificationEngine from "@/components/m05/GamificationEngine";
-import WellbeingDashboard from "@/components/m05/WellbeingDashboard";
-import WFMForecasting from "@/components/m05/WFMForecasting";
+import { useSearchParams } from "next/navigation";
 
 export default function WorkforceIntelligencePage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "directory";
-
-  const setActiveTab = (tab) => {
-    router.push(`/m05-workforce?tab=${tab}`);
-  };
+  const activeTab = searchParams.get("tab") || "overview";
 
   return (
-    <div className="flex flex-col gap-6 p-4">
-      {/* Module Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Workforce Intelligence</h1>
-          <p className="text-muted-foreground">Comprehensive agent profiles, performance metrics, and wellbeing monitoring.</p>
-        </div>
-        <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-lg border">
-          <Badge variant="secondary" className="gap-1 font-mono">
-            <Users className="h-3 w-3" />
-            Active Force: 154
-          </Badge>
-          <span className="text-xs text-muted-foreground px-2">92% Adherence</span>
-        </div>
+    <div className="p-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Workforce Intelligence</h1>
+        <p className="text-muted-foreground mt-2">
+          Module interface for Workforce Intelligence. Currently viewing {activeTab} tab.
+        </p>
       </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col gap-6">
-        {/* 5.1 Agent Directory & Profiles */}
-        <TabsContent value="directory" className="flex-1 min-h-0 data-[state=active]:block">
-          <AgentDirectory />
-        </TabsContent>
-
-        {/* 5.2 Performance Analytics */}
-        <TabsContent value="performance" className="flex-1 min-h-0 data-[state=active]:block">
-          <PerformanceAnalytics />
-        </TabsContent>
-
-        {/* 5.3 Gamification Engine */}
-        <TabsContent value="gamification" className="flex-1 min-h-0 data-[state=active]:block">
-          <GamificationEngine />
-        </TabsContent>
-
-        {/* 5.4 Wellbeing & Burnout Engine */}
-        <TabsContent value="wellbeing" className="flex-1 min-h-0 data-[state=active]:block">
-          <WellbeingDashboard />
-        </TabsContent>
-
-        {/* 5.5 WFM Analytics & Forecasting */}
-        <TabsContent value="forecasting" className="flex-1 min-h-0 data-[state=active]:block">
-          <WFMForecasting />
-        </TabsContent>
-      </Tabs>
+      
+      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
+        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+          <span className="text-primary font-bold text-xl">!</span>
+        </div>
+        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
+        <p className="text-muted-foreground max-w-md">
+          The full interface for Workforce Intelligence is currently being developed. 
+          Please check back later for the complete set of features and analytics.
+        </p>
+      </div>
     </div>
   );
 }

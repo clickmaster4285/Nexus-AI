@@ -1,33 +1,30 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import RecordingBrowser from "@/components/m09/RecordingBrowser";
-import UnifiedMediaPlayer from "@/components/m09/UnifiedMediaPlayer";
-import LifecycleManagement from "@/components/m09/LifecycleManagement";
 
-export default function RecordingPage() {
+export default function CallRecordingAndPlaybackPage() {
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get("tab") || "browser";
+  const activeTab = searchParams.get("tab") || "overview";
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-3xl font-black tracking-tighter uppercase">Recording & Media</h1>
-        <p className="text-muted-foreground">Search, playback, and manage interaction lifecycle.</p>
+    <div className="p-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Call Recording & Playback</h1>
+        <p className="text-muted-foreground mt-2">
+          Module interface for Call Recording & Playback. Currently viewing {activeTab} tab.
+        </p>
       </div>
-
-      <Tabs value={activeTab} className="w-full">
-        <TabsContent value="browser" className="mt-0 border-none p-0 outline-hidden">
-          <RecordingBrowser />
-        </TabsContent>
-        <TabsContent value="player" className="mt-0 border-none p-0 outline-hidden">
-          <UnifiedMediaPlayer />
-        </TabsContent>
-        <TabsContent value="lifecycle" className="mt-0 border-none p-0 outline-hidden">
-          <LifecycleManagement />
-        </TabsContent>
-      </Tabs>
+      
+      <div className="bg-card border rounded-lg p-12 flex flex-col items-center justify-center text-center">
+        <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+          <span className="text-primary font-bold text-xl">!</span>
+        </div>
+        <h2 className="text-xl font-semibold mb-2">Module Under Construction</h2>
+        <p className="text-muted-foreground max-w-md">
+          The full interface for Call Recording & Playback is currently being developed. 
+          Please check back later for the complete set of features and analytics.
+        </p>
+      </div>
     </div>
   );
 }

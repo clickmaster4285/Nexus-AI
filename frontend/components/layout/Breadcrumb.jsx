@@ -5,20 +5,20 @@ import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
 const moduleNames = {
-  "m01-realtime": "Real-Time Operations",
-  "m02-conversation": "Conversation AI",
-  "m03-qa": "QA & Compliance",
-  "m04-revenue": "Revenue Intelligence",
-  "m05-workforce": "Workforce Intelligence",
-  "m06-cx-journey": "CX Journey",
-  "m07-reporting": "Reporting & BI",
-  "m08-supervisor-ai": "Supervisor AI",
-  "m09-recording": "Call Recording",
-  "m10-telephony": "Telephony Hub",
-  "m11-integrations": "Integrations",
-  "m12-admin": "Administration",
-  "m13-agent-portal": "Agent Portal",
-  "m14-security": "Security",
+  "realtime-operation": "Real-Time Operations",
+  "ai-conversation": "Conversation AI",
+  "qa-compliance": "QA & Compliance",
+  "revenue-intelligence": "Revenue Intelligence",
+  "workforce-intelligence": "Workforce Intelligence",
+  "cx-journey": "CX Journey",
+  "reporting-bi": "Reporting & BI",
+  "supervisor-ai": "Supervisor AI",
+  "recording-playback": "Call Recording",
+  "telephony-hub": "Telephony Hub",
+  "integrations-ecosystem": "Integrations",
+  "admin-settings": "Administration",
+  "agent-portal": "Agent Portal",
+  "security-compliance": "Security",
 };
 
 export default function Breadcrumb() {
@@ -40,3 +40,4 @@ export default function Breadcrumb() {
     </nav>
   );
 }
+

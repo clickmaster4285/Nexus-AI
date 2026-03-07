@@ -57,7 +57,7 @@ function AgentCard({ agent }) {
         <div className="flex items-start justify-between mb-3">
           <div>
             <p className="font-semibold text-sm">{agent.name}</p>
-            <a href={`/m09-recording?callId=${agent.currentCallId || 'C001'}`} className="text-xs text-primary hover:underline font-mono">
+            <a href={`/recording-playback?callId=${agent.currentCallId || 'C001'}`} className="text-xs text-primary hover:underline font-mono">
               {agent.currentCallId || agent.id}
             </a>
           </div>
@@ -161,3 +161,4 @@ export default function AgentStateBoard() {
     </Card>
   );
 }
+
