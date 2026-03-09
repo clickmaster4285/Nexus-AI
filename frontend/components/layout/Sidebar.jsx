@@ -44,10 +44,10 @@ const modules = [
     route: "/realtime-operation",
     icon: LayoutDashboard,
     subItems: [
-      { name: "Live Operations", route: "/realtime-operation?tab=live-ops" },
-      { name: "Supervisor Tools", route: "/realtime-operation?tab=supervisor" },
-      { name: "Wallboards", route: "/realtime-operation?tab=wallboards" },
-      { name: "Alerts Engine", route: "/realtime-operation?tab=alerts" },
+      { name: "Live Operations", route: "/realtime-operation/live-ops" },
+      { name: "Supervisor Tools", route: "/realtime-operation/supervisor" },
+      { name: "Wallboards", route: "/realtime-operation/wallboards" },
+      { name: "Alerts Engine", route: "/realtime-operation/alerts" },
     ]
   },
   {
@@ -56,10 +56,10 @@ const modules = [
     route: "/ai-conversation",
     icon: MessageSquare,
     subItems: [
-      { name: "Transcript Viewer", route: "/ai-conversation?tab=transcript" },
-      { name: "Bulk Search", route: "/ai-conversation?tab=search" },
-      { name: "NLP Insights", route: "/ai-conversation?tab=insights" },
-      { name: "Analytics Library", route: "/ai-conversation?tab=analytics" },
+      { name: "Transcript Viewer", route: "/ai-conversation/transcript" },
+      { name: "Bulk Search", route: "/ai-conversation/search" },
+      { name: "NLP Insights", route: "/ai-conversation/insights" },
+      { name: "Analytics Library", route: "/ai-conversation/analytics" },
     ]
   },
   {
@@ -68,10 +68,10 @@ const modules = [
     route: "/qa-compliance",
     icon: ClipboardCheck,
     subItems: [
-      { name: "Scorecard Builder", route: "/qa-compliance?tab=scorecards" },
-      { name: "Evaluation Queue", route: "/qa-compliance?tab=reviews" },
-      { name: "Compliance Monitor", route: "/qa-compliance?tab=compliance" },
-      { name: "Coaching Workflow", route: "/qa-compliance?tab=coaching" },
+      { name: "Scorecard Builder", route: "/qa-compliance/scorecards" },
+      { name: "Evaluation Queue", route: "/qa-compliance/reviews" },
+      { name: "Compliance Monitor", route: "/qa-compliance/compliance" },
+      { name: "Coaching Workflow", route: "/qa-compliance/coaching" },
     ]
   },
   {
@@ -80,10 +80,10 @@ const modules = [
     route: "/revenue-intelligence",
     icon: TrendingUp,
     subItems: [
-      { name: "KPI Overview", route: "/revenue-intelligence?tab=dashboard" },
-      { name: "Upsell & Signals", route: "/revenue-intelligence?tab=signals" },
-      { name: "Churn & Retention", route: "/revenue-intelligence?tab=churn" },
-      { name: "Sales Scoring", route: "/revenue-intelligence?tab=sales" },
+      { name: "KPI Overview", route: "/revenue-intelligence/dashboard" },
+      { name: "Upsell & Signals", route: "/revenue-intelligence/signals" },
+      { name: "Churn & Retention", route: "/revenue-intelligence/churn" },
+      { name: "Sales Scoring", route: "/revenue-intelligence/sales" },
     ]
   },
   {
@@ -92,11 +92,11 @@ const modules = [
     route: "/workforce-intelligence",
     icon: Users,
     subItems: [
-      { name: "Agent Directory", route: "/workforce-intelligence?tab=directory" },
-      { name: "Performance", route: "/workforce-intelligence?tab=performance" },
-      { name: "Gamification", route: "/workforce-intelligence?tab=gamification" },
-      { name: "Wellbeing", route: "/workforce-intelligence?tab=wellbeing" },
-      { name: "Forecasting", route: "/workforce-intelligence?tab=forecasting" },
+      { name: "Agent Directory", route: "/workforce-intelligence/directory" },
+      { name: "Performance", route: "/workforce-intelligence/performance" },
+      { name: "Gamification", route: "/workforce-intelligence/gamification" },
+      { name: "Wellbeing", route: "/workforce-intelligence/wellbeing" },
+      { name: "Forecasting", route: "/workforce-intelligence/forecasting" },
     ]
   },
   {
@@ -105,9 +105,9 @@ const modules = [
     route: "/cx-journey",
     icon: Route,
     subItems: [
-      { name: "Journey Mapping", route: "/cx-journey?tab=journey" },
-      { name: "VoC Analytics", route: "/cx-journey?tab=voc" },
-      { name: "Self-Service", route: "/cx-journey?tab=deflection" }
+      { name: "Journey Mapping", route: "/cx-journey/journey" },
+      { name: "VoC Analytics", route: "/cx-journey/voc" },
+      { name: "Self-Service", route: "/cx-journey/deflection" }
     ]
   },
   {
@@ -116,9 +116,9 @@ const modules = [
     route: "/reporting-bi",
     icon: BarChart3,
     subItems: [
-      { name: "Dashboard Builder", route: "/reporting-bi?tab=builder" },
-      { name: "Report Library", route: "/reporting-bi?tab=library" },
-      { name: "Executive Briefing", route: "/reporting-bi?tab=briefing" }
+      { name: "Dashboard Builder", route: "/reporting-bi/builder" },
+      { name: "Report Library", route: "/reporting-bi/library" },
+      { name: "Executive Briefing", route: "/reporting-bi/briefing" }
     ]
   },
   {
@@ -127,10 +127,10 @@ const modules = [
     route: "/supervisor-ai",
     icon: Bot,
     subItems: [
-      { name: "Live Monitor", route: "/supervisor-ai?tab=monitor" },
-      { name: "Whisper Coaching", route: "/supervisor-ai?tab=coaching" },
-      { name: "Queue Health", route: "/supervisor-ai?tab=queues" },
-      { name: "Interactions", route: "/supervisor-ai?tab=interactions" }
+      { name: "Live Monitor", route: "/supervisor-ai/monitor" },
+      { name: "Whisper Coaching", route: "/supervisor-ai/coaching" },
+      { name: "Queue Health", route: "/supervisor-ai/queues" },
+      { name: "Interactions", route: "/supervisor-ai/interactions" }
     ]
   },
   {
@@ -139,9 +139,9 @@ const modules = [
     route: "/recording-playback",
     icon: PhoneCall,
     subItems: [
-      { name: "Recording Browser", route: "/recording-playback?tab=browser" },
-      { name: "Media Player", route: "/recording-playback?tab=player" },
-      { name: "Lifecycle Management", route: "/recording-playback?tab=lifecycle" }
+      { name: "Recording Browser", route: "/recording-playback/browser" },
+      { name: "Media Player", route: "/recording-playback/player" },
+      { name: "Lifecycle Management", route: "/recording-playback/lifecycle" }
     ]
   },
   {
@@ -150,11 +150,11 @@ const modules = [
     route: "/telephony-hub",
     icon: Radio,
     subItems: [
-      { name: "Connectivity", route: "/telephony-hub?tab=connectivity" },
-      { name: "Numbers", route: "/telephony-hub?tab=numbers" },
-      { name: "IVR Flows", route: "/telephony-hub?tab=ivr" },
-      { name: "AI Connectors", route: "/telephony-hub?tab=ai" },
-      { name: "Health", route: "/telephony-hub?tab=health" }
+      { name: "Connectivity", route: "/telephony-hub/connectivity" },
+      { name: "Numbers", route: "/telephony-hub/numbers" },
+      { name: "IVR Flows", route: "/telephony-hub/ivr" },
+      { name: "AI Connectors", route: "/telephony-hub/ai" },
+      { name: "Health", route: "/telephony-hub/health" }
     ]
   },
   {
@@ -163,9 +163,9 @@ const modules = [
     route: "/integrations-ecosystem",
     icon: Link2,
     subItems: [
-      { name: "CRM Connectors", route: "/integrations-ecosystem?tab=crm" },
-      { name: "Webhooks", route: "/integrations-ecosystem?tab=webhooks" },
-      { name: "API Management", route: "/integrations-ecosystem?tab=api" },
+      { name: "CRM Connectors", route: "/integrations-ecosystem/crm" },
+      { name: "Webhooks", route: "/integrations-ecosystem/webhooks" },
+      { name: "API Management", route: "/integrations-ecosystem/api" },
     ]
   },
   {
@@ -174,10 +174,10 @@ const modules = [
     route: "/admin-settings",
     icon: Settings,
     subItems: [
-      { name: "User Management", route: "/admin-settings?tab=users" },
-      { name: "Role Permissions", route: "/admin-settings?tab=roles" },
-      { name: "Audit Trails", route: "/admin-settings?tab=audit" },
-      { name: "Account Usage", route: "/admin-settings?tab=usage" },
+      { name: "User Management", route: "/admin-settings/users" },
+      { name: "Role Permissions", route: "/admin-settings/roles" },
+      { name: "Audit Trails", route: "/admin-settings/audit" },
+      { name: "Account Usage", route: "/admin-settings/usage" },
     ]
   },
   {
@@ -186,10 +186,10 @@ const modules = [
     route: "/agent-portal",
     icon: UserCircle,
     subItems: [
-      { name: "My Dashboard", route: "/agent-portal?tab=dashboard" },
-      { name: "Interaction Room", route: "/agent-portal?tab=workspace" },
-      { name: "My Performance", route: "/agent-portal?tab=performance" },
-      { name: "Support & KB", route: "/agent-portal?tab=support" },
+      { name: "My Dashboard", route: "/agent-portal/dashboard" },
+      { name: "Interaction Room", route: "/agent-portal/workspace" },
+      { name: "My Performance", route: "/agent-portal/performance" },
+      { name: "Support & KB", route: "/agent-portal/support" },
     ]
   },
   {
@@ -198,10 +198,10 @@ const modules = [
     route: "/security-compliance",
     icon: Shield,
     subItems: [
-      { name: "Threat Monitor", route: "/security-compliance?tab=monitor" },
-      { name: "Compliance Hub", route: "/security-compliance?tab=compliance" },
-      { name: "Data Privacy", route: "/security-compliance?tab=privacy" },
-      { name: "Encryption", route: "/security-compliance?tab=encryption" },
+      { name: "Threat Monitor", route: "/security-compliance/monitor" },
+      { name: "Compliance Hub", route: "/security-compliance/compliance" },
+      { name: "Data Privacy", route: "/security-compliance/privacy" },
+      { name: "Encryption", route: "/security-compliance/encryption" },
     ]
   },
   {
@@ -210,11 +210,11 @@ const modules = [
     route: "/crm-native",
     icon: BookUser,
     subItems: [
-      { name: "Contacts", route: "/crm-native?tab=contacts" },
-      { name: "Accounts", route: "/crm-native?tab=accounts" },
-      { name: "Leads", route: "/crm-native?tab=leads" },
-      { name: "Pipeline", route: "/crm-native?tab=pipeline" },
-      { name: "Tasks", route: "/crm-native?tab=tasks" },
+      { name: "Contacts", route: "/crm-native/contacts" },
+      { name: "Accounts", route: "/crm-native/accounts" },
+      { name: "Leads", route: "/crm-native/leads" },
+      { name: "Pipeline", route: "/crm-native/pipeline" },
+      { name: "Tasks", route: "/crm-native/tasks" },
     ]
   },
   {
@@ -223,12 +223,12 @@ const modules = [
     route: "/agent-desktop",
     icon: Monitor,
     subItems: [
-      { name: "Softphone", route: "/agent-desktop?tab=phone" },
-      { name: "Screen Pop", route: "/agent-desktop?tab=pop" },
-      { name: "Live Script", route: "/agent-desktop?tab=script" },
-      { name: "KB Search", route: "/agent-desktop?tab=kb" },
-      { name: "AI Assist", route: "/agent-desktop?tab=assist" },
-      { name: "ACW Panel", route: "/agent-desktop?tab=acw" },
+      { name: "Softphone", route: "/agent-desktop/softphone" },
+      { name: "Screen Pop", route: "/agent-desktop/screen-pop" },
+      { name: "Live Script", route: "/agent-desktop/script" },
+      { name: "KB Search", route: "/agent-desktop/kb" },
+      { name: "AI Assist", route: "/agent-desktop/ai-assist" },
+      { name: "ACW Panel", route: "/agent-desktop/acw" },
     ]
   },
   {
@@ -237,9 +237,9 @@ const modules = [
     route: "/outbound-dialer",
     icon: PhoneForwarded,
     subItems: [
-      { name: "Campaign Builder", route: "/outbound-dialer?tab=builder" },
-      { name: "Call List Management", route: "/outbound-dialer?tab=list" },
-      { name: "Pacing Control", route: "/outbound-dialer?tab=pacing" },
+      { name: "Campaigns", route: "/outbound-dialer/campaigns" },
+      { name: "Call Lists", route: "/outbound-dialer/call-lists" },
+      { name: "Pacing", route: "/outbound-dialer/pacing" },
     ]
   },
   {
