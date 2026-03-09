@@ -6,8 +6,7 @@ import {
   Route, 
   MessageSquare, 
   Zap, 
-  Compass,
-  BarChart3
+  Compass
 } from "lucide-react";
 
 export default function CXJourneyLayout({ children }) {

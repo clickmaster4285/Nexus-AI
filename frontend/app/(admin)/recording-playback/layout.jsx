@@ -6,8 +6,7 @@ import {
   PhoneCall, 
   PlayCircle, 
   Archive, 
-  Search,
-  Activity
+  Search
 } from "lucide-react";
 
 export default function RecordingPlaybackLayout({ children }) {

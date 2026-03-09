@@ -11,15 +11,11 @@ import {
   Mail, 
   TrendingUp, 
   Target, 
-  Clock, 
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
-  Trash2,
+  Clock,
   Edit2,
   Zap
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -29,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function LeadsPage() {
-  const [leads, setLeads] = useState(initialLeads);
+  const [leads ] = useState(initialLeads);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredLeads = leads.filter(l => 

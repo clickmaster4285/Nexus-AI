@@ -166,7 +166,7 @@ export default function EvaluationQueuePage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {Object.entries(evaluation.scores).map(([key, val], i) => (
+                  {Object.entries(evaluation.scores).map(([key, val]) => (
                     <TableRow key={key} className="group hover:bg-muted/20">
                       <TableCell className="px-4 py-3">
                         {val === true || val >= 7 ?

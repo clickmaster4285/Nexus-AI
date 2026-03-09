@@ -5,12 +5,9 @@ import {
   CheckSquare, 
   Search, 
   Filter, 
-  Plus, 
-  MoreVertical, 
-  Calendar, 
+  Plus,
   Clock, 
-  User, 
-  ChevronRight,
+  User,
   AlertCircle,
   CheckCircle2,
   Trash2,
@@ -28,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks ] = useState(initialTasks);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredTasks = tasks.filter(t => 

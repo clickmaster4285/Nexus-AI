@@ -17,7 +17,7 @@ import {
   ShieldCheck,
   Edit2
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function AccountsPage() {
-  const [accounts, setAccounts] = useState(initialAccounts);
+  const [accounts ] = useState(initialAccounts);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAccounts = accounts.filter(a => 

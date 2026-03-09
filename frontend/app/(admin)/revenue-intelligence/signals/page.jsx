@@ -13,7 +13,8 @@ import {
   Save,
   ArrowLeft,
   Info,
-  TrendingUp
+  TrendingUp,
+  X
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { revenueOpportunities } from "@/lib/mock-data/revenue";
+import { mockOpportunities } from "@/lib/mock-data/revenue";
 
 function SignalAddForm({ onCancel, onSave }) {
   const [formData, setFormData] = useState({
@@ -195,7 +196,7 @@ function SignalAddForm({ onCancel, onSave }) {
 
 export default function OpportunitySignalsPage() {
   const [isBuilding, setIsBuilding] = useState(false);
-  const opportunities = revenueOpportunities;
+  const opportunities = mockOpportunities;
 
   if (isBuilding) {
     return <SignalAddForm onCancel={() => setIsBuilding(false)} onSave={() => { alert("Signal Activated!"); setIsBuilding(false); }} />;

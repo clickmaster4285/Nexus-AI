@@ -2,24 +2,19 @@
 
 import { useState } from "react";
 import { 
-  Users, 
   Search, 
   Filter, 
   Plus, 
   MoreVertical, 
   Mail, 
-  Phone, 
-  Building2, 
-  Tag, 
+  Phone,
   Star, 
-  ChevronRight,
   ShieldCheck,
   History,
   CheckCircle2,
-  Trash2,
   Edit2
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -29,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function ContactsPage() {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts ] = useState(initialContacts);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredContacts = contacts.filter(c => 

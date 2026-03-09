@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { deals as initialDeals } from "@/lib/mock-data/crm";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 export default function PipelinePage() {
   const [deals] = useState(initialDeals);
@@ -30,9 +29,9 @@ export default function PipelinePage() {
     { name: "Contracting", color: "border-emerald-500", bg: "bg-emerald-500/5" }
   ];
 
-  const handleAction = (action, name) => {
-    toast.success(`${action}: ${name}`);
-  };
+//   const handleAction = (action, name) => {
+//     toast.success(`${action}: ${name}`);
+//   };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">

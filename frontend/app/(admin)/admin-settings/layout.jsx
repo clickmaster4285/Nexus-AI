@@ -8,7 +8,6 @@ import {
   ShieldCheck, 
   History, 
   CreditCard,
-  Building
 } from "lucide-react";
 
 export default function AdminSettingsLayout({ children }) {

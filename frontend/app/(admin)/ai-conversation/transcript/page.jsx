@@ -36,7 +36,7 @@ import { cn } from "@/lib/utils";
 import { mockTranscripts } from "@/lib/mock-data/transcripts";
 
 export default function TranscriptViewerPage() {
-  const [transcript, setTranscript] = useState(mockTranscripts[0]);
+  const [transcript ] = useState(mockTranscripts[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSpeakerLabels, setShowSpeakerLabels] = useState(true);
   const [piiRedacted, setPiiRedacted] = useState(true);

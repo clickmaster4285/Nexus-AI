@@ -35,7 +35,7 @@ export default function WellbeingPage() {
               )}>
                 <CardContent className="p-4">
                   <div className="flex flex-col md:flex-row items-center gap-6">
-                    <div className="flex items-center gap-4 min-w-[200px]">
+                    <div className="flex items-center gap-4 min-w-50">
                       <div className="h-10 w-10 rounded-full bg-secondary flex items-center justify-center font-black text-xs border border-primary/10 shadow-inner group-hover:scale-110 transition-transform">
                         {agent.fullName.split(" ").map(n => n[0]).join("")}
                       </div>

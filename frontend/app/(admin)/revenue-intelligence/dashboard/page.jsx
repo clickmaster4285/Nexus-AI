@@ -16,10 +16,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { revenueKpis } from "@/lib/mock-data/revenue";
+import { mockRevenueKpis } from "@/lib/mock-data/revenue";
 
 export default function RevenueDashboardPage() {
-  const kpis = revenueKpis;
+  const kpis = mockRevenueKpis;
   const stats = [
     {
       label: "Upsell Opportunities",

@@ -12,13 +12,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { callLists } from "@/lib/mock-data/dialer";
-import { Upload, Edit, Archive, Download, RefreshCw, FileText, UserPlus, AlertTriangle, CheckCircle, XCircle, Clock } from "lucide-react";
+import { Upload, Edit, Archive, Download, RefreshCw, FileText, UserPlus, CheckCircle, XCircle } from "lucide-react";
 
 export default function CallListsPage() {
   const [lists, setLists] = useState(callLists);
   const [selectedList, setSelectedList] = useState(lists[0]);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [ setIsEditOpen] = useState(false);
 
   const handleUpload = () => {
     toast.success("File uploaded successfully. Processing...");

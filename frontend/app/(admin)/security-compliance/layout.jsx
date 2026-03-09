@@ -7,7 +7,6 @@ import {
   ShieldCheck, 
   Lock, 
   Fingerprint,
-  Zap
 } from "lucide-react";
 
 export default function SecurityComplianceLayout({ children }) {
