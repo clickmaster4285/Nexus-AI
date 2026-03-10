@@ -281,10 +281,10 @@ const modules = [
     route: "/asterisk-config",
     icon: Cpu,
     subItems: [
-      { name: "AMI/ARI Config", route: "/asterisk-config?tab=connection" },
-      { name: "PJSIP Trunks", route: "/asterisk-config?tab=trunks" },
-      { name: "WebRTC Gateway", route: "/asterisk-config?tab=webrtc" },
-      { name: "Dialplan Mapping", route: "/asterisk-config?tab=dialplan" },
+      { name: "AMI/ARI Config", route: "/asterisk-config/connection" },
+      { name: "PJSIP Trunks", route: "/asterisk-config/trunks" },
+      { name: "WebRTC Gateway", route: "/asterisk-config/webrtc" },
+      { name: "Dialplan Mapping", route: "/asterisk-config/dialplan" },
     ]
   },
   {
@@ -293,8 +293,8 @@ const modules = [
     route: "/scripts-kb",
     icon: FileText,
     subItems: [
-      { name: "Script Builder", route: "/scripts-kb?tab=scripts" },
-      { name: "KB Manager", route: "/scripts-kb?tab=kb" },
+      { name: "Script Builder", route: "/scripts-kb/scripts" },
+      { name: "KB Manager", route: "/scripts-kb/kb" },
     ]
   },
   {
@@ -303,8 +303,8 @@ const modules = [
     route: "/robocall-engine",
     icon: Megaphone,
     subItems: [
-      { name: "Campaign Config", route: "/robocall-engine?tab=config" },
-      { name: "Delivery Analytics", route: "/robocall-engine?tab=analytics" },
+      { name: "Campaign Config", route: "/robocall-engine/config" },
+      { name: "Delivery Analytics", route: "/robocall-engine/analytics" },
     ]
   },
   {
@@ -313,8 +313,8 @@ const modules = [
     route: "/acw-disposition",
     icon: Clock,
     subItems: [
-      { name: "Disposition Codes", route: "/acw-disposition?tab=codes" },
-      { name: "ACW Timers", route: "/acw-disposition?tab=timers" },
+      { name: "Disposition Codes", route: "/acw-disposition/codes" },
+      { name: "ACW Timers", route: "/acw-disposition/timers" },
     ]
   },
   {
@@ -323,9 +323,9 @@ const modules = [
     route: "/dnc-management",
     icon: Ban,
     subItems: [
-      { name: "Internal DNC", route: "/dnc-management?tab=internal" },
-      { name: "National Registry", route: "/dnc-management?tab=national" },
-      { name: "Calling Windows", route: "/dnc-management?tab=compliance" },
+      { name: "Internal DNC", route: "/dnc-management/internal" },
+      { name: "National Registry", route: "/dnc-management/national" },
+      { name: "Calling Windows", route: "/dnc-management/compliance" },
     ]
   },
   {

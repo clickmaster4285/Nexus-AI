@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, RefreshCw, CheckCircle, XCircle, AlertTriangle, Phone, Clock, Shield } from "lucide-react";
+import { Search, RefreshCw, CheckCircle, XCircle, Phone, Shield } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,7 +47,7 @@ export default function NationalRegistryPage() {
   const [scrubEnabled, setScrubEnabled] = useState(true);
   const [autoScrub, setAutoScrub] = useState(true);
   const [scrubTiming, setScrubTiming] = useState("pre-dial");
-  const [lastSync, setLastSync] = useState("2024-01-15 14:00:00");
+  const [lastSync ] = useState("2024-01-15 14:00:00");
 
   const filteredChecks = registryChecks.filter(check =>
     check.phone.includes(searchQuery)

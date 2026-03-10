@@ -1,10 +1,11 @@
 "use client";
 
+
 import { Ban } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-
 export default function DNCManagementLayout({ children }) {
+
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
@@ -45,7 +46,6 @@ export default function DNCManagementLayout({ children }) {
           </CardContent>
         </Card>
       </div>
-
 
       {children}
     </div>

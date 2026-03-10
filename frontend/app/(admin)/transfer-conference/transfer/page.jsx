@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, PhoneTransfer, UserPlus, Search, X, ArrowRight } from "lucide-react";
+import { Phone, PhoneForwarded, UserPlus, Search, ArrowRight, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,8 +20,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  DialogTitle
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -69,7 +68,6 @@ const queues = [
 
 export default function TransferPanelPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTransfer, setSelectedTransfer] = useState(null);
   const [transferType, setTransferType] = useState("warm");
   const [transferTarget, setTransferTarget] = useState("");
   const [showAgentDialog, setShowAgentDialog] = useState(false);
@@ -127,7 +125,7 @@ export default function TransferPanelPage() {
               </p>
             </div>
             <Button className="w-full" onClick={() => setShowAgentDialog(true)}>
-              <PhoneTransfer className="h-4 w-4 mr-2" />
+              <PhoneForwarded className="h-4 w-4 mr-2" />
               Select Agent
             </Button>
           </CardContent>
@@ -265,7 +263,7 @@ export default function TransferPanelPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <ScrollArea className="h-[300px]">
+            <ScrollArea className="h-75">
               <div className="space-y-2">
                 {filteredAgents.map((agent) => (
                   <div

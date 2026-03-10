@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Users, UserPlus, Mic, MicOff, PhoneOff, Settings, Copy, Trash2, MoreVertical, Phone, MessageSquare } from "lucide-react";
+import { Users, UserPlus, Mic, MicOff, PhoneOff, Copy, Trash2, MoreVertical, Phone, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -407,7 +407,7 @@ export default function ConferenceBridgePage() {
             </div>
 
             {/* Participants List */}
-            <ScrollArea className="h-[300px]">
+            <ScrollArea className="h-75">
               <div className="space-y-2">
                 {activeParticipants.map((participant) => (
                   <div
