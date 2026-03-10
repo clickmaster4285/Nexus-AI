@@ -9,7 +9,7 @@ import {
   Bell,
   Activity
 } from "lucide-react";
-import KPITicker from "@/components/realtime-operation/KPITicker";
+import KPITicker from "./KPITicker";
 
 export default function RealtimeOpsLayout({ children }) {
   const pathname = usePathname();

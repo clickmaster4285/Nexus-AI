@@ -56,7 +56,8 @@ We have successfully initialized the **NEXUS AI** foundation and all **26 module
   - **Shared Component Library:** Reusable components like `KpiCard`, `StatusBadge`, `SentimentBadge`, and `DataTable` are in place and used across modules.
   - **Mock Data Layer:** Realistic data for agents, calls, CRM contacts, and campaigns is integrated to ensure the UI feels "alive" from day one.
 
-- **Module Implementation:** All 26 routes (`/m01-realtime` through `/m26-transfer`) are accessible. Detailed implementation has begun following the master plan:
+- **Module Implementation:** All 26 routes (`/m01-realtime` through `/m26-transfer`) are accessible. Detailed implementation and refactoring are progressing according to the master plan:
+  - **M01–M07, M09–M14 (REFACTORED):** Successfully refactored to follow the **Co-location Standard**. All UI logic is now housed within the respective module folders in the `app/` directory, and obsolete folders in `components/` have been removed.
   - **M15 — Native CRM Management (COMPLETED):**
     - **Contacts (15.1):** Split-view layout with searchable list, full details form, and interactive history timeline.
     - **Accounts (15.2):** Directory with toggleable Table/Grid views and organization-level analytics.
@@ -71,7 +72,12 @@ We have successfully initialized the **NEXUS AI** foundation and all **26 module
     - **KB Search (16.4):** Searchable knowledge base with copy-to-clipboard snippets and AI suggestions.
     - **AI Assist (16.5):** Real-time sentiment sparkline, compliance checklist, and opportunity cards.
     - **ACW (16.6):** Wrap-up timer, disposition coding form, and quick follow-up actions.
-    - **Architecture:** Implemented using the **Co-location Standard**, with all logic residing directly in `app/(dashboard)/agent-desktop/[submodule]/page.jsx`.
+  - **M17 — Revenue Intelligence (COMPLETED):**
+    - **Dashboard (17.1):** Executive overview with revenue KPIs, pipeline health, and top opportunities.
+    - **Signals (17.2):** AI-driven opportunity alerts and risk indicators.
+    - **Churn (17.3):** Customer retention analytics and churn risk playbooks.
+    - **Sales (17.4):** Performance scoring and sales representative leaderboard.
+    - **Architecture:** Fully refactored to the **Co-location Standard**, with all logic residing directly in `app/(admin)/revenue-intelligence/[submodule]/page.jsx`.
 
 ---
 

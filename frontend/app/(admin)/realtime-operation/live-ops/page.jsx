@@ -178,7 +178,7 @@ function ActiveCallCard({ call }) {
           </div>
 
           <div className="p-2 bg-primary/5 rounded text-[11px] italic text-muted-foreground border border-primary/10">
-            "Thank you for calling our support center, I'm checking that..."
+            &quot;Thank you for calling our support center, I&apos;m checking that...&quot;
           </div>
 
           <div className="space-y-2">

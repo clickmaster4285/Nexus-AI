@@ -248,10 +248,10 @@ const modules = [
     route: "/inbound-ivr",
     icon: GitMerge,
     subItems: [
-      { name: "IVR Builder", route: "/inbound-ivr?tab=ivr" },
-      { name: "Queue Config", route: "/inbound-ivr?tab=queue" },
-      { name: "Routing Rules", route: "/inbound-ivr?tab=routing" },
-      { name: "Callback Manager", route: "/inbound-ivr?tab=callback" },
+      { name: "IVR Builder", route: "/inbound-ivr/ivr-builder" },
+      { name: "Queue Config", route: "/inbound-ivr/queue-config" },
+      { name: "Routing Rules", route: "/inbound-ivr/routing-rules" },
+      { name: "Callback Manager", route: "/inbound-ivr/callback-manager" },
     ]
   },
   {
@@ -260,8 +260,8 @@ const modules = [
     route: "/data-upload",
     icon: Upload,
     subItems: [
-      { name: "File Wizard", route: "/data-upload?tab=wizard" },
-      { name: "Import History", route: "/data-upload?tab=history" },
+      { name: "File Wizard", route: "/data-upload/wizard" },
+      { name: "Import History", route: "/data-upload/history" },
     ]
   },
   {

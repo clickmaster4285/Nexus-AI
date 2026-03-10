@@ -131,3 +131,83 @@ export const liveInteractions = [
       ]
    }
 ];
+
+export const mockAgenticActions = [
+  { 
+    id: "act-01", 
+    name: "Auto-Trigger Coaching", 
+    type: "Coaching", 
+    trigger: "Sentiment < 40%", 
+    threshold: 40, 
+    autonomy: "Fully Autonomous", 
+    status: "Active",
+    cooldown: "24h"
+  },
+  { 
+    id: "act-02", 
+    name: "SLA Risk Nudge", 
+    type: "Agent Nudge", 
+    trigger: "Wait Time > 5m", 
+    threshold: 300, 
+    autonomy: "Notify + Wait", 
+    status: "Active",
+    cooldown: "1h"
+  },
+  { 
+    id: "act-03", 
+    name: "Auto-Pause Agent", 
+    type: "Pause Agent", 
+    trigger: "3+ Negative Calls", 
+    threshold: 3, 
+    autonomy: "Human Approval", 
+    status: "Paused",
+    cooldown: "4h"
+  }
+];
+
+export const mockDecisionLog = [
+  { 
+    id: "dec-001", 
+    timestamp: "2024-03-04 14:20:15", 
+    action: "Sent Empathy Nudge", 
+    trigger: "Sentiment Drop (65 -> 32)", 
+    target: "Sarah Jenkins", 
+    status: "Success", 
+    reasoning: "Agent displayed low empathy during billing dispute. Automatic nudge sent to suggest de-escalation phrase." 
+  },
+  { 
+    id: "dec-002", 
+    timestamp: "2024-03-04 14:15:22", 
+    action: "Assigned QA Review", 
+    trigger: "Compliance Flag (PII)", 
+    target: "Mark Chen", 
+    status: "Pending", 
+    reasoning: "Possible PII disclosure detected in unencrypted channel. Scheduled for immediate human QA review." 
+  },
+  { 
+    id: "dec-003", 
+    timestamp: "2024-03-04 13:50:10", 
+    action: "Adjusted Queue Priority", 
+    trigger: "Wait Time > 8m", 
+    target: "Technical Support", 
+    status: "Success", 
+    reasoning: "Wait time exceeded critical threshold. Priority boosted from 5 to 8 for all available multi-skill agents." 
+  }
+];
+
+export const mockEscalationChains = [
+  { 
+    id: "esc-01", 
+    name: "Critical Sentiment Chain", 
+    trigger: "Sentiment < 20%", 
+    steps: ["Supervisor Alert", "Manager SMS", "Legal Review Flag"],
+    active: true 
+  },
+  { 
+    id: "esc-02", 
+    name: "SLA Breach Protocol", 
+    trigger: "SLA < 70%", 
+    steps: ["Shift Lead Alert", "On-call Admin Notification"],
+    active: true 
+  }
+];
