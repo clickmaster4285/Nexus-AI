@@ -24,6 +24,7 @@ import { getActiveCalls } from "@/lib/mock-data/calls";
 import { getAgentById } from "@/lib/mock-data/agents";
 import { queues, getTotalCallsWaiting, getTotalAgentsAvailable } from "@/lib/mock-data/queues";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 // --- UTILS ---
 function formatDuration(seconds) {
@@ -210,56 +211,56 @@ function ActiveCallCard({ call }) {
 }
 
 function QueueCard({ queue }) {
-  const [longestWait, setLongestWait] = useState(queue.longestWaitTime);
+  const [longestWait, setLongestWait] = useState(queue.maxWaitTime || 0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (queue.callsWaiting > 0) {
+      if (queue.waiting > 0) {
         setLongestWait((prev) => prev + 1);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [queue.callsWaiting]);
+  }, [queue.waiting]);
 
-  const slaAlert = queue.slaPercentage < 80;
+  const slaAlert = queue.sla < 80;
   const waitAlert = longestWait > 300;
 
   return (
-    <Card className={`relative ${slaAlert || waitAlert ? "border-red-200 bg-red-50/10" : ""}`}>
+    <Card className={`relative ${slaAlert || waitAlert ? "border-red-200 bg-red-50/10 shadow-sm" : "border-primary/10 shadow-sm"}`}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-black text-xs uppercase tracking-widest">{queue.name}</h3>
-          <Badge variant={slaAlert ? "destructive" : "outline"} className="h-5 text-[10px]">
-            SLA: {queue.slaPercentage}%
+          <h3 className="font-black text-xs uppercase tracking-widest text-foreground/80">{queue.name}</h3>
+          <Badge variant={slaAlert ? "destructive" : "outline"} className="h-5 text-[10px] font-black uppercase">
+            SLA: {queue.sla}%
           </Badge>
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div className="space-y-1">
-            <p className="text-[10px] text-muted-foreground uppercase font-bold">Waiting</p>
-            <p className={`text-2xl font-black ${queue.callsWaiting > 5 ? "text-red-500" : ""}`}>{queue.callsWaiting}</p>
+            <p className="text-[10px] text-muted-foreground uppercase font-black tracking-tight">Waiting</p>
+            <p className={`text-2xl font-black ${queue.waiting > 5 ? "text-red-500" : "text-primary"}`}>{queue.waiting}</p>
           </div>
           <div className="space-y-1 text-right">
-            <p className="text-[10px] text-muted-foreground uppercase font-bold">Longest</p>
-            <p className={`text-xl font-mono font-bold ${waitAlert ? "text-red-500" : ""}`}>{formatDuration(longestWait)}</p>
+            <p className="text-[10px] text-muted-foreground uppercase font-black tracking-tight">Longest</p>
+            <p className={`text-xl font-mono font-black ${waitAlert ? "text-red-500" : "text-foreground"}`}>{formatDuration(longestWait)}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 pt-4 border-t">
+        <div className="flex items-center justify-between mb-4 pt-4 border-t border-dashed border-primary/10">
           <div className="flex items-center gap-2">
             <Users className="h-3 w-3 text-muted-foreground" />
-            <span className="text-[10px] text-muted-foreground font-bold uppercase">Agents</span>
+            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-tight">Active Agents</span>
           </div>
-          <div className="flex gap-1">
-            <Badge className="bg-green-500 h-5 text-[10px]">{queue.agentsAvailable}</Badge>
-            <Badge variant="secondary" className="h-5 text-[10px]">{queue.agentsBusy}</Badge>
+          <div className="flex gap-1.5">
+            <Badge className="bg-green-500 hover:bg-green-600 h-5 text-[10px] font-black">{queue.available}</Badge>
+            <Badge variant="secondary" className="h-5 text-[10px] font-black bg-yellow-500/10 text-yellow-600 border-none">{queue.agents - queue.available}</Badge>
           </div>
         </div>
 
         <div className="space-y-1">
-          <Label className="text-[9px] text-muted-foreground uppercase font-bold">Overflow</Label>
+          <Label className="text-[9px] text-muted-foreground uppercase font-black tracking-widest ml-1">Overflow Strategy</Label>
           <Select defaultValue="voice_mail">
-            <SelectTrigger className="h-7 text-[10px] bg-muted/20 border-none">
+            <SelectTrigger className="h-8 text-[10px] bg-muted/30 border-primary/5 focus:border-primary/20">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -288,97 +289,100 @@ export default function LiveOpsPage() {
   });
 
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-12 gap-6 p-1">
       {/* Left Column: Agents & Calls */}
-      <div className="col-span-12 lg:col-span-8 space-y-6">
+      <div className="col-span-12 lg:col-span-8 space-y-8">
         {/* Agent Grid */}
-        <Card className="border-none shadow-none bg-transparent p-4">
-          <CardHeader className="px-0 pb-4 pt-0">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                  <Users className="h-4 w-4" /> Agent State Board
-                </CardTitle>
-              </div>
-              <div className="flex bg-muted/50 p-1 rounded-lg border">
-                <Button 
-                  variant={filter === "all" ? "secondary" : "ghost"} 
-                  size="sm" 
-                  className="h-7 text-[10px] font-bold uppercase tracking-wider px-3"
-                  onClick={() => setFilter("all")}
-                >
-                  All ({agents.length})
-                </Button>
-                <Button 
-                  variant={filter === "available" ? "secondary" : "ghost"} 
-                  size="sm" 
-                  className="h-7 text-[10px] font-bold uppercase tracking-wider px-3"
-                  onClick={() => setFilter("available")}
-                >
-                  Available ({getAvailableAgents().length})
-                </Button>
-                <Button 
-                  variant={filter === "busy" ? "secondary" : "ghost"} 
-                  size="sm" 
-                  className="h-7 text-[10px] font-bold uppercase tracking-wider px-3"
-                  onClick={() => setFilter("busy")}
-                >
-                  Busy ({getBusyAgents().length})
-                </Button>
-              </div>
+        <div className="space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-sm font-black uppercase tracking-[0.2em] text-foreground flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" /> Agent State Board
+              </h2>
+              <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Real-time status monitoring & supervision</p>
             </div>
-          </CardHeader>
-          <CardContent className="px-0">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {filteredAgents.map((agent) => (
-                <AgentCard key={agent.id} agent={agent} />
-              ))}
+            <div className="flex bg-muted/40 p-1 rounded-xl border border-primary/10 shadow-inner">
+              <Button 
+                variant={filter === "all" ? "default" : "ghost"} 
+                size="sm" 
+                className={cn(
+                  "h-8 text-[10px] font-black uppercase tracking-widest px-4 transition-all rounded-lg",
+                  filter === "all" ? "bg-primary text-primary-foreground shadow-lg" : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
+                )}
+                onClick={() => setFilter("all")}
+              >
+                All ({agents.length})
+              </Button>
+              <Button 
+                variant={filter === "available" ? "default" : "ghost"} 
+                size="sm" 
+                className={cn(
+                  "h-8 text-[10px] font-black uppercase tracking-widest px-4 transition-all rounded-lg",
+                  filter === "available" ? "bg-green-500 text-white shadow-lg shadow-green-500/20" : "text-muted-foreground hover:bg-green-500/5 hover:text-green-600"
+                )}
+                onClick={() => setFilter("available")}
+              >
+                Available ({getAvailableAgents().length})
+              </Button>
+              <Button 
+                variant={filter === "busy" ? "default" : "ghost"} 
+                size="sm" 
+                className={cn(
+                  "h-8 text-[10px] font-black uppercase tracking-widest px-4 transition-all rounded-lg",
+                  filter === "busy" ? "bg-yellow-500 text-white shadow-lg shadow-yellow-500/20" : "text-muted-foreground hover:bg-yellow-500/5 hover:text-yellow-600"
+                )}
+                onClick={() => setFilter("busy")}
+              >
+                Busy ({getBusyAgents().length})
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {filteredAgents.map((agent) => (
+              <AgentCard key={agent.id} agent={agent} />
+            ))}
+          </div>
+        </div>
 
         {/* Active Calls */}
-        <Card className="border-none shadow-none bg-transparent p-4">
-          <CardHeader className="px-0 pb-4">
-            <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <Phone className="h-4 w-4" /> Active Call Monitor
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-0">
-            {activeCalls.length === 0 ? (
-              <div className="h-32 rounded-lg border-2 border-dashed flex items-center justify-center text-muted-foreground text-sm font-medium">
-                No active calls currently
-              </div>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2">
-                {activeCalls.map((call) => (
-                  <ActiveCallCard key={call.id} call={call} />
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="space-y-4 pt-4 border-t border-primary/5">
+          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-foreground flex items-center gap-2">
+            <Phone className="h-4 w-4 text-green-500" /> Active Call Monitor
+          </h2>
+          {activeCalls.length === 0 ? (
+            <div className="h-40 rounded-2xl border-2 border-dashed border-primary/10 flex flex-col items-center justify-center text-muted-foreground gap-2 bg-muted/5">
+              <Phone className="h-8 w-8 opacity-20" />
+              <p className="text-[10px] font-black uppercase tracking-widest">No active calls currently in progress</p>
+            </div>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              {activeCalls.map((call) => (
+                <ActiveCallCard key={call.id} call={call} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Right Column: Queues */}
       <div className="col-span-12 lg:col-span-4 space-y-6">
-        <Card className="border-none shadow-none bg-transparent h-full p-4">
-          <CardHeader className="px-0 pb-4 pt-0">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                <Monitor className="h-4 w-4" /> Queue Monitoring
-              </CardTitle>
-              <Badge variant="outline" className="text-[10px] font-bold border-primary/20">
-                TOTAL WAITING: {getTotalCallsWaiting()}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="px-0 space-y-4">
+        <div className="space-y-4 sticky top-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-black uppercase tracking-[0.2em] text-foreground flex items-center gap-2">
+              <Monitor className="h-4 w-4 text-blue-500" /> Queue Monitoring
+            </h2>
+            <Badge variant="outline" className="text-[9px] font-black uppercase border-primary/20 bg-primary/5 text-primary tracking-tighter">
+              Total Waiting: {getTotalCallsWaiting()}
+            </Badge>
+          </div>
+          
+          <div className="space-y-4">
             {queues.map((queue) => (
               <QueueCard key={queue.id} queue={queue} />
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

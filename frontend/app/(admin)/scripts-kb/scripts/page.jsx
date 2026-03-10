@@ -342,7 +342,7 @@ export default function ScriptBuilderPage() {
               <div className="space-y-4">
                 {selectedScript.steps.map((step, index) => (
                   <div key={step.id} className="flex gap-4 p-4 border rounded-lg">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                       {index + 1}
                     </div>
                     <div className="flex-1">

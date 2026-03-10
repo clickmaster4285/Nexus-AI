@@ -260,7 +260,7 @@ export default function KbManagerPage() {
                 <label className="text-sm font-medium mb-2 block">Content</label>
                 <Textarea
                   placeholder="Write your article content here..."
-                  className="min-h-[200px]"
+                  className="min-h-50"
                   value={newArticle.content}
                   onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })}
                 />
@@ -489,7 +489,7 @@ export default function KbManagerPage() {
               <div>
                 <label className="text-sm font-medium mb-2 block">Content</label>
                 <Textarea
-                  className="min-h-[200px]"
+                  className="min-h-50"
                   value="Article content would appear here..."
                   readOnly
                 />
