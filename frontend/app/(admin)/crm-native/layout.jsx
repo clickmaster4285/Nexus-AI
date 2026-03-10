@@ -1,25 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Users, 
-  Building2, 
-  UserPlus, 
-  GitMerge, 
-  CheckSquare,
-  BookUser
-} from "lucide-react";
+import {   BookUser} from "lucide-react";
 
 export default function CRMNativeLayout({ children }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  
-  const activeTab = pathname.split("/").pop() || "contacts";
-
-  const handleTabChange = (value) => {
-    router.push(`/crm-native/${value}`);
-  };
 
   return (
     <div className="flex flex-col h-full bg-background/50">
@@ -47,47 +30,9 @@ export default function CRMNativeLayout({ children }) {
             </div>
           </div>
         </div>
-
-        {/* Sub-navigation Tabs */}
-        <div className="mt-6">
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b-0">
-              <TabsTrigger 
-                value="contacts" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <Users className="h-4 w-4 mr-2" /> Contacts
-              </TabsTrigger>
-              <TabsTrigger 
-                value="accounts" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <Building2 className="h-4 w-4 mr-2" /> Accounts
-              </TabsTrigger>
-              <TabsTrigger 
-                value="leads" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <UserPlus className="h-4 w-4 mr-2" /> Leads
-              </TabsTrigger>
-              <TabsTrigger 
-                value="pipeline" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <GitMerge className="h-4 w-4 mr-2" /> Pipeline
-              </TabsTrigger>
-              <TabsTrigger 
-                value="tasks" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <CheckSquare className="h-4 w-4 mr-2" /> Tasks
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         {children}
       </div>
     </div>

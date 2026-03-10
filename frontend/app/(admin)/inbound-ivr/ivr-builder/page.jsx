@@ -32,64 +32,7 @@ import {
   Workflow
 } from "lucide-react";
 
-// Mock IVR flows data
-const initialFlows = [
-  {
-    id: "flow-001",
-    name: "Main Customer Service",
-    description: "Primary inbound routing for customer support",
-    status: "active",
-    nodes: 15,
-    callsHandled: 45230,
-    avgHandlingTime: "2:34",
-    successRate: 94.2,
-    lastModified: "2024-01-15",
-  },
-  {
-    id: "flow-002",
-    name: "Sales Hotline",
-    description: "Direct routing to sales team with qualification",
-    status: "active",
-    nodes: 12,
-    callsHandled: 12840,
-    avgHandlingTime: "1:45",
-    successRate: 89.5,
-    lastModified: "2024-01-12",
-  },
-  {
-    id: "flow-003",
-    name: "Technical Support",
-    description: "Tiered technical support IVR with ticket creation",
-    status: "active",
-    nodes: 18,
-    callsHandled: 8920,
-    avgHandlingTime: "4:12",
-    successRate: 87.3,
-    lastModified: "2024-01-10",
-  },
-  {
-    id: "flow-004",
-    name: "After Hours Support",
-    description: "Emergency routing and voicemail for off-hours",
-    status: "paused",
-    nodes: 8,
-    callsHandled: 2340,
-    avgHandlingTime: "0:45",
-    successRate: 78.2,
-    lastModified: "2024-01-08",
-  },
-  {
-    id: "flow-005",
-    name: "Billing Inquiries",
-    description: "Automated billing FAQ with live agent transfer",
-    status: "draft",
-    nodes: 10,
-    callsHandled: 0,
-    avgHandlingTime: "-",
-    successRate: 0,
-    lastModified: "2024-01-18",
-  },
-];
+import { mockIvrFlows } from "@/lib/mock-data/queues";
 
 // Node types available in IVR builder
 const nodeTypes = [
@@ -104,8 +47,8 @@ const nodeTypes = [
 ];
 
 export default function IVRBuilderPage() {
-  const [flows, setFlows] = useState(initialFlows);
-  const [selectedFlow, setSelectedFlow] = useState(initialFlows[0]);
+  const [flows, setFlows] = useState(mockIvrFlows);
+  const [selectedFlow, setSelectedFlow] = useState(mockIvrFlows[0]);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newFlow, setNewFlow] = useState({
     name: "",

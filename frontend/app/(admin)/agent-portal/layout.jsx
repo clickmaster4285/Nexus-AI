@@ -1,23 +1,10 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   LayoutDashboard, 
-  MessageSquare, 
-  Trophy, 
-  LifeBuoy
 } from "lucide-react";
 
-export default function AgentPortalLayout({ children }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  
-  const activeTab = pathname.split("/").pop() || "dashboard";
-
-  const handleTabChange = (value) => {
-    router.push(`/agent-portal/${value}`);
-  };
+export default function AgentPortalLayout({ children }) {  
 
   return (
     <div className="flex flex-col h-full bg-background/50">
@@ -45,41 +32,9 @@ export default function AgentPortalLayout({ children }) {
             </div>
           </div>
         </div>
-
-        {/* Sub-navigation Tabs */}
-        <div className="mt-6">
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b-0">
-              <TabsTrigger 
-                value="dashboard" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <LayoutDashboard className="h-4 w-4 mr-2" /> My Dashboard
-              </TabsTrigger>
-              <TabsTrigger 
-                value="workspace" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <MessageSquare className="h-4 w-4 mr-2" /> Interaction Room
-              </TabsTrigger>
-              <TabsTrigger 
-                value="performance" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <Trophy className="h-4 w-4 mr-2" /> My Performance
-              </TabsTrigger>
-              <TabsTrigger 
-                value="support" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <LifeBuoy className="h-4 w-4 mr-2" /> Support & KB
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-2">
         {children}
       </div>
     </div>

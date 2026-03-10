@@ -270,9 +270,9 @@ const modules = [
     route: "/supervisor-agentic",
     icon: BrainCircuit,
     subItems: [
-      { name: "Action Center", route: "/supervisor-agentic?tab=actions" },
-      { name: "Decision Log", route: "/supervisor-agentic?tab=log" },
-      { name: "Escalation Chain", route: "/supervisor-agentic?tab=chain" },
+      { name: "Action Center", route: "/supervisor-agentic/actions" },
+      { name: "Decision Log", route: "/supervisor-agentic/log" },
+      { name: "Escalation Chain", route: "/supervisor-agentic/chain" },
     ]
   },
   {
@@ -334,8 +334,8 @@ const modules = [
     route: "/transfer-conference",
     icon: Shuffle,
     subItems: [
-      { name: "Transfer Panel", route: "/transfer-conference?tab=transfer" },
-      { name: "Conference Bridge", route: "/transfer-conference?tab=conference" },
+      { name: "Transfer Panel", route: "/transfer-conference/transfer" },
+      { name: "Conference Bridge", route: "/transfer-conference/conference" },
     ]
   },
 ];

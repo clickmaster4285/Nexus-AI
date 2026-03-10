@@ -1,24 +1,11 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Settings, 
-  Users, 
-  ShieldCheck, 
-  History, 
-  CreditCard,
+import {
+  Settings,
 } from "lucide-react";
 
 export default function AdminSettingsLayout({ children }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  
-  const activeTab = pathname.split("/").pop() || "users";
-
-  const handleTabChange = (value) => {
-    router.push(`/admin-settings/${value}`);
-  };
 
   return (
     <div className="flex flex-col h-full bg-background/50">
@@ -33,7 +20,7 @@ export default function AdminSettingsLayout({ children }) {
               Tenant Configuration, User Management & Security Audits
             </p>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="text-right hidden md:block">
               <p className="text-[10px] text-muted-foreground uppercase font-black">Active Users</p>
@@ -46,41 +33,9 @@ export default function AdminSettingsLayout({ children }) {
             </div>
           </div>
         </div>
-
-        {/* Sub-navigation Tabs */}
-        <div className="mt-6">
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b-0">
-              <TabsTrigger 
-                value="users" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <Users className="h-4 w-4 mr-2" /> User Management
-              </TabsTrigger>
-              <TabsTrigger 
-                value="roles" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <ShieldCheck className="h-4 w-4 mr-2" /> Role Permissions
-              </TabsTrigger>
-              <TabsTrigger 
-                value="audit" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <History className="h-4 w-4 mr-2" /> Audit Trails
-              </TabsTrigger>
-              <TabsTrigger 
-                value="usage" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-              >
-                <CreditCard className="h-4 w-4 mr-2" /> Account Usage
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         {children}
       </div>
     </div>

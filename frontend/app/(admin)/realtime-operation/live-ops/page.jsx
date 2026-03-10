@@ -292,7 +292,7 @@ export default function LiveOpsPage() {
       {/* Left Column: Agents & Calls */}
       <div className="col-span-12 lg:col-span-8 space-y-6">
         {/* Agent Grid */}
-        <Card className="border-none shadow-none bg-transparent">
+        <Card className="border-none shadow-none bg-transparent p-4">
           <CardHeader className="px-0 pb-4 pt-0">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
@@ -338,7 +338,7 @@ export default function LiveOpsPage() {
         </Card>
 
         {/* Active Calls */}
-        <Card className="border-none shadow-none bg-transparent">
+        <Card className="border-none shadow-none bg-transparent p-4">
           <CardHeader className="px-0 pb-4">
             <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <Phone className="h-4 w-4" /> Active Call Monitor
@@ -362,7 +362,7 @@ export default function LiveOpsPage() {
 
       {/* Right Column: Queues */}
       <div className="col-span-12 lg:col-span-4 space-y-6">
-        <Card className="border-none shadow-none bg-transparent h-full">
+        <Card className="border-none shadow-none bg-transparent h-full p-4">
           <CardHeader className="px-0 pb-4 pt-0">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">

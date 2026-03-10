@@ -1,24 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileUp, History, Upload } from "lucide-react";
+import {Upload } from "lucide-react";
 
 export default function DataUploadLayout({ children }) {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const tabs = [
-    { id: "wizard", label: "File Wizard", icon: FileUp, route: "/data-upload/wizard" },
-    { id: "history", label: "Import History", icon: History, route: "/data-upload/history" },
-  ];
-
-  const activeTab = tabs.find(t => pathname === t.route)?.id || "wizard";
-
-  const handleTabChange = (value) => {
-    const tab = tabs.find(t => t.id === value);
-    if (tab) router.push(tab.route);
-  };
 
   return (
     <div className="flex flex-col h-full bg-background/50">
@@ -46,25 +30,9 @@ export default function DataUploadLayout({ children }) {
             </div>
           </div>
         </div>
-
-        <div className="mt-6">
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b-0">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-sm font-bold uppercase tracking-tighter"
-                >
-                  <tab.icon className="h-4 w-4 mr-2" /> {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         {children}
       </div>
     </div>

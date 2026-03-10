@@ -62,7 +62,7 @@ export default function BulkSearchPage() {
   return (
     <div className="space-y-6 p-1">
       {/* Search Bar & Filters */}
-      <Card className="border-none shadow-none bg-transparent">
+      <Card className="border-none shadow-none bg-transparent p-4">
         <CardContent className="p-0 space-y-4">
           <form onSubmit={handleSearch} className="flex gap-2">
             <div className="relative flex-1">

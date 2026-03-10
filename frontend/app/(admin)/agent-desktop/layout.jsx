@@ -1,30 +1,14 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-  Phone, 
   Monitor, 
-  FileText, 
-  Search, 
-  Bot, 
-  Clock,
   Mic,
   Volume2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export default function AgentDesktopLayout({ children }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  
-  // Determine active tab from pathname
-  const activeTab = pathname.split("/").pop() || "softphone";
-
-  const handleTabChange = (value) => {
-    router.push(`/agent-desktop/${value}`);
-  };
+export default function AgentDesktopLayout({ children }) {  
 
   return (
     <div className="flex flex-col h-full bg-background/50">
@@ -65,54 +49,10 @@ export default function AgentDesktopLayout({ children }) {
             </Button>
           </div>
         </div>
-
-        {/* Sub-navigation Tabs */}
-        <div className="mt-4">
-          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b-0">
-              <TabsTrigger 
-                value="softphone" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <Phone className="h-3 w-3 mr-2" /> Softphone
-              </TabsTrigger>
-              <TabsTrigger 
-                value="screen-pop" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <Monitor className="h-3 w-3 mr-2" /> Screen Pop
-              </TabsTrigger>
-              <TabsTrigger 
-                value="script" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <FileText className="h-3 w-3 mr-2" /> Script
-              </TabsTrigger>
-              <TabsTrigger 
-                value="kb" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <Search className="h-3 w-3 mr-2" /> KB Search
-              </TabsTrigger>
-              <TabsTrigger 
-                value="ai-assist" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <Bot className="h-3 w-3 mr-2" /> AI Assist
-              </TabsTrigger>
-              <TabsTrigger 
-                value="acw" 
-                className="data-[state=active]:border-primary data-[state=active]:text-primary border-b-2 border-transparent rounded-none px-1 pb-2 pt-0 bg-transparent shadow-none text-xs font-bold uppercase tracking-wider"
-              >
-                <Clock className="h-3 w-3 mr-2" /> ACW
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         {children}
       </div>
     </div>
