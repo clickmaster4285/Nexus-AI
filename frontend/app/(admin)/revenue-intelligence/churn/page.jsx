@@ -27,10 +27,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { retentionPlaybooks } from "@/lib/mock-data/revenue";
+import { mockPlaybooks } from "@/lib/mock-data/revenue";
 
 export default function ChurnRetentionPage() {
-  const playbooks = retentionPlaybooks;
+  const playbooks = mockPlaybooks;
 
   return (
     <div className="space-y-6 p-1">

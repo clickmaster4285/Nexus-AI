@@ -21,10 +21,10 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { salesScores } from "@/lib/mock-data/revenue";
+import { mockSalesScores } from "@/lib/mock-data/revenue";
 
 export default function SalesScoringPage() {
-  const scores = salesScores;
+  const scores = mockSalesScores;
   const [selectedCall, setSelectedCall] = useState(scores[0]);
 
   return (
