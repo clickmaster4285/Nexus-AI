@@ -31,7 +31,97 @@ export const sipTrunks = [
    }
 ];
 
+export const mockAsteriskConfig = {
+   ami: {
+      host: "10.0.45.10",
+      port: 5038,
+      username: "nexus_ami_user",
+      secret: "••••••••••••••••",
+      tls: true,
+      heartbeat: 30,
+      reconnect: 5,
+      status: "Connected",
+      permissions: "system,call,log,verbose,command,agent,user,config,command,dtmf,reporting,cdr,dialplan,originate,message"
+   },
+   ari: {
+      host: "https://10.0.45.10",
+      port: 8089,
+      username: "nexus_ari_user",
+      password: "••••••••••••••••",
+      tls: true,
+      stasisApp: "nexus_app",
+      wsUrl: "wss://10.0.45.10:8089/ari/events?api_key=nexus_ari_user:secret&app=nexus_app",
+      status: "Active"
+   }
+};
+
+export const mockDetailedPjsipTrunks = [
+   {
+      id: "PJSIP-001",
+      name: "Twilio-US-East",
+      type: "PJSIP",
+      server: "nexus-east.pstn.twilio.com",
+      username: "nexus_voice_01",
+      status: "Registered",
+      channels: 100,
+      transport: "UDP",
+      nat: "force_rport,comedia",
+      codecs: ["ulaw", "alaw", "g729"],
+      dtmfMode: "rfc4733"
+   },
+   {
+      id: "PJSIP-002",
+      name: "Bandwidth-Carrier",
+      type: "PJSIP",
+      server: "trunk.bandwidth.com",
+      username: "nexus_bw_trunk",
+      status: "Registered",
+      channels: 500,
+      transport: "TLS",
+      nat: "force_rport,comedia",
+      codecs: ["ulaw", "g722", "opus"],
+      dtmfMode: "info"
+   }
+];
+
+export const mockWebRtcConfig = {
+   transport: "transport-wss",
+   bindAddress: "0.0.0.0:8089",
+   stunServer: "stun.l.google.com:19302",
+   turnServer: "turn:turn.nexus-ai.com:3478",
+   turnUsername: "webrtc_agent",
+   turnSecret: "••••••••••••••••",
+   iceSupport: true,
+   dtlsSrtp: true,
+   sipPattern: "agent-${EXTEN}",
+   validity: 3600
+};
+
+export const mockDialplanContexts = [
+   {
+      id: "CTX-001",
+      name: "nexus-inbound",
+      bridge: "agi://localhost/nexus_bridge.agi",
+      queueContext: "nexus-queues",
+      recordingPath: "/var/spool/asterisk/monitor/nexus/",
+      format: "wav",
+      backend: "res_odbc",
+      variables: ["NEXUS_CID", "NEXUS_UUID", "TENANT_ID"]
+   },
+   {
+      id: "CTX-002",
+      name: "nexus-outbound",
+      bridge: "Dial(PJSIP/${EXTEN}@twilio)",
+      queueContext: "none",
+      recordingPath: "/var/spool/asterisk/monitor/nexus-out/",
+      format: "mp3",
+      backend: "res_cdr_custom",
+      variables: ["CAMPAIGN_ID", "LEAD_ID"]
+   }
+];
+
 export const phoneNumbers = [
+// ... (rest of the file)
    {
       id: "DID-101",
       number: "+1 (555) 123-4567",

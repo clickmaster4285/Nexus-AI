@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  redirect("/m01-realtime");
+  redirect("/realtime-operation");
 }
+

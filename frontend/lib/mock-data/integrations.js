@@ -6,6 +6,7 @@ export const crmConnectors = [
       status: "Connected",
       lastSync: "2 min ago",
       objects: ["Contact", "Account", "Lead", "Case"],
+      leadsTransferred: 1240,
       image: "/icons/salesforce.svg"
    },
    {
@@ -15,6 +16,7 @@ export const crmConnectors = [
       status: "Connected",
       lastSync: "15 min ago",
       objects: ["Ticket", "User", "Organization"],
+      leadsTransferred: 850,
       image: "/icons/zendesk.svg"
    },
    {
@@ -24,6 +26,7 @@ export const crmConnectors = [
       status: "Disconnected",
       lastSync: "2 days ago",
       objects: ["Contact", "Deal", "Task"],
+      leadsTransferred: 0,
       image: "/icons/hubspot.svg"
    },
    {
@@ -33,6 +36,7 @@ export const crmConnectors = [
       status: "Available",
       lastSync: null,
       objects: [],
+      leadsTransferred: 0,
       image: "/icons/dynamics.svg"
    }
 ];
