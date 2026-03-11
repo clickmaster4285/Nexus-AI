@@ -3,39 +3,10 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState, useMemo } from "react";
-import {
-  LayoutDashboard,
-  MessageSquare,
-  ClipboardCheck,
-  TrendingUp,
-  Users,
-  Route,
-  BarChart3,
-  Bot,
-  PhoneCall,
-  Radio,
-  Link2,
-  Settings,
-  UserCircle,
-  Shield,
-  ChevronRight,
-  ChevronDown,
-  Menu,
-  BookUser,
-  Monitor,
-  PhoneForwarded,
-  GitMerge,
-  Upload,
-  BrainCircuit,
-  Cpu,
-  FileText,
-  Megaphone,
-  Clock,
-  Ban,
-  Shuffle
-} from "lucide-react";
+import { LayoutDashboard, MessageSquare, ClipboardCheck, TrendingUp, Users, Route, BarChart3, Bot, PhoneCall, Radio, Link2, Settings, UserCircle, Shield, ChevronRight, ChevronDown, Menu, BookUser, Monitor, PhoneForwarded, GitMerge, Upload, BrainCircuit, Cpu, FileText, Megaphone, Clock, Ban, Shuffle } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
 
 const modules = [
   {
@@ -473,12 +444,45 @@ function SidebarContent() {
   );
 }
 
+function SidebarSkeleton() {
+  return (
+    <div className="flex h-full flex-col bg-sidebar animate-pulse">
+      {/* Logo Area */}
+      <div className="flex h-16 items-center border-b px-4 gap-2">
+        <div className="h-8 w-8 rounded-lg bg-sidebar-accent" />
+        <div className="h-4 w-24 rounded bg-sidebar-accent" />
+      </div>
+
+      {/* Nav Items */}
+      <div className="flex-1 space-y-4 py-6 px-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="h-4 w-4 rounded bg-sidebar-accent" />
+            <div className="h-4 flex-1 rounded bg-sidebar-accent" />
+          </div>
+        ))}
+      </div>
+
+      {/* Footer Area */}
+      <div className="border-t p-4 flex items-center gap-3">
+        <div className="h-8 w-8 rounded-full bg-sidebar-accent" />
+        <div className="flex-1 space-y-2">
+          <div className="h-3 w-16 rounded bg-sidebar-accent" />
+          <div className="h-2 w-20 rounded bg-sidebar-accent" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
       <aside className="hidden lg:block w-64 border-r bg-sidebar">
-        <SidebarContent />
+        <Suspense fallback={<SidebarSkeleton />}>
+          <SidebarContent />
+        </Suspense>
       </aside>
 
       {/* Mobile Sidebar */}
@@ -489,7 +493,9 @@ export default function Sidebar() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
-          <SidebarContent />
+          <Suspense fallback={<SidebarSkeleton />}>
+            <SidebarContent />
+          </Suspense>
         </SheetContent>
       </Sheet>
     </>

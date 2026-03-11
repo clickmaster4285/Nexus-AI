@@ -1,23 +1,14 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { Megaphone, Settings, BarChart3 } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Suspense } from "react";
+import { Megaphone, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-const tabs = [
-  { id: "config", label: "Campaign Config", icon: Settings, route: "/robocall-engine/config" },
-  { id: "analytics", label: "Delivery Analytics", icon: BarChart3, route: "/robocall-engine/analytics" },
-];
 
 export default function RobocallEngineLayout({ children }) {
-  const pathname = usePathname();
-
-  const activeTab = pathname.includes("/analytics") ? "analytics" : "config";
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black tracking-tighter uppercase flex items-center gap-3">
@@ -57,23 +48,18 @@ export default function RobocallEngineLayout({ children }) {
         </Card>
       </div>
 
-      <Tabs value={activeTab} className="w-full">
-        <TabsList>
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <TabsTrigger key={tab.id} value={tab.id} asChild>
-                <Link href={tab.route} className="flex items-center gap-2">
-                  <Icon className="h-4 w-4" />
-                  {tab.label}
-                </Link>
-              </TabsTrigger>
-            );
-          })}
-        </TabsList>
-      </Tabs>
-
-      {children}
+      <Suspense
+        fallback={
+          <div className="flex flex-col items-center justify-center min-h-75 w-full border-2 border-dashed rounded-xl bg-muted/30">
+            <Loader2 className="h-10 w-10 animate-spin text-primary opacity-40" />
+            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-4">
+              Synchronizing Engine Data...
+            </p>
+          </div>
+        }
+      >
+        {children}
+      </Suspense>
     </div>
   );
 }
