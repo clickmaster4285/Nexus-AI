@@ -1,6 +1,7 @@
 "use client";
 
-import {Upload } from "lucide-react";
+import { Suspense } from "react";
+import { Upload, Loader2 } from "lucide-react";
 
 export default function DataUploadLayout({ children }) {
 
@@ -33,7 +34,15 @@ export default function DataUploadLayout({ children }) {
       </div>
 
       <div className="flex-1 overflow-auto p-4">
-        {children}
+        <Suspense
+          fallback={
+            <div className="flex h-full w-full items-center justify-center min-h-100">
+              <Loader2 className="h-8 w-8 animate-spin text-primary opacity-50" />
+            </div>
+          }
+        >
+          {children}
+        </Suspense>
       </div>
     </div>
   );
