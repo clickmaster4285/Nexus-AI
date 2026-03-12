@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Search,
   Download,
@@ -11,13 +12,26 @@ import {
   MessageSquare,
   Clock,
   User,
-  Bot
+  Bot,
+  Sparkles,
+  ChevronRight,
+  TrendingUp,
+  BrainCircuit,
+  Zap,
+  Quote,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  PanelRightClose,
+  PanelRightOpen,
+  ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,15 +46,22 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { mockTranscripts } from "@/lib/mock-data/transcripts";
+import { mockTranscripts, getTranscriptByCallId } from "@/lib/mock-data/transcripts";
+import InsightsPanel from "./InsightsPanel";
 
-export default function TranscriptViewerPage() {
-  const [transcript ] = useState(mockTranscripts[0]);
+function TranscriptContent() {
+  const searchParams = useSearchParams();
+  const callId = searchParams.get("callId");
+  
+  const [transcript, setTranscript] = useState(mockTranscripts[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSpeakerLabels, setShowSpeakerLabels] = useState(true);
   const [piiRedacted, setPiiRedacted] = useState(true);
   const [translation, setTranslation] = useState("Original (en-US)");
+  const [showIntelligence, setShowIntelligence] = useState(true);
+  
   const [annotations, setAnnotations] = useState([
     { startTime: 10, text: "Customer sounds frustrated here", color: "bg-red-500" },
     { startTime: 25, text: "Agent followed protocol", color: "bg-green-500" }
@@ -51,10 +72,16 @@ export default function TranscriptViewerPage() {
 
   const transcriptRef = useRef(null);
 
+  useEffect(() => {
+    if (callId) {
+      const found = getTranscriptByCallId(callId);
+      if (found) setTranscript(found);
+    }
+  }, [callId]);
+
   const filteredSegments = transcript?.segments || [];
 
   const handleExport = (format) => {
-    console.log(`Exporting as ${format}...`);
     alert(`Transcript exported as ${format.toUpperCase()}`);
   };
 
@@ -95,136 +122,138 @@ export default function TranscriptViewerPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-250px)]">
-      <div className="flex flex-col h-full bg-card border rounded-xl shadow-sm relative overflow-hidden">
-        {/* Header / Controls */}
-        <div className="p-4 border-b bg-muted/30 flex flex-wrap items-center justify-between gap-4">
+    <div className="flex h-[calc(100vh-200px)] gap-4 animate-in fade-in duration-700">
+      {/* Main Transcript View */}
+      <div className={cn(
+        "flex flex-col flex-1 bg-card border rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-500",
+        showIntelligence ? "lg:mr-0" : ""
+      )}>
+        {/* Header Controls */}
+        <div className="p-4 border-b bg-muted/20 backdrop-blur-sm flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="relative w-64">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-primary opacity-40" />
               <Input
-                placeholder="Search transcript..."
-                className="pl-9 h-9"
+                placeholder="Search dialogue..."
+                className="pl-10 h-10 bg-background/50 border-primary/5 focus-visible:ring-primary/20"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="flex items-center gap-2">
-              <Switch
-                id="speaker-labels"
-                checked={showSpeakerLabels}
-                onCheckedChange={setShowSpeakerLabels}
-              />
-              <Label htmlFor="speaker-labels" className="text-sm">Speakers</Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <Switch
-                id="pii-redactor"
-                checked={piiRedacted}
-                onCheckedChange={setPiiRedacted}
-              />
-              <Label htmlFor="pii-redactor" className="text-sm flex items-center gap-1">
-                {piiRedacted ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
-                PII Redaction
-              </Label>
+            <div className="flex items-center gap-4 border-l pl-4">
+               <div className="flex items-center gap-2">
+                 <Switch id="speaker-labels" checked={showSpeakerLabels} onCheckedChange={setShowSpeakerLabels} />
+                 <Label htmlFor="speaker-labels" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Speakers</Label>
+               </div>
+               <div className="flex items-center gap-2">
+                 <Switch id="pii-redactor" checked={piiRedacted} onCheckedChange={setPiiRedacted} />
+                 <Label htmlFor="pii-redactor" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1">
+                   {piiRedacted ? <EyeOff className="h-3 w-3 text-red-500" /> : <Eye className="h-3 w-3 text-green-500" />}
+                   Redaction
+                 </Label>
+               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+            <Button 
+               variant="outline" 
+               size="sm" 
+               onClick={() => setShowIntelligence(!showIntelligence)}
+               className={cn(
+                  "h-10 text-[10px] font-black uppercase tracking-widest gap-2 transition-all",
+                  showIntelligence ? "bg-primary/10 text-primary border-primary/20" : ""
+               )}
+            >
+               <Sparkles className="h-4 w-4" />
+               AI Intelligence {showIntelligence ? <PanelRightClose className="h-3 w-3" /> : <PanelRightOpen className="h-3 w-3" />}
+            </Button>
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
+                <Button variant="outline" size="sm" className="h-10 text-[10px] font-black uppercase tracking-widest gap-2">
                   <Languages className="h-4 w-4" />
                   {translation}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setTranslation("Original (en-US)")}>Original (en-US)</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTranslation("Spanish")}>Spanish</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTranslation("French")}>French</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTranslation("German")}>German</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="w-48">
+                {["Original (en-US)", "Spanish", "French", "German"].map(lang => (
+                  <DropdownMenuItem key={lang} onClick={() => setTranslation(lang)} className="text-[10px] font-bold uppercase tracking-tight">
+                     {lang}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Download className="h-4 w-4" />
-                  Export
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleExport("pdf")}>PDF Document</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleExport("docx")}>Word Document</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleExport("txt")}>Plain Text</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleExport("json")}>JSON (Full Data)</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleExport("srt")}>SRT Subtitles</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="outline" size="sm" className="h-10 text-[10px] font-black uppercase tracking-widest gap-2 px-4 shadow-sm">
+               <Download className="h-4 w-4" /> Export
+            </Button>
           </div>
         </div>
 
-        {/* Transcript Content */}
+        {/* Dialogue Flow */}
         <div
           ref={transcriptRef}
-          className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth"
+          className="flex-1 overflow-y-auto p-4 space-y-2 scroll-smooth bg-linear-to-b from-transparent to-muted/5"
           onMouseUp={handleTextSelection}
         >
           {filteredSegments.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-muted-foreground opacity-50">
-              <MessageSquare className="h-12 w-12 mb-2" />
-              <p>No transcript segments found.</p>
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground opacity-20 italic">
+              <MessageSquare className="h-16 w-16 mb-4" />
+              <p className="text-xl font-black uppercase tracking-widest">No dialogue streams</p>
             </div>
           ) : (
             filteredSegments.map((segment, idx) => (
               <div
                 key={idx}
                 className={cn(
-                  "group flex gap-4 transition-all duration-200 rounded-lg p-2 hover:bg-muted/50",
-                  segment.confidence < 0.8 ? "bg-yellow-500/5" : ""
+                  "group flex gap-3 transition-all duration-300 rounded-2xl p-2 border border-transparent",
+                  segment.speaker === "agent" ? "hover:border-primary/10 hover:bg-primary/2" : "hover:border-muted-foreground/10 hover:bg-muted/30",
+                  segment.confidence < 0.8 ? "bg-amber-500/5" : ""
                 )}
               >
-                <div className="flex flex-col items-center gap-1 pt-1">
+                <div className="flex flex-col items-center gap-2 pt-1">
                   <div className={cn(
-                    "h-8 w-8 rounded-full flex items-center justify-center shrink-0",
-                    segment.speaker === "agent" ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                    "h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 shadow-lg transition-transform group-hover:scale-110",
+                    segment.speaker === "agent" ? "bg-primary text-white" : "bg-muted text-muted-foreground border"
                   )}>
-                    {segment.speaker === "agent" ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
+                    {segment.speaker === "agent" ? <Bot className="h-6 w-6" /> : <User className="h-6 w-6" />}
                   </div>
-                  <span className="text-[10px] font-mono text-muted-foreground font-medium">
+                  <span className="text-[10px] font-mono text-muted-foreground font-black opacity-40 uppercase">
                     {formatTime(segment.startTime)}
                   </span>
                 </div>
 
-                <div className="flex-1 space-y-1">
+                <div className="flex-1 space-y-2">
                   {showSpeakerLabels && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-1">
                       <span className={cn(
-                        "text-xs font-bold uppercase tracking-wider",
-                        segment.speaker === "agent" ? "text-primary" : "text-muted-foreground"
+                        "text-[10px] font-black uppercase tracking-[0.2em]",
+                        segment.speaker === "agent" ? "text-primary" : "text-muted-foreground/60"
                       )}>
-                        {segment.speaker}
+                        {segment.speaker} Interaction
                       </span>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all">
                         <Button
                           variant="ghost"
-                          size="icon-xs"
-                          title="Annotate"
+                          size="icon"
+                          className="h-7 w-7 rounded-lg hover:bg-primary hover:text-white"
                           onClick={() => setIsAnnotating(true)}
                           disabled={!selectedText}
                         >
-                          <Highlighter className="h-3 w-3" />
+                          <Highlighter className="h-3.5 w-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon-xs" title="Comment">
-                          <MessageSquare className="h-3 w-3" />
+                        <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg">
+                          <Quote className="h-3.5 w-3.5" />
                         </Button>
                       </div>
                     </div>
                   )}
 
                   <p className={cn(
-                    "text-sm leading-relaxed",
-                    segment.confidence < 0.3 ? "bg-yellow-100 dark:bg-yellow-900/30 px-1 border-l-2 border-yellow-500" : ""
+                    "text-[13px] leading-relaxed font-medium tracking-tight",
+                    segment.speaker === "agent" ? "text-foreground" : "text-foreground/80 italic",
+                    segment.confidence < 0.3 ? "bg-amber-500/10 px-2 py-1 border-l-4 border-amber-500 rounded" : ""
                   )}>
                     {segment.text.split(" ").map((word, wIdx) => {
                       const isMatch = searchTerm && word.toLowerCase().includes(searchTerm.toLowerCase());
@@ -234,11 +263,10 @@ export default function TranscriptViewerPage() {
                         <span
                           key={wIdx}
                           className={cn(
-                            "cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors inline-block mr-1",
-                            isMatch ? "bg-yellow-400 dark:bg-yellow-600 text-black font-semibold" : "",
-                            hasAnnotation ? "underline decoration-primary decoration-2 underline-offset-4" : ""
+                            "cursor-pointer transition-all duration-150 inline-block mr-1.5 rounded px-0.5",
+                            isMatch ? "bg-primary text-white font-black scale-110 shadow-lg" : "hover:bg-primary/10 hover:text-primary",
+                            hasAnnotation ? "underline decoration-primary decoration-4 underline-offset-4" : ""
                           )}
-                          onClick={() => console.log(`Clicked ${word} at ${segment.startTime}`)}
                         >
                           {redactPII(word)}
                         </span>
@@ -247,71 +275,185 @@ export default function TranscriptViewerPage() {
                   </p>
 
                   {annotations.filter(a => a.startTime === segment.startTime).map((a, i) => (
-                    <div key={i} className="mt-2 p-2 bg-primary/5 border border-primary/20 rounded text-[10px] flex items-start gap-2 animate-in fade-in slide-in-from-top-1 relative overflow-hidden">
-                      <div className={cn("w-1 h-full absolute left-0 top-0", a.color)} />
-                      <MessageSquare className="h-3 w-3 text-primary shrink-0 mt-0.5" />
+                    <div key={i} className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-xl text-[10px] flex items-start gap-3 animate-in slide-in-from-left-4 duration-500 relative overflow-hidden group/note">
+                      <div className={cn("w-1.5 h-full absolute left-0 top-0", a.color)} />
+                      <MessageSquare className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-bold">Note: </span>
-                        {a.text}
+                        <span className="font-black uppercase tracking-widest text-primary block mb-1">Supervisor Observation:</span>
+                        <p className="text-xs font-medium text-muted-foreground leading-relaxed">{a.text}</p>
                       </div>
                     </div>
                   ))}
-
-                  {segment.confidence < 0.8 && (
-                    <div className="flex items-center gap-1 text-[10px] text-yellow-600 dark:text-yellow-400 font-medium italic mt-1">
-                      <Clock className="h-3 w-3" />
-                      Low confidence ({Math.round(segment.confidence * 100)}%)
-                    </div>
-                  )}
                 </div>
               </div>
             ))
           )}
         </div>
 
-        {/* Footer / Summary Info */}
-        <div className="p-3 bg-muted/20 border-t flex items-center justify-between text-[11px] text-muted-foreground">
-          <div className="flex items-center gap-4">
-            <span>{transcript?.language || "N/A"}</span>
-            <span>•</span>
-            <span>{transcript?.duration ? formatTime(transcript.duration) : "0:00"}</span>
-            <span>•</span>
-            <span>{transcript?.segments?.length || 0} Segments</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="h-5 px-1.5 text-[10px] font-normal">
-              Confidence: {Math.round((transcript?.confidence || 0) * 100)}%
-            </Badge>
-          </div>
+        {/* Action Footer */}
+        <div className="p-4 bg-muted/30 border-t flex items-center justify-between">
+           <div className="flex items-center gap-6">
+              <div className="flex flex-col">
+                 <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Confidence Index</span>
+                 <div className="flex items-center gap-2">
+                    <Progress value={(transcript?.confidence || 0) * 100} className="h-1.5 w-24" />
+                    <span className="text-xs font-black">{Math.round((transcript?.confidence || 0) * 100)}%</span>
+                 </div>
+              </div>
+              <div className="flex flex-col border-l pl-6">
+                 <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Duration</span>
+                 <span className="text-xs font-black">{formatTime(transcript?.duration || 0)}</span>
+              </div>
+           </div>
+           <div className="flex gap-2">
+              <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest h-9 border border-primary/5">
+                 <Zap className="mr-2 h-3.5 w-3.5" /> Force Re-transcribe
+              </Button>
+           </div>
         </div>
-
-        {/* Annotation Dialog */}
-        <Dialog open={isAnnotating} onOpenChange={setIsAnnotating}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add Annotation</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="p-3 bg-muted rounded-lg text-xs italic">
-                &quot;{selectedText || "No text selected..."}&quot;
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="annotation-note">Observation Note</Label>
-                <Textarea
-                  id="annotation-note"
-                  placeholder="Enter your observation or coaching tip..."
-                  value={annotationNote}
-                  onChange={(e) => setAnnotationNote(e.target.value)}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsAnnotating(false)}>Cancel</Button>
-              <Button onClick={handleAddAnnotation} disabled={!selectedText}>Save Annotation</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
+
+      {/* Intelligence & NLP Side Panel */}
+      {showIntelligence && (
+        <ScrollArea className="w-112.5 border rounded-2xl bg-card/30 backdrop-blur-xl shadow-2xl animate-in slide-in-from-right-10 duration-500">
+           <div className="p-6 space-y-8">
+              {/* Executive Summary */}
+              <section className="space-y-4">
+                 <div className="flex items-center justify-between">
+                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2">
+                       <Sparkles className="h-4 w-4" /> AI Executive Brief
+                    </h3>
+                    <Badge className="bg-green-500/10 text-green-600 border-none uppercase text-[9px] font-black italic">
+                       {transcript.summary.resolutionStatus}
+                    </Badge>
+                 </div>
+                 <div className="p-5 rounded-2xl bg-linear-to-br from-primary/5 to-transparent border border-primary/10 space-y-4">
+                    <div className="space-y-1">
+                       <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">Primary Intent</span>
+                       <p className="text-md font-black tracking-tighter uppercase">{transcript.summary.primaryReason}</p>
+                    </div>
+                    <div className="space-y-2">
+                       <span className="text-[9px] font-black uppercase text-muted-foreground tracking-widest">AI Summary</span>
+                       <p className="text-xs font-medium leading-relaxed italic text-muted-foreground">
+                          &quot;{transcript.summary.sentimentSummary}&quot;
+                       </p>
+                    </div>
+                 </div>
+              </section>
+
+              {/* Intents & Topics */}
+              <section className="space-y-4">
+                 <h3 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+                    <BrainCircuit className="h-4 w-4" /> Intent & Entity Mapping
+                 </h3>
+                 <div className="grid grid-cols-1 gap-3">
+                    {transcript.nlp.intents.map((intent, i) => (
+                       <div key={i} className="flex items-center justify-between p-3 rounded-xl border bg-card/50">
+                          <div className="flex items-center gap-3">
+                             <div className="h-2 w-2 rounded-full bg-primary" />
+                             <span className="text-xs font-bold uppercase tracking-tight">{intent.name}</span>
+                          </div>
+                          <span className="text-[10px] font-black font-mono text-muted-foreground">{Math.round(intent.confidence * 100)}%</span>
+                       </div>
+                    ))}
+                 </div>
+                 <div className="flex flex-wrap gap-2 pt-2">
+                    {transcript.nlp.topics.map(topic => (
+                       <Badge key={topic} variant="secondary" className="bg-muted text-muted-foreground text-[9px] font-black uppercase px-3 py-1 border-none tracking-widest">
+                          #{topic}
+                       </Badge>
+                    ))}
+                 </div>
+              </section>
+
+              {/* Sentiment Intensity */}
+              <section className="space-y-4">
+                 <h3 className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" /> Sentiment Intensity
+                 </h3>
+                 <div className="space-y-6 p-5 rounded-2xl bg-muted/20 border border-primary/5">
+                    <div className="space-y-2">
+                       <div className="flex justify-between text-[10px] font-black uppercase">
+                          <span>Overall Score</span>
+                          <span className={cn(transcript.sentiment > 70 ? "text-green-500" : "text-amber-500")}>{transcript.sentiment}%</span>
+                       </div>
+                       <Progress value={transcript.sentiment} className="h-2 bg-background shadow-inner" />
+                    </div>
+                    
+                    <div className="space-y-3">
+                       <p className="text-[10px] font-black uppercase text-muted-foreground/60 tracking-widest border-b pb-2">Key Entities Detected</p>
+                       <div className="space-y-2">
+                          {transcript.nlp.entities.map((entity, i) => (
+                             <div key={i} className="flex items-center justify-between text-xs">
+                                <span className="font-bold text-muted-foreground">{entity.type}:</span>
+                                <span className="font-black italic text-primary">{entity.value}</span>
+                             </div>
+                          ))}
+                       </div>
+                    </div>
+                 </div>
+              </section>
+
+              {/* Quality Actions */}
+              <section className="space-y-4 pt-4">
+                 <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" className="h-12 text-[10px] font-black uppercase tracking-widest gap-2 hover:bg-green-500/10 hover:text-green-600 border-primary/5">
+                       <CheckCircle2 className="h-4 w-4" /> Approve Case
+                    </Button>
+                    <Button variant="outline" className="h-12 text-[10px] font-black uppercase tracking-widest gap-2 hover:bg-red-500/10 hover:text-red-600 border-primary/5">
+                       <AlertTriangle className="h-4 w-4" /> Flag Compliance
+                    </Button>
+                 </div>
+                 <Button className="w-full h-12 text-[10px] font-black uppercase tracking-widest gap-2 shadow-2xl shadow-primary/20">
+                    Push To CRM (Account #{transcript.customerId}) <ExternalLink className="h-4 w-4" />
+                 </Button>
+              </section>
+           </div>
+        </ScrollArea>
+      )}
+
+      {/* Annotation Dialog */}
+      <Dialog open={isAnnotating} onOpenChange={setIsAnnotating}>
+        <DialogContent className="sm:max-w-md border-primary/20 bg-card">
+          <DialogHeader>
+            <DialogTitle className="text-sm font-black uppercase tracking-widest">Add System Annotation</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="p-4 bg-muted/50 rounded-xl text-xs italic font-medium border-l-4 border-primary shadow-inner">
+              &quot;{selectedText || "No text selected..."}&quot;
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="annotation-note" className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Supervisor Observation</Label>
+              <Textarea
+                id="annotation-note"
+                placeholder="Enter coaching notes or interaction markers..."
+                className="bg-background/50 border-primary/5 min-h-32 text-xs"
+                value={annotationNote}
+                onChange={(e) => setAnnotationNote(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="ghost" className="text-[10px] font-black uppercase" onClick={() => setIsAnnotating(false)}>Discard</Button>
+            <Button className="text-[10px] font-black uppercase px-8" onClick={handleAddAnnotation} disabled={!selectedText}>Save Note</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
+}
+
+export default function TranscriptViewerPage() {
+   return (
+      <Suspense fallback={
+         <div className="h-full flex items-center justify-center animate-pulse">
+            <div className="flex flex-col items-center gap-4">
+               <Bot className="h-12 w-12 text-primary opacity-20" />
+               <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Synthesizing Voice Data...</p>
+            </div>
+         </div>
+      }>
+         <TranscriptContent />
+      </Suspense>
+   );
 }

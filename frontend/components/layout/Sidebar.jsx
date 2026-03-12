@@ -27,9 +27,7 @@ const modules = [
     route: "/ai-conversation",
     icon: MessageSquare,
     subItems: [
-      { name: "Transcript Viewer", route: "/ai-conversation/transcript" },
       { name: "Bulk Search", route: "/ai-conversation/search" },
-      { name: "NLP Insights", route: "/ai-conversation/insights" },
       { name: "Analytics Library", route: "/ai-conversation/analytics" },
     ]
   },
