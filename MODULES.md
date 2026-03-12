@@ -811,3 +811,93 @@ A module is "done" when:
 - [ ] No console errors
 - [ ] Sidebar shows this module as active when on its route
 
+
+
+
+
+
+
+<!-- flow -->
+# Call Evaluation Framework — NEXUS AI
+
+Based on the specification documents, call evaluation operates across **three interconnected layers**:
+
+---
+
+## 1. AI Automated Scoring (100% Coverage)
+
+Every completed call is automatically evaluated via the **QA Scorecard Engine (M03)**:
+
+- **Sentiment Analysis** — Per-segment + call-level scoring (0–100 scale), tracked at 5-second intervals via `sentiment_timeline` in ClickHouse
+- **Intent Classification** — 200+ intents identified throughout the call
+- **NER (Named Entity Recognition)** — Names, accounts, dates, amounts extracted
+- **Emotion Arc** — Tracks emotional trajectory across the call duration
+- **Outcome Classification** — Resolved / Escalated / Transferred / Pending
+- **Conversation Analytics** — Talk-over detection, dead air, hold analysis, talk-to-listen ratio, question ratio
+- **Sales Call Scoring** — Opening, discovery, value proposition, objection handling, close attempt
+
+---
+
+## 2. Compliance-Based Evaluation
+
+- **Required Disclosure Monitoring** — Real-time transcript scan for mandatory phrases
+- **Forbidden Phrase Detection** — Fires `compliance.violation` events to Kafka instantly
+- **PII Detection** — SSN, credit card, DOB flagged via SpaCy + regex
+- Results stored in `nexus.compliance.events` Kafka topic
+
+---
+
+## 3. Human QA Evaluation (Override Layer)
+
+Stored in `qa_evaluations` collection with **dual scoring architecture**:
+
+| Field | Purpose |
+|---|---|
+| `ai_scores{}` | Always present — baseline |
+| `human_scores{}` | Optional human override |
+| `total_score` | Composite final score |
+| `pass_fail` | Binary threshold gate |
+| `disputes[]` | Calibration disagreements |
+| `coaching_triggered` | Auto-flag if below threshold |
+
+---
+
+## 4. Revenue Intelligence Evaluation
+
+Layered on top of QA, calls are also evaluated for **commercial signals**:
+
+- Upsell signal presence
+- Churn vocabulary count
+- CLV impact assessment
+- Competitor mention detection
+- Results written to `revenue_signals` ClickHouse table
+
+---
+
+## 5. Evaluation Data Flow
+
+```
+Call Recording
+      ↓
+Whisper ASR (Full Transcript)
+      ↓
+Speaker Diarization (AGENT / CUSTOMER labeling)
+      ↓
+Full NLU Enrichment Pipeline
+      ↓
+AI QA Scoring → qa_evaluations (MongoDB)
+      ↓
+Revenue Signal Extraction → revenue_signals (ClickHouse)
+      ↓
+Coaching Trigger (if score < threshold)
+      ↓
+Kafka: call.processing.complete → Dashboard + CRM Sync
+```
+
+---
+
+## Key Design Principle
+
+> AI scores are **always present** as the baseline. Human scores are **optional overrides**. Both are stored simultaneously for **calibration and model improvement** — human overrides feed back as negative signals into the rule evaluation engine.
+
+This gives you **100% call coverage** at AI speed, with human review focused only on flagged or disputed calls.

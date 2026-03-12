@@ -149,6 +149,7 @@ const modules = [
       { name: "Role Permissions", route: "/admin-settings/roles" },
       { name: "Audit Trails", route: "/admin-settings/audit" },
       { name: "Account Usage", route: "/admin-settings/usage" },
+      { name: "Billing & Expenses", route: "/admin-settings/billing" },
     ]
   },
   {

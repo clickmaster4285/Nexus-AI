@@ -49,3 +49,30 @@ export const accountUsage = {
       { label: "API Requests", current: 1.2, limit: 5, unit: "M", color: "bg-purple-500" }
    ]
 };
+
+export const billingStats = {
+   currentBalance: 1240.50,
+   lastPayment: 1150.00,
+   lastPaymentDate: "May 15, 2024",
+   paymentMethod: "Visa •••• 9012",
+   billingContact: "billing@nexus-ai.com",
+   tier: "Enterprise Pro",
+   monthlyBase: 999.00
+};
+
+export const agentExpenses = [
+   { id: "A001", name: "Sarah Johnson", team: "Sales", sessionHours: 165, callMinutes: 4200, totalCost: 345.50, status: "Active" },
+   { id: "A002", name: "Michael Chen", team: "Support", sessionHours: 158, callMinutes: 3850, totalCost: 312.20, status: "Active" },
+   { id: "A003", name: "Emily Rodriguez", team: "Billing", sessionHours: 172, callMinutes: 4500, totalCost: 368.40, status: "Active" },
+   { id: "A004", name: "James Wilson", team: "Sales", sessionHours: 140, callMinutes: 2900, totalCost: 245.10, status: "Active" },
+   { id: "A005", name: "Priya Patel", team: "Onboarding", sessionHours: 160, callMinutes: 0, totalCost: 160.00, status: "Training" },
+   { id: "A006", name: "David Kim", team: "Technical", sessionHours: 155, callMinutes: 3100, totalCost: 285.50, status: "Active" },
+];
+
+export const invoiceHistory = [
+   { id: "INV-2024-005", date: "May 15, 2024", amount: 1150.00, status: "Paid", method: "Visa •••• 9012" },
+   { id: "INV-2024-004", date: "Apr 15, 2024", amount: 1125.50, status: "Paid", method: "Visa •••• 9012" },
+   { id: "INV-2024-003", date: "Mar 15, 2024", amount: 1080.00, status: "Paid", method: "Visa •••• 9012" },
+   { id: "INV-2024-002", date: "Feb 15, 2024", amount: 1190.25, status: "Paid", method: "Visa •••• 9012" },
+   { id: "INV-2024-001", date: "Jan 15, 2024", amount: 1050.00, status: "Paid", method: "Visa •••• 9012" },
+];
