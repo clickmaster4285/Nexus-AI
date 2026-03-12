@@ -8,7 +8,7 @@ export const USER_PROFILES = {
       email: "admin@nexus-ai.com",
       password: "password123"
     },
-    modules: ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M14", "M15", "M17", "M18", "M19", "M20", "M21", "M23", "M25"]
+    modules: ["M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08", "M09", "M10", "M11", "M12", "M14", "M15", "M18", "M19", "M20", "M21", "M23", "M25"]
   },
   SUPERVISOR: {
     id: "supervisor",
@@ -30,7 +30,7 @@ export const USER_PROFILES = {
       email: "agent.smith@nexus-ai.com",
       password: "password123"
     },
-    modules: ["M13", "M15", "M16", "M22", "M24", "M26"]
+    modules: ["M00", "M13", "M15", "M16", "M17", "M22", "M24", "M26"]
   }
 };
 

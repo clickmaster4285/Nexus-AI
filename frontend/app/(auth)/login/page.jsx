@@ -47,11 +47,32 @@ function LoginContent() {
     setIsAuthenticating(true);
     
     setTimeout(() => {
+      // Security Validation: Ensure role exists in our protocol
+      if (!selectedProfile || !selectedProfile.id) {
+        toast.error("Role Verification Failed", {
+          description: "Unauthorized access profile detected. Please return to gate."
+        });
+        setIsAuthenticating(false);
+        return;
+      }
+
       toast.success(`Authenticated as ${selectedProfile.label}`, {
         description: "Welcome back to NEXUS AI Command Center."
       });
+      
       document.cookie = `userRole=${selectedProfile.id}; path=/`;
-      router.push("/realtime-operation");
+
+      // Role-Based Routing Logic
+      if (selectedProfile.id === "super_admin") {
+        router.push("/realtime-operation");
+      } else if (["agent", "supervisor"].includes(selectedProfile.id)) {
+        router.push("/agent-dashboard");
+      } else {
+        toast.error("Protocol Error", {
+          description: "Your role has no assigned landing vector. Contact System Admin."
+        });
+        setIsAuthenticating(false);
+      }
     }, 1500);
   };
 
