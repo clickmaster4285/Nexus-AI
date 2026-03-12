@@ -111,7 +111,6 @@ const modules = [
     icon: PhoneCall,
     subItems: [
       { name: "Recording Browser", route: "/recording-playback/browser" },
-      { name: "Media Player", route: "/recording-playback/player" },
       { name: "Lifecycle Management", route: "/recording-playback/lifecycle" }
     ]
   },

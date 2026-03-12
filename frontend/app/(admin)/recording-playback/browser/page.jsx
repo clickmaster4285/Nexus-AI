@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Filter, Download, Play, ShieldAlert, Calendar, User, Clock, HardDrive, Tag, FileText, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { recordings } from "@/lib/mock-data/recording";
 import { cn } from "@/lib/utils";
 
 export default function RecordingBrowser() {
+   const router = useRouter();
    const [searchTerm, setSearchTerm] = useState("");
 
    const filteredRecordings = recordings.filter(rec =>
@@ -17,6 +19,10 @@ export default function RecordingBrowser() {
       rec.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
       rec.topic.toLowerCase().includes(searchTerm.toLowerCase())
    );
+
+   const handleRowClick = (id) => {
+      router.push(`/recording-playback/player?id=${id}`);
+   };
 
    return (
       <div className="space-y-6">
@@ -61,7 +67,11 @@ export default function RecordingBrowser() {
                </thead>
                <tbody className="divide-y divide-primary/5">
                   {filteredRecordings.map((rec) => (
-                     <tr key={rec.id} className="hover:bg-muted/30 transition-colors group">
+                     <tr 
+                        key={rec.id} 
+                        className="hover:bg-primary/5 transition-colors group cursor-pointer"
+                        onClick={() => handleRowClick(rec.id)}
+                     >
                         <td className="p-4">
                            <div className="flex items-center gap-3">
                               <div className="h-10 w-10 rounded-xl bg-primary/5 flex items-center justify-center shrink-0">
@@ -110,13 +120,31 @@ export default function RecordingBrowser() {
                         <td className="p-4 text-right">
                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               {rec.flagged && <ShieldAlert className="h-4 w-4 text-red-500 mr-2" />}
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary hover:text-white transition-all shadow-sm">
+                              <Button 
+                                 variant="ghost" 
+                                 size="icon" 
+                                 className="h-8 w-8 rounded-lg hover:bg-primary hover:text-white transition-all shadow-sm"
+                                 onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRowClick(rec.id);
+                                 }}
+                              >
                                  <Play className="h-4 w-4 fill-current" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                              <Button 
+                                 variant="ghost" 
+                                 size="icon" 
+                                 className="h-8 w-8 rounded-lg"
+                                 onClick={(e) => e.stopPropagation()}
+                              >
                                  <Download className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                              <Button 
+                                 variant="ghost" 
+                                 size="icon" 
+                                 className="h-8 w-8 rounded-lg"
+                                 onClick={(e) => e.stopPropagation()}
+                              >
                                  <Tag className="h-4 w-4" />
                               </Button>
                            </div>
