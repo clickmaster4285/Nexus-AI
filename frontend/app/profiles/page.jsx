@@ -1,11 +1,40 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { USER_PROFILES } from "@/lib/auth";
-import { ArrowRight, UserCircle2, ShieldAlert, BadgeCheck } from "lucide-react";
+import { ArrowRight, UserCircle2, ShieldAlert, BadgeCheck, Loader2, Fingerprint, Lock, ShieldCheck } from "lucide-react";
 
 export default function ProfileSelectionPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingStep, setLoadingStep] = useState(0);
   const profiles = Object.values(USER_PROFILES);
+
+  const steps = [
+    "Verifying Identity Protocols...",
+    "Querying Access Control Lists...",
+    "Retrieving Role Metadata...",
+    "Handshake Complete."
+  ];
+
+  useEffect(() => {
+    const stepInterval = setInterval(() => {
+      setLoadingStep(prev => {
+        if (prev < steps.length - 1) return prev + 1;
+        clearInterval(stepInterval);
+        return prev;
+      });
+    }, 600);
+
+    const loadTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(loadTimer);
+      clearInterval(stepInterval);
+    };
+  }, [steps.length]);
 
   const getIcon = (id) => {
     switch (id) {
@@ -15,8 +44,57 @@ export default function ProfileSelectionPage() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white text-foreground flex flex-col items-center justify-center relative overflow-hidden font-sans">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
+        
+        <div className="z-10 flex flex-col items-center gap-12 w-full max-w-sm px-6">
+          {/* Handshake Visual */}
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center shadow-2xl relative overflow-hidden">
+               <Fingerprint className="h-12 w-12 text-primary animate-in zoom-in duration-500" />
+            </div>
+            <div className="absolute -inset-4 border-2 border-dashed border-primary/10 rounded-full animate-[spin_20s_linear_infinite]" />
+          </div>
+
+          <div className="space-y-6 w-full text-center">
+            <div className="space-y-2">
+              <h2 className="text-xl font-black tracking-[0.2em] uppercase text-foreground">
+                Identity <span className="text-primary">Gate</span>
+              </h2>
+              <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin text-primary" /> 
+                Protocol Handshake
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="h-1 w-full bg-muted rounded-full overflow-hidden border border-border">
+              <div 
+                className="h-full bg-primary transition-all duration-500 ease-out shadow-[0_0_15px_rgba(var(--primary),0.5)]" 
+                style={{ width: `${((loadingStep + 1) / steps.length) * 100}%` }}
+              />
+            </div>
+
+            {/* Step Indicator */}
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary animate-pulse">
+              {steps[loadingStep]}
+            </p>
+          </div>
+
+          {/* Security Sub-tags */}
+          <div className="flex gap-8 opacity-30">
+             <Lock className="h-4 w-4" />
+             <ShieldCheck className="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-linear-to-t from-primary via-primary/30 to-background text-foreground flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-linear-to-t from-primary via-primary/30 to-background text-foreground flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans animate-in fade-in duration-1000">
       {/* Background Decor - Subtle for Light Mode */}
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-primary opacity-5 blur-[150px] rounded-full" />
       <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-primary opacity-5 blur-[120px] rounded-full" />
@@ -51,10 +129,10 @@ export default function ProfileSelectionPage() {
                   <div className="p-3 rounded-2xl bg-primary text-white shadow-lg shadow-primary/20">
                     {getIcon(profile.id)}
                   </div>
-                  <h3 className="text-2xl font-black tracking-tight text-muted">{profile.label}</h3>
+                  <h3 className="text-2xl font-black tracking-tight text-white">{profile.label}</h3>
                 </div>
                 
-                <p className="text-sm text-muted leading-relaxed font-bold">
+                <p className="text-sm text-white/90 leading-relaxed font-bold">
                   {profile.description}
                 </p>
 
