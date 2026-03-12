@@ -2,15 +2,22 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useState, useMemo } from "react";
-import { LayoutDashboard, MessageSquare, ClipboardCheck, TrendingUp, Users, Route, BarChart3, Bot, PhoneCall, Radio, Link2, Settings, UserCircle, Shield, ChevronRight, ChevronDown, Menu, BookUser, Monitor, PhoneForwarded, GitMerge, Upload, BrainCircuit, Cpu, FileText, Megaphone, Clock, Ban, Shuffle } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { LayoutDashboard, MessageSquare, ClipboardCheck, TrendingUp, Users, Route, BarChart3, Bot, PhoneCall, Radio, Link2, Settings, UserCircle, Shield, ChevronRight, ChevronDown, Menu, BookUser, Monitor, PhoneForwarded, GitMerge, Upload, BrainCircuit, Cpu, FileText, Megaphone, Clock, Ban, Shuffle, Zap } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
+import { USER_PROFILES } from "@/lib/auth";
 
-const modules = [
+const allModules = [
   {
-    id: "m01",
+    id: "M00",
+    name: "Agent Command Center",
+    route: "/agent-dashboard",
+    icon: Zap,
+  },
+  {
+    id: "M01",
     name: "Real-Time Operations",
     route: "/realtime-operation",
     icon: LayoutDashboard,
@@ -22,19 +29,7 @@ const modules = [
     ]
   },
   {
-    id: "m02",
-    name: "AI Conversation Intelligence",
-    route: "/ai-conversation",
-    icon: MessageSquare,
-    subItems: [
-      { name: "Transcript Viewer", route: "/ai-conversation/transcript" },
-      { name: "Bulk Search", route: "/ai-conversation/search" },
-      { name: "NLP Insights", route: "/ai-conversation/insights" },
-      { name: "Analytics Library", route: "/ai-conversation/analytics" },
-    ]
-  },
-  {
-    id: "m03",
+    id: "M03",
     name: "QA & Compliance",
     route: "/qa-compliance",
     icon: ClipboardCheck,
@@ -46,7 +41,7 @@ const modules = [
     ]
   },
   {
-    id: "m04",
+    id: "M04",
     name: "Revenue Intelligence",
     route: "/revenue-intelligence",
     icon: TrendingUp,
@@ -58,7 +53,7 @@ const modules = [
     ]
   },
   {
-    id: "m05",
+    id: "M05",
     name: "Workforce Intelligence",
     route: "/workforce-intelligence",
     icon: Users,
@@ -71,7 +66,7 @@ const modules = [
     ]
   },
   {
-    id: "m06",
+    id: "M06",
     name: "CX & Journey",
     route: "/cx-journey",
     icon: Route,
@@ -82,7 +77,7 @@ const modules = [
     ]
   },
   {
-    id: "m07",
+    id: "M07",
     name: "Reporting & BI",
     route: "/reporting-bi",
     icon: BarChart3,
@@ -93,7 +88,7 @@ const modules = [
     ]
   },
   {
-    id: "m08",
+    id: "M08",
     name: "AI Supervisor",
     route: "/supervisor-ai",
     icon: Bot,
@@ -101,11 +96,22 @@ const modules = [
       { name: "Live Monitor", route: "/supervisor-ai/monitor" },
       { name: "Whisper Coaching", route: "/supervisor-ai/coaching" },
       { name: "Queue Health", route: "/supervisor-ai/queues" },
-      { name: "Interactions", route: "/supervisor-ai/interactions" }
+      { name: "Interactions", route: "/supervisor-ai/interactions" },
+      {
+        name: "AI Conversation",
+        id: "conversation_sub",
+        isNested: true,
+        icon: MessageSquare,
+        route: "/ai-conversation",
+        items: [
+          { name: "Bulk Search", route: "/ai-conversation/search" },
+          { name: "Analytics Library", route: "/ai-conversation/analytics" },
+        ]
+      }
     ]
   },
   {
-    id: "m09",
+    id: "M09",
     name: "Call Recording & Playback",
     route: "/recording-playback",
     icon: PhoneCall,
@@ -115,7 +121,7 @@ const modules = [
     ]
   },
   {
-    id: "m10",
+    id: "M10",
     name: "Telephony Integration",
     route: "/telephony-hub",
     icon: Radio,
@@ -128,7 +134,7 @@ const modules = [
     ]
   },
   {
-    id: "m11",
+    id: "M11",
     name: "Integrations & Ecosystem",
     route: "/integrations-ecosystem",
     icon: Link2,
@@ -136,10 +142,23 @@ const modules = [
       { name: "CRM Connectors", route: "/integrations-ecosystem/crm" },
       { name: "Webhooks", route: "/integrations-ecosystem/webhooks" },
       { name: "API Management", route: "/integrations-ecosystem/api" },
+      { 
+        name: "Asterisk", 
+        id: "asterisk_sub", 
+        isNested: true,
+        icon: Cpu,
+        route: "/asterisk-config",
+        items: [
+          { name: "AMI/ARI Config", route: "/asterisk-config/connection" },
+          { name: "PJSIP Trunks", route: "/asterisk-config/trunks" },
+          { name: "WebRTC Gateway", route: "/asterisk-config/webrtc" },
+          { name: "Dialplan Mapping", route: "/asterisk-config/dialplan" },
+        ]
+      }
     ]
   },
   {
-    id: "m12",
+    id: "M12",
     name: "Administration & Settings",
     route: "/admin-settings",
     icon: Settings,
@@ -152,7 +171,7 @@ const modules = [
     ]
   },
   {
-    id: "m13",
+    id: "M13",
     name: "Agent Self-Service Portal",
     route: "/agent-portal",
     icon: UserCircle,
@@ -164,7 +183,7 @@ const modules = [
     ]
   },
   {
-    id: "m14",
+    id: "M14",
     name: "Security & Compliance",
     route: "/security-compliance",
     icon: Shield,
@@ -176,7 +195,7 @@ const modules = [
     ]
   },
   {
-    id: "m15",
+    id: "M15",
     name: "Native CRM Management",
     route: "/crm-native",
     icon: BookUser,
@@ -189,7 +208,7 @@ const modules = [
     ]
   },
   {
-    id: "m16",
+    id: "M16",
     name: "Agent Desktop",
     route: "/agent-desktop",
     icon: Monitor,
@@ -203,7 +222,7 @@ const modules = [
     ]
   },
   {
-    id: "m17",
+    id: "M17",
     name: "Outbound Dialer",
     route: "/outbound-dialer",
     icon: PhoneForwarded,
@@ -214,7 +233,7 @@ const modules = [
     ]
   },
   {
-    id: "m18",
+    id: "M18",
     name: "Inbound Routing & IVR",
     route: "/inbound-ivr",
     icon: GitMerge,
@@ -226,7 +245,7 @@ const modules = [
     ]
   },
   {
-    id: "m19",
+    id: "M19",
     name: "Data Upload Engine",
     route: "/data-upload",
     icon: Upload,
@@ -236,7 +255,7 @@ const modules = [
     ]
   },
   {
-    id: "m20",
+    id: "M20",
     name: "Agentic Automation",
     route: "/supervisor-agentic",
     icon: BrainCircuit,
@@ -247,19 +266,7 @@ const modules = [
     ]
   },
   {
-    id: "m21",
-    name: "Asterisk Deep-Dive",
-    route: "/asterisk-config",
-    icon: Cpu,
-    subItems: [
-      { name: "AMI/ARI Config", route: "/asterisk-config/connection" },
-      { name: "PJSIP Trunks", route: "/asterisk-config/trunks" },
-      { name: "WebRTC Gateway", route: "/asterisk-config/webrtc" },
-      { name: "Dialplan Mapping", route: "/asterisk-config/dialplan" },
-    ]
-  },
-  {
-    id: "m22",
+    id: "M22",
     name: "Script & KB Builder",
     route: "/scripts-kb",
     icon: FileText,
@@ -269,7 +276,7 @@ const modules = [
     ]
   },
   {
-    id: "m23",
+    id: "M23",
     name: "Robocall Campaign",
     route: "/robocall-engine",
     icon: Megaphone,
@@ -279,7 +286,7 @@ const modules = [
     ]
   },
   {
-    id: "m24",
+    id: "M24",
     name: "ACW & Disposition",
     route: "/acw-disposition",
     icon: Clock,
@@ -289,7 +296,7 @@ const modules = [
     ]
   },
   {
-    id: "m25",
+    id: "M25",
     name: "DNC & Compliance",
     route: "/dnc-management",
     icon: Ban,
@@ -300,7 +307,7 @@ const modules = [
     ]
   },
   {
-    id: "m26",
+    id: "M26",
     name: "Transfer & Conference",
     route: "/transfer-conference",
     icon: Shuffle,
@@ -314,26 +321,47 @@ const modules = [
 function SidebarContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [userToggledModules, setUserToggledModules] = useState({}); // moduleId -> boolean
+  const [userToggledModules, setUserToggledModules] = useState({});
+  const [userRole, setUserRole] = useState("super_admin");
+  const [mounted, setMounted] = useState(false);
 
-  // Derive expanded modules from both user toggles and the current active path
+  useEffect(() => {
+    setMounted(true);
+    const cookies = document.cookie.split("; ");
+    const roleCookie = cookies.find(row => row.startsWith("userRole="));
+    if (roleCookie) {
+      setUserRole(roleCookie.split("=")[1]);
+    }
+  }, []);
+
+  const activeProfile = useMemo(() => {
+    return Object.values(USER_PROFILES).find(p => p.id === userRole) || USER_PROFILES.SUPER_ADMIN;
+  }, [userRole]);
+
+  const filteredModules = useMemo(() => {
+    if (!mounted) return [];
+    return allModules.filter(m => activeProfile.modules.includes(m.id));
+  }, [activeProfile, mounted]);
+
   const expandedModules = useMemo(() => {
-    const activeModule = modules.find(m =>
+    const activeModule = filteredModules.find(m =>
       pathname.startsWith(m.route) ||
       (m.subItems && m.subItems.some(si => {
+        if (si.items) {
+           return pathname.startsWith(si.route);
+        }
         const [siPath, siQuery] = si.route.split("?");
-        return pathname === siPath && searchParams.get("tab") === siQuery.split("=")[1];
+        return pathname === siPath && searchParams.get("tab") === (siQuery ? siQuery.split("=")[1] : null);
       }))
     );
 
-    return modules.map(m => {
+    return filteredModules.map(m => {
       const isActive = activeModule?.id === m.id;
       const userState = userToggledModules[m.id];
-      // Default to active module expanded, but respect user toggle if it exists
       const isExpanded = userState !== undefined ? userState : isActive;
       return isExpanded ? m.id : null;
     }).filter(Boolean);
-  }, [userToggledModules, pathname, searchParams]);
+  }, [userToggledModules, pathname, searchParams, filteredModules]);
 
   const toggleModule = (moduleId) => {
     const isCurrentlyExpanded = expandedModules.includes(moduleId);
@@ -344,6 +372,7 @@ function SidebarContent() {
   };
 
   const isActive = (route) => {
+    if (!route) return false;
     if (route.includes("?")) {
       const [path, query] = route.split("?");
       const tabParam = query.split("=")[1];
@@ -352,20 +381,22 @@ function SidebarContent() {
     return pathname === route || (pathname.startsWith(route) && pathname !== "/");
   };
 
+  if (!mounted) return <SidebarSkeleton />;
+
   return (
     <div className="flex h-full flex-col bg-sidebar">
       <div className="flex h-16 items-center border-b px-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg shadow-primary/20">
             N
           </div>
-          <span className="text-sidebar-foreground">NEXUS AI</span>
+          <span className="text-sidebar-foreground tracking-tighter">NEXUS <span className="text-primary italic">AI</span></span>
         </Link>
       </div>
 
-      <nav className="flex-1 overflow-auto py-4 px-2">
+      <nav className="flex-1 overflow-auto py-4 px-1">
         <div className="space-y-1">
-          {modules.map((module) => {
+          {filteredModules.map((module) => {
             const Icon = module.icon;
             const active = isActive(module.route);
             const expanded = expandedModules.includes(module.id);
@@ -373,18 +404,18 @@ function SidebarContent() {
             return (
               <div key={module.id} className="space-y-1">
                 <Link
-                  href={module.route}
+                  href={module.route || "#"}
                   onClick={() => {
                     toggleModule(module.id);
                   }}
-                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ${active
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-bold transition-all duration-200 ${active
+                    ? "bg-primary text-white shadow-md shadow-primary/20"
+                    : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                     }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className={`h-4 w-4 ${active ? "animate-pulse" : ""}`} />
-                    <span>{module.name}</span>
+                    <span className="truncate">{module.name}</span>
                   </div>
                   {module.subItems && (
                     <button
@@ -393,7 +424,7 @@ function SidebarContent() {
                         e.stopPropagation();
                         toggleModule(module.id);
                       }}
-                      className="p-1 rounded-md hover:bg-black/10 transition-colors"
+                      className="p-1 rounded-md hover:bg-black/10 transition-colors shrink-0"
                     >
                       {expanded ? (
                         <ChevronDown className="h-4 w-4" />
@@ -407,14 +438,55 @@ function SidebarContent() {
                 {expanded && module.subItems && (
                   <div className="ml-4 pl-2 border-l border-primary/10 mt-1 space-y-1 animate-in slide-in-from-left-2 duration-200">
                     {module.subItems.map((subItem) => {
+                      if (subItem.isNested) {
+                        const subExpanded = userToggledModules[subItem.id] !== undefined 
+                          ? userToggledModules[subItem.id] 
+                          : pathname.startsWith(subItem.route);
+                        const SubIcon = subItem.icon;
+
+                        return (
+                          <div key={subItem.id} className="space-y-1">
+                            <button
+                               onClick={() => setUserToggledModules(p => ({...p, [subItem.id]: !subExpanded}))}
+                               className={`flex w-full items-center justify-between rounded-md px-3 py-1.5 text-[12px] font-bold uppercase tracking-tight transition-colors ${pathname.startsWith(subItem.route)
+                                ? "text-primary bg-primary/5 shadow-sm shadow-primary/5"
+                                : "text-sidebar-foreground/50 hover:bg-sidebar-accent"
+                                }`}
+                            >
+                               <div className="flex items-center gap-2">
+                                  <SubIcon className="h-3 w-3" />
+                                  <span>{subItem.name}</span>
+                               </div>
+                               {subExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                            </button>
+                            {subExpanded && subItem.items && (
+                               <div className="ml-3 pl-2 border-l border-primary/10 space-y-1 animate-in slide-in-from-left-1">
+                                  {subItem.items.map(ssi => (
+                                     <Link
+                                        key={ssi.route}
+                                        href={ssi.route}
+                                        className={`block rounded-md px-3 py-1 text-[11px] font-bold transition-colors ${isActive(ssi.route)
+                                          ? "text-primary bg-primary/5"
+                                          : "text-sidebar-foreground/40 hover:text-sidebar-foreground/70"
+                                          }`}
+                                     >
+                                        {ssi.name}
+                                     </Link>
+                                  ))}
+                               </div>
+                            )}
+                          </div>
+                        )
+                      }
+
                       const subActive = isActive(subItem.route);
                       return (
                         <Link
                           key={subItem.route}
                           href={subItem.route}
-                          className={`block rounded-md px-3 py-1.5 text-sm transition-colors ${subActive
-                            ? "bg-primary/10 text-primary font-bold shadow-xs"
-                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                          className={`block rounded-md px-3 py-1.5 text-[11px] font-bold uppercase tracking-tight transition-colors ${subActive
+                            ? "bg-primary/10 text-primary shadow-xs"
+                            : "text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                             }`}
                         >
                           {subItem.name}
@@ -429,16 +501,10 @@ function SidebarContent() {
         </div>
       </nav>
 
-      <div className="border-t p-4">
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-            JD
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-sidebar-foreground truncate">John Doe</p>
-            <p className="text-xs text-sidebar-foreground/60 truncate">Supervisor</p>
-          </div>
-        </div>
+      <div className="border-t p-4 bg-muted/5">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/90 text-center">
+          Nexus AI v2.4
+        </p>
       </div>
     </div>
   );
@@ -447,15 +513,13 @@ function SidebarContent() {
 function SidebarSkeleton() {
   return (
     <div className="flex h-full flex-col bg-sidebar animate-pulse">
-      {/* Logo Area */}
       <div className="flex h-16 items-center border-b px-4 gap-2">
         <div className="h-8 w-8 rounded-lg bg-sidebar-accent" />
         <div className="h-4 w-24 rounded bg-sidebar-accent" />
       </div>
 
-      {/* Nav Items */}
       <div className="flex-1 space-y-4 py-6 px-4">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
           <div key={i} className="flex items-center gap-3">
             <div className="h-4 w-4 rounded bg-sidebar-accent" />
             <div className="h-4 flex-1 rounded bg-sidebar-accent" />
@@ -463,9 +527,8 @@ function SidebarSkeleton() {
         ))}
       </div>
 
-      {/* Footer Area */}
       <div className="border-t p-4 flex items-center gap-3">
-        <div className="h-8 w-8 rounded-full bg-sidebar-accent" />
+        <div className="h-10 w-10 rounded-xl bg-sidebar-accent" />
         <div className="flex-1 space-y-2">
           <div className="h-3 w-16 rounded bg-sidebar-accent" />
           <div className="h-2 w-20 rounded bg-sidebar-accent" />
@@ -478,14 +541,12 @@ function SidebarSkeleton() {
 export default function Sidebar() {
   return (
     <>
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:block w-64 border-r bg-sidebar">
+      <aside className="hidden lg:block w-68 border-r bg-sidebar">
         <Suspense fallback={<SidebarSkeleton />}>
           <SidebarContent />
         </Suspense>
       </aside>
 
-      {/* Mobile Sidebar */}
       <Sheet>
         <SheetTrigger asChild className="lg:hidden">
           <Button variant="ghost" size="icon" className="ml-2">
@@ -501,4 +562,3 @@ export default function Sidebar() {
     </>
   );
 }
-

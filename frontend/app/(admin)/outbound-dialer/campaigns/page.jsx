@@ -97,7 +97,7 @@ export default function CampaignsPage() {
               <Plus className="h-4 w-4" /> New Campaign
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="min-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold">Create New Campaign</DialogTitle>
               <DialogDescription>Configure your outbound dialing campaign settings</DialogDescription>

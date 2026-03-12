@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Search,
   Calendar as CalendarIcon,
@@ -10,7 +11,8 @@ import {
   ExternalLink,
   TrendingUp,
   TrendingDown,
-  Minus
+  Minus,
+  MousePointerClick
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,6 +35,7 @@ import {
 import { mockTranscripts } from "@/lib/mock-data/transcripts";
 
 export default function BulkSearchPage() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [speakerFilter, setSpeakerFilter] = useState("both");
   const [results, setResults] = useState(mockTranscripts);
@@ -51,6 +54,10 @@ export default function BulkSearchPage() {
       setResults(filtered);
       setIsSearching(false);
     }, 500);
+  };
+
+  const handleRowClick = (callId) => {
+    router.push(`/ai-conversation/transcript?callId=${callId}`);
   };
 
   const sentimentIcon = (score) => {
@@ -171,7 +178,11 @@ export default function BulkSearchPage() {
         </div>
 
         {results.map((result) => (
-          <Card key={result.id} className="group hover:border-primary/50 transition-colors bg-card/50">
+          <Card 
+            key={result.id} 
+            className="group hover:border-primary/50 transition-all bg-card/50 cursor-pointer active:scale-[0.99]"
+            onClick={() => handleRowClick(result.callId)}
+          >
             <CardContent className="p-4">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 space-y-3">
@@ -218,19 +229,26 @@ export default function BulkSearchPage() {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ExternalLink className="h-4 w-4" />
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRowClick(result.callId);
+                      }}
+                    >
+                      <MousePointerClick className="h-4 w-4" />
                     </Button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" onClick={(e) => e.stopPropagation()}>
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Full Transcript</DropdownMenuItem>
-                        <DropdownMenuItem>Listen to Audio</DropdownMenuItem>
-                        <DropdownMenuItem>Push to CRM</DropdownMenuItem>
+                        <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleRowClick(result.callId); }}>View Full Analysis</DropdownMenuItem>
+                        <DropdownMenuItem onClick={(e) => e.stopPropagation()}>Push to CRM</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

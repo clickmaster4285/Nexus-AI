@@ -77,7 +77,12 @@ We have successfully initialized the **NEXUS AI** foundation and all **26 module
     - **Signals (17.2):** AI-driven opportunity alerts and risk indicators.
     - **Churn (17.3):** Customer retention analytics and churn risk playbooks.
     - **Sales (17.4):** Performance scoring and sales representative leaderboard.
-    - **Architecture:** Fully refactored to the **Co-location Standard**, with all logic residing directly in `app/(admin)/revenue-intelligence/[submodule]/page.jsx`.
+  - **Core Infrastructure & RBAC (RECENT ADVANCEMENTS):**
+    - **Identity-Driven Onboarding:** A new 3-stage onboarding flow (Welcome -> Profile Selection -> Secure Login) with "Enterprise-Light" aesthetics and animated system metrics.
+    - **Persistent RBAC:** Role-based access control implemented via `userRole` cookies, dynamically filtering the sidebar for Super Admin, Supervisor, and Agent roles.
+    - **TopNav Evolution:** Identity management and session termination (logout) migrated to a polished TopNav profile dropdown, decluttering the module navigation.
+    - **Sidebar Architecture 2.0:** Implemented a two-level nested navigation system. Centralized connectivity by nesting **Asterisk Deep-Dive (M21)** as a submodule within **Integrations & Ecosystem (M11)**, featuring an expandable group UI for improved information density.
+    - **Agent Portal (M00):** Initialized the "Agent Command Center" with live KPI grids and shift timelines.
 
 ---
 
