@@ -29,16 +29,6 @@ const allModules = [
     ]
   },
   {
-    id: "M02",
-    name: "AI Conversation Intelligence",
-    route: "/ai-conversation",
-    icon: MessageSquare,
-    subItems: [
-      { name: "Bulk Search", route: "/ai-conversation/search" },
-      { name: "Analytics Library", route: "/ai-conversation/analytics" },
-    ]
-  },
-  {
     id: "M03",
     name: "QA & Compliance",
     route: "/qa-compliance",
@@ -106,7 +96,18 @@ const allModules = [
       { name: "Live Monitor", route: "/supervisor-ai/monitor" },
       { name: "Whisper Coaching", route: "/supervisor-ai/coaching" },
       { name: "Queue Health", route: "/supervisor-ai/queues" },
-      { name: "Interactions", route: "/supervisor-ai/interactions" }
+      { name: "Interactions", route: "/supervisor-ai/interactions" },
+      {
+        name: "AI Conversation",
+        id: "conversation_sub",
+        isNested: true,
+        icon: MessageSquare,
+        route: "/ai-conversation",
+        items: [
+          { name: "Bulk Search", route: "/ai-conversation/search" },
+          { name: "Analytics Library", route: "/ai-conversation/analytics" },
+        ]
+      }
     ]
   },
   {
@@ -141,6 +142,19 @@ const allModules = [
       { name: "CRM Connectors", route: "/integrations-ecosystem/crm" },
       { name: "Webhooks", route: "/integrations-ecosystem/webhooks" },
       { name: "API Management", route: "/integrations-ecosystem/api" },
+      { 
+        name: "Asterisk", 
+        id: "asterisk_sub", 
+        isNested: true,
+        icon: Cpu,
+        route: "/asterisk-config",
+        items: [
+          { name: "AMI/ARI Config", route: "/asterisk-config/connection" },
+          { name: "PJSIP Trunks", route: "/asterisk-config/trunks" },
+          { name: "WebRTC Gateway", route: "/asterisk-config/webrtc" },
+          { name: "Dialplan Mapping", route: "/asterisk-config/dialplan" },
+        ]
+      }
     ]
   },
   {
@@ -252,18 +266,6 @@ const allModules = [
     ]
   },
   {
-    id: "M21",
-    name: "Asterisk Deep-Dive",
-    route: "/asterisk-config",
-    icon: Cpu,
-    subItems: [
-      { name: "AMI/ARI Config", route: "/asterisk-config/connection" },
-      { name: "PJSIP Trunks", route: "/asterisk-config/trunks" },
-      { name: "WebRTC Gateway", route: "/asterisk-config/webrtc" },
-      { name: "Dialplan Mapping", route: "/asterisk-config/dialplan" },
-    ]
-  },
-  {
     id: "M22",
     name: "Script & KB Builder",
     route: "/scripts-kb",
@@ -345,6 +347,9 @@ function SidebarContent() {
     const activeModule = filteredModules.find(m =>
       pathname.startsWith(m.route) ||
       (m.subItems && m.subItems.some(si => {
+        if (si.items) {
+           return pathname.startsWith(si.route);
+        }
         const [siPath, siQuery] = si.route.split("?");
         return pathname === siPath && searchParams.get("tab") === (siQuery ? siQuery.split("=")[1] : null);
       }))
@@ -367,6 +372,7 @@ function SidebarContent() {
   };
 
   const isActive = (route) => {
+    if (!route) return false;
     if (route.includes("?")) {
       const [path, query] = route.split("?");
       const tabParam = query.split("=")[1];
@@ -398,7 +404,7 @@ function SidebarContent() {
             return (
               <div key={module.id} className="space-y-1">
                 <Link
-                  href={module.route}
+                  href={module.route || "#"}
                   onClick={() => {
                     toggleModule(module.id);
                   }}
@@ -432,6 +438,47 @@ function SidebarContent() {
                 {expanded && module.subItems && (
                   <div className="ml-4 pl-2 border-l border-primary/10 mt-1 space-y-1 animate-in slide-in-from-left-2 duration-200">
                     {module.subItems.map((subItem) => {
+                      if (subItem.isNested) {
+                        const subExpanded = userToggledModules[subItem.id] !== undefined 
+                          ? userToggledModules[subItem.id] 
+                          : pathname.startsWith(subItem.route);
+                        const SubIcon = subItem.icon;
+
+                        return (
+                          <div key={subItem.id} className="space-y-1">
+                            <button
+                               onClick={() => setUserToggledModules(p => ({...p, [subItem.id]: !subExpanded}))}
+                               className={`flex w-full items-center justify-between rounded-md px-3 py-1.5 text-[12px] font-bold uppercase tracking-tight transition-colors ${pathname.startsWith(subItem.route)
+                                ? "text-primary bg-primary/5 shadow-sm shadow-primary/5"
+                                : "text-sidebar-foreground/50 hover:bg-sidebar-accent"
+                                }`}
+                            >
+                               <div className="flex items-center gap-2">
+                                  <SubIcon className="h-3 w-3" />
+                                  <span>{subItem.name}</span>
+                               </div>
+                               {subExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                            </button>
+                            {subExpanded && subItem.items && (
+                               <div className="ml-3 pl-2 border-l border-primary/10 space-y-1 animate-in slide-in-from-left-1">
+                                  {subItem.items.map(ssi => (
+                                     <Link
+                                        key={ssi.route}
+                                        href={ssi.route}
+                                        className={`block rounded-md px-3 py-1 text-[11px] font-bold transition-colors ${isActive(ssi.route)
+                                          ? "text-primary bg-primary/5"
+                                          : "text-sidebar-foreground/40 hover:text-sidebar-foreground/70"
+                                          }`}
+                                     >
+                                        {ssi.name}
+                                     </Link>
+                                  ))}
+                               </div>
+                            )}
+                          </div>
+                        )
+                      }
+
                       const subActive = isActive(subItem.route);
                       return (
                         <Link
@@ -515,4 +562,3 @@ export default function Sidebar() {
     </>
   );
 }
-

@@ -14,7 +14,7 @@ export const USER_PROFILES = {
     id: "supervisor",
     label: "Supervisor",
     description: "Team performance, real-time monitoring, and QA coaching.",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop",
     testCredentials: {
       email: "supervisor@nexus-ai.com",
       password: "password123"
