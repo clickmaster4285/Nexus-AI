@@ -98,7 +98,7 @@ const allModules = [
       { name: "Queue Health", route: "/supervisor-ai/queues" },
       { name: "Interactions", route: "/supervisor-ai/interactions" },
       {
-        name: "AI Conversation",
+        name: "AI Conversations Intel.",
         id: "conversation_sub",
         isNested: true,
         icon: MessageSquare,

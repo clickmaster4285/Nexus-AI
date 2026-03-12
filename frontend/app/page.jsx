@@ -1,21 +1,105 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Sparkles, ShieldCheck, Activity, Brain } from "lucide-react";
+import { Sparkles, ShieldCheck, Activity, Brain, Loader2, Cpu, Zap, Fingerprint } from "lucide-react";
 
 export default function WelcomePage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  const steps = [
+    "Initializing Neural Core...",
+    "Syncing Regional Voice Nodes...",
+    "Establishing Security Handshake...",
+    "System Ready."
+  ];
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push("/profiles");
-    }, 5000);
+    // Stage 1: Loading Sequence
+    const stepInterval = setInterval(() => {
+      setLoadingStep(prev => {
+        if (prev < steps.length - 1) return prev + 1;
+        clearInterval(stepInterval);
+        return prev;
+      });
+    }, 800);
 
-    return () => clearTimeout(timer);
-  }, [router]);
+    const loadTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3500);
+
+    // Stage 2: Redirect Timer (Starts after loading is done)
+    let redirectTimer;
+    if (!isLoading) {
+      redirectTimer = setTimeout(() => {
+        router.push("/profiles");
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(loadTimer);
+      clearInterval(stepInterval);
+      if (redirectTimer) clearTimeout(redirectTimer);
+    };
+  }, [isLoading, router, steps.length]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white text-foreground flex flex-col items-center justify-center relative overflow-hidden font-sans">
+        {/* Abstract Background Blur */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
+        
+        <div className="z-10 flex flex-col items-center gap-12 w-full max-w-sm">
+          {/* Central Logo Loading */}
+          <div className="relative">
+            <div className="h-24 w-24 rounded-3xl bg-white border-2 border-primary/20 flex items-center justify-center shadow-2xl relative overflow-hidden group">
+               <div className="absolute inset-0 bg-primary/5 animate-pulse" />
+               <Cpu className="h-12 w-12 text-primary animate-in zoom-in duration-500" />
+            </div>
+            <div className="absolute -inset-4 border border-primary/10 rounded-[2.5rem] animate-[spin_10s_linear_infinite]" />
+            <div className="absolute -inset-8 border border-primary/5 rounded-[3rem] animate-[spin_15s_linear_infinite_reverse]" />
+          </div>
+
+          <div className="space-y-6 w-full text-center">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-black tracking-tighter uppercase italic">
+                Nexus <span className="text-primary italic">AI</span>
+              </h2>
+              <div className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin text-primary" /> 
+                System Boot
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden border border-border shadow-inner">
+              <div 
+                className="h-full bg-primary transition-all duration-500 ease-out shadow-[0_0_15px_rgba(var(--primary),0.5)]" 
+                style={{ width: `${((loadingStep + 1) / steps.length) * 100}%` }}
+              />
+            </div>
+
+            {/* Step Indicator */}
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary animate-pulse">
+              {steps[loadingStep]}
+            </p>
+          </div>
+
+          {/* Bottom Security Tags */}
+          <div className="flex gap-6 opacity-40">
+             <Fingerprint className="h-4 w-4" />
+             <Zap className="h-4 w-4" />
+             <ShieldCheck className="h-4 w-4" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans animate-in fade-in duration-1000">
       {/* Abstract Background Elements - Light Mode Optimized */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary opacity-5 blur-[120px] rounded-full animate-pulse" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary opacity-5 blur-[120px] rounded-full" />
