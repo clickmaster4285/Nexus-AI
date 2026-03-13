@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ]  # Or main, depending on your branch
+    branches: [ master ]
 
 jobs:
   build:
@@ -15,9 +15,7 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-
-      - name: Show repo contents
-        run: ls -R  # Optional debug
+          cache-dependency-path: frontend/package-lock.json  # ✅ important
 
       - name: Install dependencies
         working-directory: ./frontend
