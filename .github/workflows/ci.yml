@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact-path: frontend/.next
     steps:
       - uses: actions/checkout@v4
 
@@ -15,7 +17,7 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json  # ✅ important
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: ./frontend
@@ -25,19 +27,34 @@ jobs:
         working-directory: ./frontend
         run: npm run build
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: next-build
+          path: frontend/.next
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: next-build
+          path: ./frontend/.next
+
       - name: Execute SSH commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          port: 22
+          ssh_options: "-o StrictHostKeyChecking=no"
           script: |
             cd ${{ secrets.APP_DIR }}
             git pull origin master
-            npm install
-            npm run build
+            npm install --production
+            # Copy the build artifact
+            cp -r /home/runner/work/NexusAI/NexusAI/frontend/.next ./frontend/.next
             pm2 restart all
