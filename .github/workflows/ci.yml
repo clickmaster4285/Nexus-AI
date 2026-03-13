@@ -2,28 +2,36 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ] # Runs every time you push to the 'master' branch
+    branches: [ master ]  # Or main, depending on your branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Match your local version
-          # cache: 'npm'
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Show repo contents
+        run: ls -R  # Optional debug
+
       - name: Install dependencies
+        working-directory: ./frontend
         run: npm install
-      - name: Check Build
-        run: npm run build # This verifies the Next.js build passes
+
+      - name: Build Next.js
+        working-directory: ./frontend
+        run: npm run build
 
   deploy:
-    needs: build # This ensures deployment only happens if build is successful
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Executing remote ssh commands
+      - name: Execute SSH commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -31,7 +39,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ${{ secrets.APP_DIR }}
-            git pull origin main
+            git pull origin master
             npm install
             npm run build
-            pm2 restart all # Or use your specific name: pm2 restart my-app
+            pm2 restart all
