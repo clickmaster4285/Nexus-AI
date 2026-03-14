@@ -5,55 +5,66 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    outputs:
-      artifact-path: frontend/.next
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
+          node-version: '22'
+          
+      - name: Build Next.js app
         working-directory: ./frontend
-        run: npm install
-
-      - name: Build Next.js
-        working-directory: ./frontend
-        run: npm run build
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: next-build
-          path: frontend/.next
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: next-build
-          path: ./frontend/.next
-
-      - name: Execute SSH commands
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
+          script_stop: true
           script: |
-            cd ${{ secrets.APP_DIR }}
-            git pull origin master
-            npm install --production
-            # Copy the build artifact
-            cp -r /home/runner/work/NexusAI/NexusAI/frontend/.next ./frontend/.next
-            pm2 restart all
+            # Create temporary directory
+            mkdir -p /tmp/nexusai-deploy
+            
+      - name: Copy files via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "frontend/*"
+          target: "/tmp/nexusai-deploy/"
+          strip_components: 1  # Removes the 'frontend' prefix
+          
+      - name: Execute deployment commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            # Backup current version
+            if [ -d "${{ secrets.APP_DIR }}/frontend" ]; then
+              mv ${{ secrets.APP_DIR }}/frontend ${{ secrets.APP_DIR }}/frontend-backup-$(date +%Y%m%d-%H%M%S)
+            fi
+            
+            # Deploy new version
+            mv /tmp/nexusai-deploy ${{ secrets.APP_DIR }}/frontend
+            
+            # Install production dependencies
+            cd ${{ secrets.APP_DIR }}/frontend
+            npm ci --only=production
+            
+            # Restart application
+            pm2 restart all || pm2 start npm --name "nexusai" -- start
+            pm2 save
