@@ -50,7 +50,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          ssh_options: "-o StrictHostKeyChecking=no"
           script: |
             cd ${{ secrets.APP_DIR }}
             git pull origin master
