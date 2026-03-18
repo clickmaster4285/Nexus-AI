@@ -1,17 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { Clock, TrendingUp, TrendingDown, Minus, CheckCircle2, AlertCircle, Zap, ShieldCheck } from "lucide-react";
+import { Clock, TrendingUp, TrendingDown, Minus, CheckCircle2, AlertCircle, Zap, ShieldCheck, Plus, ListTodo } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { agentStats } from "@/lib/mock-data/agent";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function PersonalDashboard() {
   const [status, setStatus] = useState(agentStats.status);
   const [timer] = useState(agentStats.statusTime);
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
   const statuses = [
     { label: "Available", color: "bg-green-500", text: "text-green-500" },
@@ -20,6 +34,20 @@ export default function PersonalDashboard() {
     { label: "Training", color: "bg-purple-500", text: "text-purple-500" },
     { label: "Offline", color: "bg-red-500", text: "text-red-500" }
   ];
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    toast.success("New priority task added successfully!");
+    setIsAddTaskOpen(false);
+  };
+
+  const handleTaskClick = (task) => {
+    toast.info(`Opening details for: ${task.title}`);
+  };
+
+  const handleViewAll = () => {
+    toast("Redirecting to full task list...");
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -55,7 +83,10 @@ export default function PersonalDashboard() {
                 key={s.label}
                 variant={status === s.label ? "default" : "outline"}
                 size="sm"
-                onClick={() => setStatus(s.label)}
+                onClick={() => {
+                  setStatus(s.label);
+                  toast.success(`Status updated to ${s.label}`);
+                }}
                 className={cn(
                   "h-10 px-4 text-[10px] font-black uppercase tracking-widest transition-all",
                   status === s.label ? "shadow-lg" : "border-primary/10 hover:bg-primary/5"
@@ -71,7 +102,11 @@ export default function PersonalDashboard() {
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {agentStats.dailyKpis.map((kpi, idx) => (
-          <Card key={idx} className="border-primary/10 shadow-sm group hover:border-primary/30 transition-all">
+          <Card 
+            key={idx} 
+            className="border-primary/10 shadow-sm group hover:border-primary/30 transition-all cursor-pointer"
+            onClick={() => toast.info(`Deep dive into ${kpi.label}`)}
+          >
             <CardContent className="p-6 space-y-4">
               <div className="flex justify-between items-start">
                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{kpi.label}</p>
@@ -146,8 +181,60 @@ export default function PersonalDashboard() {
         {/* Action Items / Coaching */}
         <Card className="lg:col-span-2 border-primary/10 shadow-lg">
           <CardHeader className="p-6 border-b bg-card/50 flex flex-row items-center justify-between">
-            <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">My Priority Tasks</CardTitle>
-            <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest text-primary">View All</Button>
+            <div className="flex items-center gap-2">
+              <ListTodo className="h-4 w-4 text-primary" />
+              <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">My Priority Tasks</CardTitle>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5"
+                onClick={handleViewAll}
+              >
+                View All
+              </Button>
+              <Dialog open={isAddTaskOpen} onOpenChange={setIsAddTaskOpen}>
+                <DialogTrigger asChild>
+                  <Button size="icon" className="h-7 w-7 rounded-full shadow-lg hover:scale-105 transition-transform">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <form onSubmit={handleAddTask}>
+                    <DialogHeader>
+                      <DialogTitle className="text-xl font-black tracking-tighter">Add New Task</DialogTitle>
+                      <DialogDescription className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                        Create a priority item for your daily queue.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Task Title</Label>
+                        <Input id="title" placeholder="e.g., Review Session Feedback" className="font-medium" required />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="type" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Category</Label>
+                        <select id="type" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 font-medium">
+                          <option>Review</option>
+                          <option>Task</option>
+                          <option>Training</option>
+                          <option>Escalation</option>
+                        </select>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="desc" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Description</Label>
+                        <Textarea id="desc" placeholder="Briefly describe the objective..." className="font-medium h-24" />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="button" variant="outline" onClick={() => setIsAddTaskOpen(false)} className="text-[10px] font-black uppercase tracking-widest">Cancel</Button>
+                      <Button type="submit" className="text-[10px] font-black uppercase tracking-widest">Create Task</Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
             {[
@@ -155,13 +242,17 @@ export default function PersonalDashboard() {
               { title: "Escalation Follow-up", desc: "Consult with supervisor on Jonathan Reed case.", type: "Task", icon: Zap, color: "text-blue-500" },
               { title: "New Feature Training", desc: "Complete the module on Nexus AI Summaries.", type: "Training", icon: CheckCircle2, color: "text-green-500" },
             ].map((task, idx) => (
-              <div key={idx} className="p-5 border-b border-primary/5 last:border-0 flex items-start justify-between hover:bg-muted/10 transition-colors group cursor-pointer">
+              <div 
+                key={idx} 
+                className="p-5 border-b border-primary/5 last:border-0 flex items-start justify-between hover:bg-muted/10 transition-colors group cursor-pointer"
+                onClick={() => handleTaskClick(task)}
+              >
                 <div className="flex items-start gap-4">
                   <div className={cn("p-2 rounded-lg bg-primary/5 mt-1", task.color)}>
                     <task.icon className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-sm font-black tracking-tight">{task.title}</p>
+                    <p className="text-sm font-black tracking-tight group-hover:text-primary transition-colors">{task.title}</p>
                     <p className="text-[10px] text-muted-foreground font-medium italic">{task.desc}</p>
                   </div>
                 </div>

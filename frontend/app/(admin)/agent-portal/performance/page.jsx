@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { badges, leaderboard } from "@/lib/mock-data/agent";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function PerformanceGamification() {
    const badgeIcons = {
@@ -94,8 +95,8 @@ export default function PerformanceGamification() {
                         { label: "QA Streak (5/5)", reward: "500 XP", progress: 100 },
                         { label: "Upsell Master", reward: "1,200 XP", progress: 65 },
                      ].map((m, i) => (
-                        <div key={i} className="space-y-2">
-                           <div className="flex justify-between text-[9px] font-black uppercase italic">
+                        <div key={i} className="space-y-2 cursor-pointer group" onClick={() => toast.info(`Milestone: ${m.label} - Reward: ${m.reward}`)}>
+                           <div className="flex justify-between text-[9px] font-black uppercase italic group-hover:text-primary transition-colors">
                               <span>{m.label}</span>
                               <span className="text-primary">{m.reward}</span>
                            </div>
@@ -114,14 +115,18 @@ export default function PerformanceGamification() {
                   <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground italic flex items-center gap-2">
                      <Award className="h-4 w-4" /> Earned Accolades
                   </h3>
-                  <Button variant="link" className="text-[10px] font-black uppercase text-primary">View Collection</Button>
+                  <Button variant="link" className="text-[10px] font-black uppercase text-primary" onClick={() => toast("Opening full badge collection...")}>View Collection</Button>
                </div>
 
                <div className="grid grid-cols-2 gap-4">
                   {badges.map((badge) => {
                      const Icon = badgeIcons[badge.icon];
                      return (
-                        <Card key={badge.id} className="border-primary/5 shadow-md hover:border-primary/20 transition-all group overflow-hidden bg-card/50 backdrop-blur-sm">
+                        <Card 
+                           key={badge.id} 
+                           className="border-primary/5 shadow-md hover:border-primary/20 transition-all group overflow-hidden bg-card/50 backdrop-blur-sm cursor-pointer"
+                           onClick={() => toast.success(`Viewing details for: ${badge.name}`)}
+                        >
                            <CardContent className="p-6 flex items-center gap-4">
                               <div className={cn("p-3 rounded-2xl bg-primary/5 shadow-inner transition-transform group-hover:scale-110 duration-500", badge.color)}>
                                  <Icon className="h-6 w-6" />
@@ -158,10 +163,14 @@ export default function PerformanceGamification() {
                            </thead>
                            <tbody className="divide-y divide-primary/5">
                               {leaderboard.map((player) => (
-                                 <tr key={player.rank} className={cn(
-                                    "hover:bg-primary/5 transition-colors group",
-                                    player.isMe ? "bg-primary/10" : ""
-                                 )}>
+                                 <tr 
+                                    key={player.rank} 
+                                    className={cn(
+                                       "hover:bg-primary/5 transition-colors group cursor-pointer",
+                                       player.isMe ? "bg-primary/10" : ""
+                                    )}
+                                    onClick={() => toast.info(`Viewing profile: ${player.name} (Rank #${player.rank})`)}
+                                 >
                                     <td className="p-4 text-center">
                                        <span className={cn(
                                           "text-sm font-black italic",

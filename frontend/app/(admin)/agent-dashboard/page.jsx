@@ -12,10 +12,24 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogFooter,
+  DialogTrigger
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function AgentDashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [greeting, setGreeting] = useState("Good Morning");
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [newTask, setNewTask] = useState({ title: "", priority: "Medium", time: "Today" });
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -27,6 +41,15 @@ export default function AgentDashboard() {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    toast.success("Task added successfully!", {
+      description: `Task "${newTask.title}" has been scheduled.`,
+    });
+    setIsTaskModalOpen(false);
+    setNewTask({ title: "", priority: "Medium", time: "Today" });
+  };
 
   // KPI stats
   const stats = [
@@ -172,7 +195,11 @@ export default function AgentDashboard() {
                 <CardTitle className="text-xs font-black uppercase tracking-[0.17em] text-slate-500 flex items-center gap-3">
                   <CheckSquare className="h-4 w-4 text-primary" /> Action Items
                 </CardTitle>
-                <Button size="icon" className="h-8 w-8 rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+                <Button 
+                  size="icon" 
+                  className="h-8 w-8 rounded-xl bg-primary text-white shadow-lg shadow-primary/20"
+                  onClick={() => setIsTaskModalOpen(true)}
+                >
                   <Plus className="h-4 w-4" />
                 </Button>
               </CardHeader>
@@ -192,7 +219,10 @@ export default function AgentDashboard() {
                     </Button>
                   </div>
                 ))}
-                <div className="p-4 rounded-3xl border-2 border-dashed border-slate-100 flex items-center justify-center gap-2 text-[10px] font-black uppercase text-slate-300 hover:text-primary hover:border-primary/20 transition-all cursor-pointer">
+                <div 
+                  className="p-4 rounded-3xl border-2 border-dashed border-slate-100 flex items-center justify-center gap-2 text-[10px] font-black uppercase text-slate-300 hover:text-primary hover:border-primary/20 transition-all cursor-pointer"
+                  onClick={() => setIsTaskModalOpen(true)}
+                >
                   <Plus className="h-3 w-3" /> Quick Add Task
                 </div>
               </CardContent>
@@ -302,6 +332,73 @@ export default function AgentDashboard() {
         </div>
       </div>
 
+      {/* Quick Add Task Modal */}
+      <Dialog open={isTaskModalOpen} onOpenChange={setIsTaskModalOpen}>
+        <DialogContent className="sm:max-w-[425px] rounded-3xl border-primary/10 shadow-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black tracking-tighter text-slate-900 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                <CheckSquare className="h-5 w-5 text-primary" />
+              </div>
+              ADD NEW TASK
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleAddTask} className="space-y-6 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Task Description</Label>
+              <Input
+                id="title"
+                placeholder="e.g., Follow up with customer..."
+                className="h-12 rounded-xl border-slate-200 focus:border-primary/30 bg-slate-50/50"
+                value={newTask.title}
+                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="priority" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Priority</Label>
+                <select
+                  id="priority"
+                  className="w-full h-12 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-sm font-bold focus:border-primary/30 outline-hidden"
+                  value={newTask.priority}
+                  onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
+                >
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="time" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Due Time</Label>
+                <Input
+                  id="time"
+                  placeholder="e.g., 14:00"
+                  className="h-12 rounded-xl border-slate-200 focus:border-primary/30 bg-slate-50/50"
+                  value={newTask.time}
+                  onChange={(e) => setNewTask({ ...newTask, time: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="notes" className="text-[10px] font-black uppercase tracking-widest text-slate-500">Additional Notes (Optional)</Label>
+              <Textarea
+                id="notes"
+                placeholder="Add more details about this task..."
+                className="rounded-xl border-slate-200 focus:border-primary/30 bg-slate-50/50 min-h-[100px]"
+              />
+            </div>
+            <DialogFooter className="pt-4">
+              <Button 
+                type="submit" 
+                className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white font-black uppercase tracking-widest shadow-xl shadow-primary/20 transition-all active:scale-95"
+              >
+                Create Task
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

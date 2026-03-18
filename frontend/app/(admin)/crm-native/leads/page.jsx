@@ -20,13 +20,33 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { leads as initialLeads } from "@/lib/mock-data/crm";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function LeadsPage() {
-  const [leads ] = useState(initialLeads);
+  const [leads, setLeads] = useState(initialLeads);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newLead, setNewLead] = useState({ name: "", email: "", source: "Web Form", score: 50 });
 
   const filteredLeads = leads.filter(l => 
     l.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -36,6 +56,15 @@ export default function LeadsPage() {
 
   const handleAction = (action, name) => {
     toast.success(`${action}: ${name}`);
+  };
+
+  const handleCreateLead = (e) => {
+    e.preventDefault();
+    toast.success("Lead registered successfully!", {
+      description: `${newLead.name} has been added to the NX-Score pipeline.`,
+    });
+    setIsCreateOpen(false);
+    setNewLead({ name: "", email: "", source: "Web Form", score: 50 });
   };
 
   return (
@@ -52,12 +81,82 @@ export default function LeadsPage() {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]">
+          <Button 
+            variant="outline" 
+            className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]"
+            onClick={() => toast.info("Opening advanced lead filters...")}
+          >
             <Filter className="h-3.5 w-3.5 mr-2" /> Filter
           </Button>
-          <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
-            <Plus className="h-4 w-4 mr-2" /> New Lead
-          </Button>
+          
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                <Plus className="h-4 w-4 mr-2" /> New Lead
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] rounded-3xl">
+              <form onSubmit={handleCreateLead}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-black tracking-tighter uppercase italic">Register New Lead</DialogTitle>
+                  <DialogDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                    Inbound lead acquisition for NX-Score analysis.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-6 py-6">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</Label>
+                    <Input 
+                      placeholder="e.g. Robert Wilson" 
+                      required 
+                      value={newLead.name}
+                      onChange={(e) => setNewLead({...newLead, name: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</Label>
+                    <Input 
+                      type="email" 
+                      placeholder="robert.w@outlook.com" 
+                      required 
+                      value={newLead.email}
+                      onChange={(e) => setNewLead({...newLead, email: e.target.value})}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Lead Source</Label>
+                      <select 
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-medium"
+                        value={newLead.source}
+                        onChange={(e) => setNewLead({...newLead, source: e.target.value})}
+                      >
+                        <option>Web Form</option>
+                        <option>Referral</option>
+                        <option>Cold Outreach</option>
+                        <option>Social Media</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Initial Score</Label>
+                      <Input 
+                        type="number" 
+                        max="100" 
+                        min="0"
+                        value={newLead.score}
+                        onChange={(e) => setNewLead({...newLead, score: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit" className="w-full h-12 bg-primary font-black uppercase tracking-widest shadow-lg shadow-primary/20">
+                    Initialize Lead Pulse
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -107,8 +206,8 @@ export default function LeadsPage() {
                         <td className="p-4">
                            <div className="space-y-1.5 w-32">
                               <div className="flex justify-between items-center text-[10px] font-black uppercase italic">
-                                 <span className="text-primary">NX-Score</span>
-                                 <span>{lead.score}/100</span>
+                                 <span className="text-primary font-black">NX-Score</span>
+                                 <span className="font-black">{lead.score}/100</span>
                               </div>
                               <Progress value={lead.score} className="h-1" indicatorClassName={lead.score > 70 ? "bg-green-500" : lead.score > 40 ? "bg-amber-500" : "bg-red-500"} />
                            </div>
@@ -130,9 +229,22 @@ export default function LeadsPage() {
                               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 text-green-600" onClick={() => handleAction("Convert to Contact", lead.name)}>
                                  <Zap className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
-                                 <MoreVertical className="h-4 w-4" />
-                              </Button>
+                              
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-56 rounded-xl p-2">
+                                  <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Lead Actions</DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("Re-scoring", lead.name)}>Force Re-score</DropdownMenuItem>
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("Outreach Scheduled", lead.name)}>Schedule Outreach</DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase text-red-500" onClick={() => handleAction("Lead Rejected", lead.name)}>Reject Lead</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                            </div>
                         </td>
                      </tr>
@@ -151,8 +263,8 @@ export default function LeadsPage() {
                <TrendingUp className="h-4 w-4 text-primary" />
             </div>
             <div>
-               <p className="text-3xl font-black tracking-tighter">4.2 Days</p>
-               <p className="text-[10px] text-green-600 font-bold uppercase mt-1">↑ 18% Faster than avg</p>
+               <p className="text-3xl font-black tracking-tighter text-slate-900">4.2 Days</p>
+               <p className="text-[10px] text-green-600 font-bold uppercase mt-1 italic">↑ 18% Faster than avg</p>
             </div>
             <div className="mt-6 pt-4 border-t border-dashed">
                <p className="text-[10px] text-muted-foreground font-medium italic">Avg time from New to Qualified</p>
@@ -172,8 +284,8 @@ export default function LeadsPage() {
                ].map((source, i) => (
                   <div key={i} className="space-y-1">
                      <div className="flex justify-between text-[9px] font-black uppercase italic">
-                        <span>{source.label}</span>
-                        <span>{source.val}</span>
+                        <span className="text-slate-700">{source.label}</span>
+                        <span className="text-slate-900 font-black">{source.val}</span>
                      </div>
                      <Progress value={parseInt(source.val)} className="h-1" indicatorClassName={source.color} />
                   </div>
@@ -191,7 +303,14 @@ export default function LeadsPage() {
                   Nexus AI has identified <span className="text-foreground font-black">12 high-intent</span> domains from your visitor logs.
                </p>
             </div>
-            <Button className="h-9 px-6 bg-primary font-black uppercase text-[9px] shadow-lg">Initialize Hunt</Button>
+            <Button 
+              className="h-9 px-6 bg-primary font-black uppercase text-[9px] shadow-lg shadow-primary/20"
+              onClick={() => toast.success("AI Lead Hunt Initialized", {
+                description: "Crawling high-intent visitor domains for contact data..."
+              })}
+            >
+              Initialize Hunt
+            </Button>
          </Card>
       </div>
     </div>

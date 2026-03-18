@@ -262,6 +262,7 @@ export default function IVRBuilderPage() {
                   <div
                     key={node.type}
                     className="flex items-center gap-3 p-3 rounded-lg border bg-background hover:bg-accent cursor-pointer transition-colors"
+                    onClick={() => toast.info(`Adding ${node.label} node to canvas...`)}
                   >
                     <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
                       <node.icon className="h-4 w-4 text-primary" />
@@ -281,10 +282,10 @@ export default function IVRBuilderPage() {
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm">Flow Canvas</CardTitle>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast.success("Canvas Zoom In: 120%")}>
                       <ZoomIn className="h-4 w-4 mr-1" /> Zoom In
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast.success("Canvas Zoom Out: 80%")}>
                       <ZoomOut className="h-4 w-4 mr-1" /> Zoom Out
                     </Button>
                   </div>

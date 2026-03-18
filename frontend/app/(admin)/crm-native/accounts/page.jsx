@@ -21,13 +21,33 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { accounts as initialAccounts } from "@/lib/mock-data/crm";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function AccountsPage() {
-  const [accounts ] = useState(initialAccounts);
+  const [accounts, setAccounts] = useState(initialAccounts);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newAccount, setNewAccount] = useState({ name: "", industry: "", website: "", type: "Customer" });
 
   const filteredAccounts = accounts.filter(a => 
     a.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -36,6 +56,15 @@ export default function AccountsPage() {
 
   const handleAction = (action, name) => {
     toast.success(`${action}: ${name}`);
+  };
+
+  const handleCreateAccount = (e) => {
+    e.preventDefault();
+    toast.success("Account created successfully!", {
+      description: `${newAccount.name} has been added to your enterprise directory.`,
+    });
+    setIsCreateOpen(false);
+    setNewAccount({ name: "", industry: "", website: "", type: "Customer" });
   };
 
   return (
@@ -52,12 +81,79 @@ export default function AccountsPage() {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]">
+          <Button 
+            variant="outline" 
+            className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]"
+            onClick={() => toast.info("Advanced filter options opening...")}
+          >
             <Filter className="h-3.5 w-3.5 mr-2" /> Filter
           </Button>
-          <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
-            <Plus className="h-4 w-4 mr-2" /> New Account
-          </Button>
+
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                <Plus className="h-4 w-4 mr-2" /> New Account
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] rounded-3xl">
+              <form onSubmit={handleCreateAccount}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-black tracking-tighter uppercase italic">Register New Account</DialogTitle>
+                  <DialogDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                    Onboard a new organization to the Nexus AI platform.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-6 py-6">
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Organization Name</Label>
+                    <Input 
+                      placeholder="e.g. Acme Corp Industries" 
+                      required 
+                      value={newAccount.name}
+                      onChange={(e) => setNewAccount({...newAccount, name: e.target.value})}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Industry</Label>
+                      <Input 
+                        placeholder="e.g. Technology" 
+                        required 
+                        value={newAccount.industry}
+                        onChange={(e) => setNewAccount({...newAccount, industry: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Account Type</Label>
+                      <select 
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 font-medium"
+                        value={newAccount.type}
+                        onChange={(e) => setNewAccount({...newAccount, type: e.target.value})}
+                      >
+                        <option>Customer</option>
+                        <option>Partner</option>
+                        <option>Vendor</option>
+                        <option>Prospect</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Website URL</Label>
+                    <Input 
+                      placeholder="https://www.acme.com" 
+                      value={newAccount.website}
+                      onChange={(e) => setNewAccount({...newAccount, website: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit" className="w-full h-12 bg-primary font-black uppercase tracking-widest shadow-lg shadow-primary/20">
+                    Onboard Organization
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -133,9 +229,22 @@ export default function AccountsPage() {
                               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10" onClick={() => handleAction("View Details", account.name)}>
                                  <ExternalLink className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
-                                 <MoreVertical className="h-4 w-4" />
-                              </Button>
+                              
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-56 rounded-xl p-2">
+                                  <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Management</DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("Revenue Re-sync", account.name)}>Sync Financials</DropdownMenuItem>
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("Audit Log", account.name)}>View Audit Log</DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase text-red-500" onClick={() => handleAction("Mark Inactive", account.name)}>Deactivate Account</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                            </div>
                         </td>
                      </tr>
@@ -169,7 +278,12 @@ export default function AccountsPage() {
                      <p className="text-[9px] text-red-400 font-bold uppercase">↓ Reduced risk</p>
                   </div>
                </div>
-               <Button className="h-10 px-6 font-black uppercase text-[10px] bg-primary shadow-xl shadow-primary/20">
+               <Button 
+                className="h-10 px-6 font-black uppercase text-[10px] bg-primary shadow-xl shadow-primary/20"
+                onClick={() => toast.info("Opening predictive revenue model...", {
+                  description: "Processing historical account data for Q3 projections."
+                })}
+               >
                   Open Forecast Model <ChevronRight className="h-4 w-4 ml-2" />
                </Button>
             </div>
@@ -190,7 +304,7 @@ export default function AccountsPage() {
             <div className="pt-6 mt-6 border-t border-dashed flex items-center justify-between">
                <div className="flex -space-x-2">
                   {[1,2,3,4].map(i => (
-                     <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-primary/10 flex items-center justify-center text-[10px] font-black">
+                     <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-primary/10 flex items-center justify-center text-[10px] font-black text-primary">
                         {String.fromCharCode(64+i)}
                      </div>
                   ))}
@@ -198,7 +312,7 @@ export default function AccountsPage() {
                      +8
                   </div>
                </div>
-               <p className="text-[10px] text-muted-foreground font-black uppercase">12 Assigned Account Owners</p>
+               <p className="text-[10px] text-muted-foreground font-black uppercase tracking-tighter">12 Assigned Account Owners</p>
             </div>
          </Card>
       </div>

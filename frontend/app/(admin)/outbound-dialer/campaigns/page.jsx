@@ -311,7 +311,13 @@ export default function CampaignsPage() {
                     {selectedCampaign?.status === "Active" ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
                     {selectedCampaign?.status === "Active" ? "Pause" : "Resume"}
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => toast.success("Campaign data export initialized", {
+                      description: `Downloading performance report for ${selectedCampaign.name}.`
+                    })}
+                  >
                     <Download className="h-4 w-4 mr-2" /> Export
                   </Button>
                 </div>

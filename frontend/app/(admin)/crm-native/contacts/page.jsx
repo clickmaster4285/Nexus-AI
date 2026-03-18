@@ -19,13 +19,33 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { contacts as initialContacts } from "@/lib/mock-data/crm";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function ContactsPage() {
-  const [contacts ] = useState(initialContacts);
+  const [contacts, setContacts] = useState(initialContacts);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newContact, setNewContact] = useState({ firstName: "", lastName: "", email: "", company: "", phone: "" });
 
   const filteredContacts = contacts.filter(c => 
     `${c.firstName} ${c.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -35,6 +55,15 @@ export default function ContactsPage() {
 
   const handleAction = (action, name) => {
     toast.success(`${action}: ${name}`);
+  };
+
+  const handleCreateContact = (e) => {
+    e.preventDefault();
+    toast.success("Contact created successfully!", {
+      description: `${newContact.firstName} ${newContact.lastName} has been added to your CRM.`,
+    });
+    setIsCreateOpen(false);
+    setNewContact({ firstName: "", lastName: "", email: "", company: "", phone: "" });
   };
 
   return (
@@ -51,12 +80,76 @@ export default function ContactsPage() {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]">
+          <Button 
+            variant="outline" 
+            className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]"
+            onClick={() => toast.info("Filter sidebar opening...")}
+          >
             <Filter className="h-3.5 w-3.5 mr-2" /> Filter
           </Button>
-          <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
-            <Plus className="h-4 w-4 mr-2" /> Create Contact
-          </Button>
+          
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                <Plus className="h-4 w-4 mr-2" /> Create Contact
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] rounded-3xl">
+              <form onSubmit={handleCreateContact}>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-black tracking-tighter">CREATE NEW CONTACT</DialogTitle>
+                  <DialogDescription className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+                    Add a new identity to the Nexus AI ecosystem.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-6 py-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">First Name</Label>
+                      <Input 
+                        placeholder="e.g. Sarah" 
+                        required 
+                        value={newContact.firstName}
+                        onChange={(e) => setNewContact({...newContact, firstName: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Last Name</Label>
+                      <Input 
+                        placeholder="e.g. Jenkins" 
+                        required 
+                        value={newContact.lastName}
+                        onChange={(e) => setNewContact({...newContact, lastName: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</Label>
+                    <Input 
+                      type="email" 
+                      placeholder="sarah.j@enterprise.com" 
+                      required 
+                      value={newContact.email}
+                      onChange={(e) => setNewContact({...newContact, email: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Company</Label>
+                    <Input 
+                      placeholder="e.g. Global Tech Solutions" 
+                      value={newContact.company}
+                      onChange={(e) => setNewContact({...newContact, company: e.target.value})}
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit" className="w-full h-12 bg-primary font-black uppercase tracking-widest">
+                    Confirm & Save Contact
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -138,9 +231,22 @@ export default function ContactsPage() {
                               <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10" onClick={() => handleAction("View History", contact.firstName)}>
                                  <History className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
-                                 <MoreVertical className="h-4 w-4" />
-                              </Button>
+                              
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="w-48 rounded-xl p-2">
+                                  <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Operations</DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("DNC Flagged", contact.firstName)}>Add to DNC List</DropdownMenuItem>
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase" onClick={() => handleAction("Campaign Assigned", contact.firstName)}>Assign to Campaign</DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem className="rounded-lg text-[10px] font-bold uppercase text-red-500 focus:text-red-600" onClick={() => handleAction("Archive Request", contact.firstName)}>Archive Contact</DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                            </div>
                         </td>
                      </tr>
@@ -182,7 +288,16 @@ export default function ContactsPage() {
                <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Database Backup</p>
                <p className="text-xs font-bold mt-1">Automatic sync every 15m</p>
             </div>
-            <Button variant="outline" size="sm" className="h-8 text-[9px] font-black uppercase border-primary/10">Manual Export</Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="h-8 text-[9px] font-black uppercase border-primary/10"
+              onClick={() => toast.success("Contact database export initialized", {
+                description: "Your CSV file will be ready for download in a few moments."
+              })}
+            >
+              Manual Export
+            </Button>
          </Card>
       </div>
     </div>
