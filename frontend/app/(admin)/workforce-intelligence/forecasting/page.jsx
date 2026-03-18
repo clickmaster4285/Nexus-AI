@@ -1,6 +1,7 @@
 "use client";
 
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
+import { toast } from "sonner";
 import { Clock, TrendingUp, Download, Filter, Info, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,10 +19,10 @@ export default function ForecastingPage() {
           <p className="text-xs text-muted-foreground font-medium italic">Predictive staffing models and volume distribution analysis.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="h-8 gap-2 text-xs font-bold ring-1 ring-primary/10" onClick={() => alert("Exporting forecast report...")}>
+          <Button variant="outline" size="sm" className="h-8 gap-2 text-xs font-bold ring-1 ring-primary/10" onClick={() => toast.success("Exporting forecast report...")}>
             <Download className="h-4 w-4" /> Export Report
           </Button>
-          <Button variant="default" size="sm" className="h-8 gap-2 text-xs font-black shadow-lg" onClick={() => alert("Running new AI dynamic forecast...")}>
+          <Button variant="default" size="sm" className="h-8 gap-2 text-xs font-black shadow-lg" onClick={() => toast.success("Running new AI dynamic forecast...")}>
             <TrendingUp className="h-4 w-4" /> Run New Forecast
           </Button>
         </div>
@@ -197,7 +198,7 @@ export default function ForecastingPage() {
                 <div className="space-y-1">
                   <p className="text-xs font-bold text-red-950 dark:text-red-200">Understaffing Detected: 11:00 - 12:00</p>
                   <p className="text-[10px] text-red-900/70 dark:text-red-200/70 font-medium">Gap of 2 FTE. Estimated SLA drop to 72% (Goal 85%).</p>
-                  <Button variant="link" className="h-auto p-0 text-[10px] text-red-600 font-bold hover:no-underline" onClick={() => alert("Opening queue rerouting options...")}>Open Rerouting Options →</Button>
+                  <Button variant="link" className="h-auto p-0 text-[10px] text-red-600 font-bold hover:no-underline" onClick={() => toast.success("Opening queue rerouting options...")}>Open Rerouting Options →</Button>
                 </div>
               </div>
               <div className="flex items-start gap-4 p-4 rounded-xl border border-green-500/20 bg-green-500/5 shadow-sm group hover:border-green-500/40 transition-colors">

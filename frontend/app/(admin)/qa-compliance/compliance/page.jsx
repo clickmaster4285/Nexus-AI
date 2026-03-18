@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import {
   ShieldCheck,
   ShieldAlert,
@@ -117,7 +118,7 @@ export default function ComplianceMonitorPage() {
                 </div>
               ))}
 
-              <Button variant="outline" className="w-full border-dashed gap-2 group" onClick={() => alert("Custom compliance pack request flow...")}>
+              <Button variant="outline" className="w-full border-dashed gap-2 group" onClick={() => toast.success("Custom compliance pack request flow...")}>
                 <Plus className="h-4 w-4 group-hover:rotate-90 transition-transform" />
                 Request Custom Compliance Pack
               </Button>
@@ -139,7 +140,7 @@ export default function ComplianceMonitorPage() {
                     <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
                     <Input placeholder="Search logs..." className="pl-8 h-8 text-xs bg-background" />
                   </div>
-                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => alert("Downloading logs...")}>
+                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => toast.success("Downloading logs...")}>
                     <Download className="h-3.5 w-3.5" />
                   </Button>
                 </div>
@@ -194,10 +195,10 @@ export default function ComplianceMonitorPage() {
                               {v.status}
                             </Badge>
                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button size="icon" variant="ghost" className="h-6 w-6" title="Legal Hold" onClick={() => alert("Legal Hold Applied")}>
+                              <Button size="icon" variant="ghost" className="h-6 w-6" title="Legal Hold" onClick={() => toast.success("Legal Hold Applied")}>
                                 <ShieldAlert className="h-3.5 w-3.5 text-amber-500" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => alert("View violation details...")}>
+                              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => toast.success("View violation details...")}>
                                 <ExternalLink className="h-3.5 w-3.5" />
                               </Button>
                             </div>
@@ -213,7 +214,7 @@ export default function ComplianceMonitorPage() {
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1"><ShieldAlert className="h-3 w-3 text-red-500" /> 1 Critical Item Found</span>
                 </div>
-                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold" onClick={() => alert("Navigating to full audit log...")}>
+                <Button variant="ghost" size="sm" className="h-7 text-[10px] font-bold" onClick={() => toast.success("Navigating to full audit log...")}>
                   VIEW FULL AUDIT LOG <ChevronRight className="h-3 w-3 ml-1" />
                 </Button>
               </div>

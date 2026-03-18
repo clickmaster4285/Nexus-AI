@@ -583,7 +583,7 @@ export default function RoutingRulesPage() {
                       </Select>
                     </div>
                     <div className="pt-4 border-t">
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full" onClick={() => toast.info("Advanced Settings Opened")}>
                         <Settings className="h-4 w-4 mr-2" /> Advanced Settings
                       </Button>
                     </div>
@@ -640,7 +640,7 @@ export default function RoutingRulesPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button className="w-full mt-4">
+                <Button className="w-full mt-4" onClick={() => toast.info("Testing Routing...")}>
                   <Phone className="h-4 w-4 mr-2" /> Test Routing
                 </Button>
               </CardContent>

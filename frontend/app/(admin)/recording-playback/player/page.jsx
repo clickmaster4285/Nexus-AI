@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Play, Pause, SkipBack, SkipForward, Volume2, Maximize2, BadgeCheck, Download, Share2,  Sparkles, TrendingUp, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
+import { toast } from "sonner";
 import { recordings, mediaEvents } from "@/lib/mock-data/recording";
 import { cn } from "@/lib/utils";
 
@@ -81,7 +83,7 @@ export default function UnifiedMediaPlayer() {
 
                   <div className="flex items-center justify-between">
                      <div className="flex gap-2">
-                        <Button variant="ghost" size="icon" className="h-10 w-10 opacity-60 hover:opacity-100 transition-all">
+                        <Button variant="ghost" size="icon" className="h-10 w-10 opacity-60 hover:opacity-100 transition-all" onClick={() => setProgress(Math.max(0, progress - 10))}>
                            <SkipBack className="h-5 w-5" />
                         </Button>
                         <Button
@@ -91,7 +93,7 @@ export default function UnifiedMediaPlayer() {
                         >
                            {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 fill-current" />}
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-10 w-10 opacity-60 hover:opacity-100 transition-all">
+                        <Button variant="ghost" size="icon" className="h-10 w-10 opacity-60 hover:opacity-100 transition-all" onClick={() => setProgress(Math.min(100, progress + 10))}>
                            <SkipForward className="h-5 w-5" />
                         </Button>
                      </div>
@@ -102,10 +104,10 @@ export default function UnifiedMediaPlayer() {
                            <Slider defaultValue={[75]} max={100} step={1} className="flex-1" />
                         </div>
                         <div className="h-6 w-px bg-primary/10" />
-                        <Button variant="ghost" size="icon" className="h-10 w-10">
+                        <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => toast.success("Link copied to clipboard!")}>
                            <Share2 className="h-5 w-5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-10 w-10">
+                        <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => toast.success("Maximizing player...")}>
                            <Maximize2 className="h-5 w-5" />
                         </Button>
                      </div>
@@ -173,7 +175,7 @@ export default function UnifiedMediaPlayer() {
                      </p>
                   </div>
 
-                  <Button size="sm" className="w-full h-10 gap-2 font-black uppercase text-[10px] shadow-lg">
+                  <Button size="sm" className="w-full h-10 gap-2 font-black uppercase text-[10px] shadow-lg" onClick={() => toast.success("Report exported")}>
                      <Download className="h-3.5 w-3.5" /> Export Insights Report
                   </Button>
                </CardContent>

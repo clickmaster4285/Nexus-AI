@@ -5,6 +5,7 @@ import {
   Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function ReportingBILayout({ children }) {
 
@@ -23,7 +24,7 @@ export default function ReportingBILayout({ children }) {
           </div>
           
           <div className="flex items-center gap-3">
-            <Button size="sm" className="h-9 font-bold px-4 shadow-lg">
+            <Button size="sm" className="h-9 font-bold px-4 shadow-lg" onClick={() => toast.success("Creating new dashboard")}>
               <Plus className="h-4 w-4 mr-2" /> Create New
             </Button>
           </div>

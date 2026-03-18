@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Phone, PhoneForwarded, UserPlus, Search, ArrowRight, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -198,9 +199,9 @@ export default function TransferPanelPage() {
                   <TableCell>{transfer.duration}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="sm">View</Button>
+                      <Button variant="ghost" size="sm" onClick={() => toast.success("Loading transfer details")}>View</Button>
                       {transfer.status === "In Progress" && (
-                        <Button variant="ghost" size="sm" className="text-red-500">Cancel</Button>
+                        <Button variant="ghost" size="sm" className="text-red-500" onClick={() => toast.success("Transfer cancelled")}>Cancel</Button>
                       )}
                     </div>
                   </TableCell>

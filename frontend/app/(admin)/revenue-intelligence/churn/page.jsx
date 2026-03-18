@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import {
   ShieldAlert,
   BookOpen,
@@ -88,7 +89,7 @@ export default function ChurnRetentionPage() {
                 </div>
               </div>
 
-              <Button className="w-full bg-red-600 hover:bg-red-700 shadow-md font-bold" onClick={() => alert("Churn model weights updated!")}>
+              <Button className="w-full bg-red-600 hover:bg-red-700 shadow-md font-bold" onClick={() => toast.success("Churn model weights updated!")}>
                 Update Model Weights
               </Button>
             </CardContent>
@@ -99,7 +100,7 @@ export default function ChurnRetentionPage() {
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold tracking-tight">Retention Playbook Manager</h3>
-            <Button variant="outline" className="gap-2 border-dashed border-primary font-bold" onClick={() => alert("Opening new playbook builder...")}>
+            <Button variant="outline" className="gap-2 border-dashed border-primary font-bold" onClick={() => toast.success("Opening new playbook builder...")}>
               <Plus className="h-4 w-4 text-primary" />
               New Playbook
             </Button>
@@ -110,10 +111,10 @@ export default function ChurnRetentionPage() {
               <Card key={i} className="group relative border-2 border-transparent hover:border-primary/20 transition-all overflow-hidden bg-card/50 backdrop-blur-sm shadow-sm">
                 <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => alert("Edit playbook...")}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => toast.success("Edit playbook...")}>
                       <Settings2 className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => alert("Delete playbook...")}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => toast.success("Delete playbook...")}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>

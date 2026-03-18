@@ -40,7 +40,7 @@ export default function EscalationChainPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold tracking-tight">Escalation Chain Builder</h3>
-        <Button className="gap-2 shadow-lg font-bold" onClick={() => alert("Creating new chain...")}>
+        <Button className="gap-2 shadow-lg font-bold" onClick={() => toast.success("Creating new chain...")}>
           <Plus className="h-4 w-4" />
           Create New Chain
         </Button>
@@ -68,7 +68,7 @@ export default function EscalationChainPage() {
                   <Switch checked={chain.active} onCheckedChange={() => toggleChain(chain.id)} />
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => alert("Edit chain...")}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toast.success("Opening chain editor...")}>
                     <Settings2 className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={() => deleteChain(chain.id)}>
@@ -104,7 +104,7 @@ export default function EscalationChainPage() {
                 ))}
                 
                 <div className="w-full md:w-auto">
-                  <Button variant="outline" className="w-full md:w-auto border-dashed h-12 px-6 gap-2 text-[10px] font-black uppercase hover:bg-primary/5 hover:border-primary/30 transition-all" onClick={() => alert("Adding step...")}>
+                  <Button variant="outline" className="w-full md:w-auto border-dashed h-12 px-6 gap-2 text-[10px] font-black uppercase hover:bg-primary/5 hover:border-primary/30 transition-all" onClick={() => toast.success("Adding new step...")}>
                     <Plus className="h-4 w-4" /> Add Step
                   </Button>
                 </div>
@@ -125,7 +125,7 @@ export default function EscalationChainPage() {
               Configure multi-stage notification protocols for critical events. Escalations can trigger SMS, Email, and Slack notifications to management tiers.
             </p>
           </div>
-          <Button variant="outline" className="font-bold border-primary/20" onClick={() => alert("Configuring global notifications...")}>Global Notification Settings</Button>
+          <Button variant="outline" className="font-bold border-primary/20" onClick={() => toast.success("Configuring global notifications...")}>Global Notification Settings</Button>
         </CardContent>
       </Card>
     </div>

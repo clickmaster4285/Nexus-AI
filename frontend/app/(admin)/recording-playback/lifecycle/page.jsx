@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { HardDrive, ShieldCheck, Trash2, Archive, Lock, Settings, BadgeCheck, History, Database } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,7 @@ export default function LifecycleManagement() {
                      <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">Active Retention Policies</h3>
                      <p className="text-[10px] text-muted-foreground font-medium italic mt-1">Configure how long interactions are stored before auto-purging.</p>
                   </div>
-                  <Button size="sm" className="h-8 gap-2 text-[10px] font-black shadow-md border-primary/20">
+                  <Button size="sm" className="h-8 gap-2 text-[10px] font-black shadow-md border-primary/20" onClick={() => toast.success("Creating new retention policy...")}>
                      New Policy
                   </Button>
                </div>
@@ -51,8 +52,8 @@ export default function LifecycleManagement() {
                                  <Switch checked={policy.autoArchive} />
                               </div>
                               <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                 <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg"><Settings className="h-3.5 w-3.5" /></Button>
-                                 <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg text-red-500 hover:text-red-600 hover:bg-red-500/5"><Trash2 className="h-3.5 w-3.5" /></Button>
+                                 <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg" onClick={() => toast.success("Editing policy...")}><Settings className="h-3.5 w-3.5" /></Button>
+                                 <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg text-red-500 hover:text-red-600 hover:bg-red-500/5" onClick={() => toast.success("Deleting policy...")}><Trash2 className="h-3.5 w-3.5" /></Button>
                               </div>
                            </div>
                         </CardContent>
@@ -110,7 +111,7 @@ export default function LifecycleManagement() {
                      </div>
 
                      <div className="pt-4">
-                        <Button variant="outline" className="w-full h-11 text-[11px] font-black uppercase shadow-sm gap-2">
+                        <Button variant="outline" className="w-full h-11 text-[11px] font-black uppercase shadow-sm gap-2" onClick={() => toast.success("Audit logs downloaded.")}>
                            <ShieldCheck className="h-4 w-4" /> Download Audit Logs
                         </Button>
                      </div>

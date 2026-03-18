@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus, Edit, Trash2, Copy, Search, Eye, ThumbsUp, ThumbsDown, FileText, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -269,7 +270,7 @@ export default function KbManagerPage() {
                 <Button variant="outline" className="flex-1" onClick={() => setShowCreateDialog(false)}>
                   Cancel
                 </Button>
-                <Button variant="outline" className="flex-1">
+                <Button variant="outline" className="flex-1" onClick={() => toast.success("Draft saved")}>
                   Save as Draft
                 </Button>
                 <Button className="flex-1" onClick={handleCreateArticle}>
@@ -345,10 +346,10 @@ export default function KbManagerPage() {
                       <Button variant="ghost" size="sm" onClick={() => handleEditArticle(article)}>
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => toast.success("Article copied")}>
                         <Copy className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-red-500">
+                      <Button variant="ghost" size="sm" className="text-red-500" onClick={() => toast.success("Article deleted")}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -413,11 +414,11 @@ export default function KbManagerPage() {
             </div>
             <div className="flex justify-between pt-4 border-t">
               <div className="flex gap-4">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => toast.success("Marked as helpful")}>
                   <ThumbsUp className="h-4 w-4 mr-2" />
                   Helpful ({selectedArticle?.helpful})
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => toast.success("Marked as not helpful")}>
                   <ThumbsDown className="h-4 w-4 mr-2" />
                   Not Helpful ({selectedArticle?.notHelpful})
                 </Button>

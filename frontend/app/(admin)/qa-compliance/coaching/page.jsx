@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Plus,
   Calendar,
@@ -201,7 +202,7 @@ export default function CoachingWorkflowPage() {
   const [isCreating, setIsCreating] = useState(false);
 
   if (isCreating) {
-    return <CoachingAddForm onCancel={() => setIsCreating(false)} onSave={() => { alert("Session Scheduled!"); setIsCreating(false); }} />;
+    return <CoachingAddForm onCancel={() => setIsCreating(false)} onSave={() => { toast.success("Session Scheduled!"); setIsCreating(false); }} />;
   }
 
   return (
@@ -321,7 +322,7 @@ export default function CoachingWorkflowPage() {
                             )}>
                               {session.status}
                             </Badge>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => alert("Opening session details...")}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => toast.success("Opening session details...")}>
                               <ExternalLink className="h-4 w-4" />
                             </Button>
                           </div>
@@ -378,7 +379,7 @@ export default function CoachingWorkflowPage() {
                       Mike Ross triggered **Compliance Rule R002**. Automating coach assignment now...
                     </p>
                   </div>
-                  <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold" onClick={() => alert("Coaching assigned!")}>ACKNOWLEDGE & ASSIGN</Button>
+                  <Button variant="link" className="h-auto p-0 text-[10px] text-primary font-bold" onClick={() => toast.success("Coaching assigned!")}>ACKNOWLEDGE & ASSIGN</Button>
                 </div>
               </div>
             </CardContent>

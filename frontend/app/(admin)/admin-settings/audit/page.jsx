@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { auditLogs } from "@/lib/mock-data/admin";
+import { toast } from "sonner";
 
 export default function AuditLogs() {
    const [logs] = useState(auditLogs);
@@ -33,10 +34,10 @@ export default function AuditLogs() {
                   />
                </div>
                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase">
+                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase" onClick={() => toast.info("Extended filters opened")}>
                      <Filter className="h-3.5 w-3.5 mr-2" /> Extended filters
                   </Button>
-                  <Button className="h-10 px-6 shadow-lg text-[10px] font-black uppercase bg-primary hover:bg-primary/90">
+                  <Button className="h-10 px-6 shadow-lg text-[10px] font-black uppercase bg-primary hover:bg-primary/90" onClick={() => toast.success("Exporting logs...")}>
                      <Download className="h-3.5 w-3.5 mr-2" /> Full Export
                   </Button>
                </div>
@@ -101,7 +102,7 @@ export default function AuditLogs() {
             </div>
 
             <div className="p-4 bg-muted/20 border-t border-primary/5 text-center">
-               <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-primary">
+               <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-primary" onClick={() => toast.info("Loading more logs...")}>
                   Load Historical archives <MoreHorizontal className="h-4 w-4 ml-2" />
                </Button>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Plus,
   Trash2,
@@ -98,7 +99,7 @@ export default function ScorecardBuilderPage() {
               <Input placeholder="sales, q1, high-value, retention" className="h-8 text-xs" />
             </div>
 
-            <Button className="w-full gap-2 shadow-md bg-primary hover:bg-primary/90" onClick={() => alert("Scorecard deployed successfully!")}>
+            <Button className="w-full gap-2 shadow-md bg-primary hover:bg-primary/90" onClick={() => toast.success("Scorecard deployed successfully!")}>
               <Save className="h-4 w-4" />
               Deploy Scorecard (3.1.2)
             </Button>
@@ -113,7 +114,7 @@ export default function ScorecardBuilderPage() {
             <h3 className="text-xl font-bold tracking-tight">Criteria Builder</h3>
             <p className="text-sm text-muted-foreground">Manage sections, criteria, and weights (11 Fields Specification).</p>
           </div>
-          <Button variant="outline" className="gap-2 border-dashed border-primary/40 text-primary" onClick={() => alert("Add section feature...")}>
+          <Button variant="outline" className="gap-2 border-dashed border-primary/40 text-primary" onClick={() => toast.success("Add section feature...")}>
             <Plus className="h-4 w-4" />
             Add Section
           </Button>
@@ -131,7 +132,7 @@ export default function ScorecardBuilderPage() {
                   </div>
                 </AccordionTrigger>
                 <div className="flex items-center gap-2 pr-2">
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={(e) => { e.stopPropagation(); alert("Delete section..."); }}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500" onClick={(e) => { e.stopPropagation(); toast.success("Delete section..."); }}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

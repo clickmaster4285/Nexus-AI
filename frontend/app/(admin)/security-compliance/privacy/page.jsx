@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Fingerprint, Eraser, Plus, Trash2, Lock, ShieldAlert, Key } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -112,10 +113,10 @@ export default function PrivacyDataProtection() {
 
                      <div className="pt-6 border-t border-dashed space-y-3">
                         <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Compliance Actions</p>
-                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10">
+                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10" onClick={() => toast.success("Right to be Forgotten process initiated.")}>
                            Right to be Forgotten
                         </Button>
-                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10">
+                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10" onClick={() => toast.success("Data portability export started.")}>
                            Portability Export (JSON)
                         </Button>
                      </div>

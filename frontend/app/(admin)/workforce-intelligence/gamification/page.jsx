@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Trophy, Flame, Settings, Plus, Star, ArrowLeft, Save, X, Info, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -177,7 +178,7 @@ export default function GamificationPage() {
   const [isAdding, setIsAdding] = useState(false);
 
   if (isAdding) {
-    return <AchievementAddForm onCancel={() => setIsAdding(false)} onSave={() => { alert("Achievement deployed!"); setIsAdding(false); }} />;
+    return <AchievementAddForm onCancel={() => setIsAdding(false)} onSave={() => { toast.success("Achievement deployed!"); setIsAdding(false); }} />;
   }
 
   return (
@@ -216,7 +217,7 @@ export default function GamificationPage() {
               {achievements.map((item) => (
                 <Card key={item.id} className="border-primary/10 hover:shadow-lg transition-all group overflow-hidden relative">
                   <div className="absolute top-0 right-0 p-2">
-                    <Settings className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" onClick={() => alert("Edit achievement...")} />
+                    <Settings className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" onClick={() => toast.success("Opening achievement editor...")} />
                   </div>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
@@ -373,7 +374,7 @@ export default function GamificationPage() {
                     <Switch />
                   </div>
                 </div>
-                <Button className="w-full font-black uppercase tracking-widest shadow-lg bg-primary text-white" onClick={() => alert("Leaderboard initialized!")}>
+                <Button className="w-full font-black uppercase tracking-widest shadow-lg bg-primary text-white" onClick={() => toast.success("Leaderboard initialized!")}>
                   Create Board
                 </Button>
               </CardContent>

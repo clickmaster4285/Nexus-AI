@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { deals as initialDeals } from "@/lib/mock-data/crm";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function PipelinePage() {
   const [deals] = useState(initialDeals);
@@ -29,9 +30,9 @@ export default function PipelinePage() {
     { name: "Contracting", color: "border-emerald-500", bg: "bg-emerald-500/5" }
   ];
 
-//   const handleAction = (action, name) => {
-//     toast.success(`${action}: ${name}`);
-//   };
+  const handleAction = (action, name) => {
+    toast.success(`${action}: ${name}`);
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -60,10 +61,10 @@ export default function PipelinePage() {
            <p className="text-[10px] font-black uppercase text-muted-foreground italic">Current Pipeline: <span className="text-foreground">Sales 2026</span></p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-10 px-4 border-primary/10 font-bold uppercase text-[10px]">
+          <Button variant="outline" className="h-10 px-4 border-primary/10 font-bold uppercase text-[10px]" onClick={() => toast.info("Opening filter...")}>
             <Filter className="h-3.5 w-3.5 mr-2" /> Filter
           </Button>
-          <Button className="h-10 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+          <Button className="h-10 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20" onClick={() => toast.success("New deal modal opened")}>
             <Plus className="h-4 w-4 mr-2" /> New Deal
           </Button>
         </div>
@@ -92,7 +93,7 @@ export default function PipelinePage() {
                       <CardContent className="p-4 space-y-3">
                         <div className="flex justify-between items-start">
                            <p className="text-xs font-black leading-tight group-hover:text-primary transition-colors">{deal.name}</p>
-                           <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100">
+                           <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => handleAction("Deal Options", deal.name)}>
                               <MoreVertical className="h-3 w-3" />
                            </Button>
                         </div>
@@ -114,7 +115,7 @@ export default function PipelinePage() {
                       </CardContent>
                     </Card>
                   ))}
-                  <Button variant="ghost" className="w-full border-dashed border border-primary/10 h-10 text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5">
+                  <Button variant="ghost" className="w-full border-dashed border border-primary/10 h-10 text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5" onClick={() => toast.success("Quick Add Deal initiated")}>
                      <Plus className="h-3 w-3 mr-2" /> Quick Add
                   </Button>
                 </div>

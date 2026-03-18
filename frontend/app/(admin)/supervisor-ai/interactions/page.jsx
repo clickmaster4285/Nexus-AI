@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { MessageCircle, Activity, Play, Square, Volume2, Mic, ShieldAlert, ArrowRight, TrendingUp, ListFilter, Maximize2, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -100,7 +101,7 @@ export default function InteractionsPage() {
               <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-primary" /> Live Transcript (AI Powered)
               </CardTitle>
-              <Maximize2 className="h-3.5 w-3.5 text-muted-foreground cursor-pointer hover:text-primary transition-colors" onClick={() => alert("Expanding viewer...")} />
+              <Maximize2 className="h-3.5 w-3.5 text-muted-foreground cursor-pointer hover:text-primary transition-colors" onClick={() => toast.success("Expanding viewer...")} />
             </CardHeader>
             <CardContent className="p-6 overflow-y-auto flex-1 space-y-6 custom-scrollbar">
               {selectedInteraction.transcript.map((line, idx) => (
@@ -144,14 +145,14 @@ export default function InteractionsPage() {
               </CardHeader>
               <CardContent className="p-4 pt-0 space-y-3">
                 <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" size="sm" className="h-16 flex-col gap-1 text-[9px] font-black uppercase border-primary/10 hover:border-primary hover:bg-primary/5 transition-all group" onClick={() => alert("Listening to live audio...")}>
+                  <Button variant="outline" size="sm" className="h-16 flex-col gap-1 text-[9px] font-black uppercase border-primary/10 hover:border-primary hover:bg-primary/5 transition-all group" onClick={() => toast.success("Listening to live audio...")}>
                     <Volume2 className="h-4 w-4 group-hover:scale-110 transition-transform" /> Listen
                   </Button>
-                  <Button variant="outline" size="sm" className="h-16 flex-col gap-1 text-[9px] font-black uppercase border-primary/10 hover:border-primary hover:bg-primary/5 transition-all group" onClick={() => alert("Opening whisper channel...")}>
+                  <Button variant="outline" size="sm" className="h-16 flex-col gap-1 text-[9px] font-black uppercase border-primary/10 hover:border-primary hover:bg-primary/5 transition-all group" onClick={() => toast.success("Opening whisper channel...")}>
                     <Mic className="h-4 w-4 group-hover:scale-110 transition-transform" /> Barge In
                   </Button>
                 </div>
-                <Button className="w-full h-10 gap-2 font-black shadow-lg bg-orange-500 hover:bg-orange-600 text-white border-none transition-all text-[10px] uppercase tracking-widest" onClick={() => alert("Taking over session control...")}>
+                <Button className="w-full h-10 gap-2 font-black shadow-lg bg-orange-500 hover:bg-orange-600 text-white border-none transition-all text-[10px] uppercase tracking-widest" onClick={() => toast.success("Taking over session control...")}>
                   Take Over Session
                 </Button>
               </CardContent>
@@ -178,7 +179,7 @@ export default function InteractionsPage() {
                     <CheckCircle2 className="h-3 w-3 shadow-sm" />
                   </div>
                 </div>
-                <Button variant="link" className="w-full text-[10px] font-black uppercase h-auto p-0 flex items-center gap-1 justify-center pt-2 text-primary hover:no-underline hover:opacity-70 transition-opacity" onClick={() => alert("Loading case file...")}>
+                <Button variant="link" className="w-full text-[10px] font-black uppercase h-auto p-0 flex items-center gap-1 justify-center pt-2 text-primary hover:no-underline hover:opacity-70 transition-opacity" onClick={() => toast.success("Loading case file...")}>
                   Open Full Case File <ArrowRight className="h-3 w-3" />
                 </Button>
               </CardContent>

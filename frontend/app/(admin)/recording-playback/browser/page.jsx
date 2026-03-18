@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Search, Filter, Download, Play, ShieldAlert, Calendar, User, Clock, HardDrive, Tag, FileText, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,13 +40,13 @@ export default function RecordingBrowser() {
                   />
                </div>
                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase">
+                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase" onClick={() => toast.success("Opening date picker...")}>
                      <Calendar className="h-3.5 w-3.5 mr-2" /> Date Range
                   </Button>
-                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase">
+                  <Button variant="outline" size="sm" className="h-10 px-4 border-primary/10 text-[10px] font-black uppercase" onClick={() => toast.success("Opening advanced filters...")}>
                      <Filter className="h-3.5 w-3.5 mr-2" /> More Filters
                   </Button>
-                  <Button className="h-10 px-6 shadow-lg text-[10px] font-black uppercase">
+                  <Button className="h-10 px-6 shadow-lg text-[10px] font-black uppercase" onClick={() => toast.success("Searching recordings...")}>
                      Search Recordings
                   </Button>
                </div>
@@ -135,7 +136,7 @@ export default function RecordingBrowser() {
                                  variant="ghost" 
                                  size="icon" 
                                  className="h-8 w-8 rounded-lg"
-                                 onClick={(e) => e.stopPropagation()}
+                                 onClick={(e) => { e.stopPropagation(); toast.success("Downloading recording..."); }}
                               >
                                  <Download className="h-4 w-4" />
                               </Button>
@@ -143,7 +144,7 @@ export default function RecordingBrowser() {
                                  variant="ghost" 
                                  size="icon" 
                                  className="h-8 w-8 rounded-lg"
-                                 onClick={(e) => e.stopPropagation()}
+                                 onClick={(e) => { e.stopPropagation(); toast.success("Opening tag manager..."); }}
                               >
                                  <Tag className="h-4 w-4" />
                               </Button>

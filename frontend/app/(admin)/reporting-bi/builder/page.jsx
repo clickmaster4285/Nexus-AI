@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Layout, Plus, Settings2, BarChart3, PieChart, LineChart, Move, Trash2, Maximize2, Layers, Database, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,10 +77,10 @@ export default function DashboardBuilder() {
                   </div>
                </div>
                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="h-9 gap-2 text-xs font-bold">
+                  <Button variant="outline" size="sm" className="h-9 gap-2 text-xs font-bold" onClick={() => toast.success("Previewing dashboard...")}>
                      <Eye className="h-4 w-4" /> Preview
                   </Button>
-                  <Button size="sm" className="h-9 gap-2 text-xs font-black shadow-lg">
+                  <Button size="sm" className="h-9 gap-2 text-xs font-black shadow-lg" onClick={() => toast.success("Dashboard changes saved!")}>
                      <Settings2 className="h-4 w-4" /> Save Changes
                   </Button>
                </div>
@@ -93,10 +94,10 @@ export default function DashboardBuilder() {
                {selectedDashboard.widgets.map((widget) => (
                   <Card key={widget.id} className="group relative border-primary/10 hover:border-primary/30 transition-all hover:shadow-lg bg-linear-to-b from-card to-secondary/5">
                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1 z-20">
-                        <Button size="icon" variant="ghost" className="h-7 w-7 bg-background/80 backdrop-blur-sm shadow-sm">
+                        <Button size="icon" variant="ghost" className="h-7 w-7 bg-background/80 backdrop-blur-sm shadow-sm" onClick={() => toast.success("Maximizing widget...")}>
                            <Maximize2 className="h-3 w-3" />
                         </Button>
-                        <Button size="icon" variant="ghost" className="h-7 w-7 bg-background/80 backdrop-blur-sm shadow-sm text-red-500 hover:text-red-600">
+                        <Button size="icon" variant="ghost" className="h-7 w-7 bg-background/80 backdrop-blur-sm shadow-sm text-red-500 hover:text-red-600" onClick={() => toast.success("Removing widget...")}>
                            <Trash2 className="h-3 w-3" />
                         </Button>
                      </div>

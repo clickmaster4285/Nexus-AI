@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { users as initialUsers } from "@/lib/mock-data/admin";
 import { cn } from "@/lib/utils";
 import UserAddForm from "./UserAddForm";
+import { toast } from "sonner";
+import { toast } from "sonner";
 
 export default function UserManagement() {
    const [userList, setUserList] = useState(initialUsers);
@@ -71,7 +73,7 @@ export default function UserManagement() {
                   />
                </div>
                <div className="flex gap-2 ml-4">
-                  <Button variant="outline" size="sm" className="h-10 text-[10px] font-black uppercase border-primary/10">
+                  <Button variant="outline" size="sm" className="h-10 text-[10px] font-black uppercase border-primary/10" onClick={() => toast.info("Filter opened")}>
                      <Filter className="h-3.5 w-3.5 mr-2" /> Filter
                   </Button>
                   <Button
@@ -131,13 +133,13 @@ export default function UserManagement() {
                               </td>
                               <td className="p-4 text-right">
                                  <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 text-primary transition-all">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-primary/10 text-primary transition-all" onClick={() => toast.info("Edit user")}>
                                        <Edit2 className="h-4 w-4" />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-red-500/10 text-red-500 transition-all">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-red-500/10 text-red-500 transition-all" onClick={() => toast.success("User deleted")}>
                                        <Trash2 className="h-4 w-4" />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100">
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg opacity-40 hover:opacity-100" onClick={() => toast.info("More options")}>
                                        <MoreVertical className="h-4 w-4" />
                                     </Button>
                                  </div>
@@ -161,7 +163,7 @@ export default function UserManagement() {
                   <p className="text-[10px] text-muted-foreground font-medium italic">All administrative actions are logged and subject to SOC2 compliance auditing. 2FA is mandatory for Admin roles.</p>
                </div>
             </div>
-            <Button variant="link" className="text-[10px] font-black uppercase text-primary underline-offset-4">Identity Security Guide</Button>
+            <Button variant="link" className="text-[10px] font-black uppercase text-primary underline-offset-4" onClick={() => toast.info("Opening guide")}>Identity Security Guide</Button>
          </div>
       </div>
    );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { 
   Search, 
   Filter, 
@@ -46,7 +47,7 @@ export default function DecisionLogPage() {
           <Button variant="outline" size="icon" className="h-9 w-9">
             <Filter className="h-4 w-4" />
           </Button>
-          <Button variant="outline" className="h-9 gap-2 text-xs font-bold" onClick={() => alert("Exporting log...")}>
+          <Button variant="outline" className="h-9 gap-2 text-xs font-bold" onClick={() => toast.success("Exporting log...")}>
             <FileText className="h-4 w-4" /> Export CSV
           </Button>
         </div>
@@ -140,10 +141,10 @@ export default function DecisionLogPage() {
                 </div>
 
                 <div className="pt-4 border-t space-y-3">
-                  <Button className="w-full gap-2 font-black uppercase tracking-widest text-[10px] h-10 shadow-md" onClick={() => alert("Reverting action...")}>
+                  <Button className="w-full gap-2 font-black uppercase tracking-widest text-[10px] h-10 shadow-md" onClick={() => toast.success("Reverting action...")}>
                     <RotateCcw className="h-4 w-4" /> Revert Decision
                   </Button>
-                  <Button variant="outline" className="w-full gap-2 font-black uppercase tracking-widest text-[10px] h-10" onClick={() => alert("Showing full interaction...")}>
+                  <Button variant="outline" className="w-full gap-2 font-black uppercase tracking-widest text-[10px] h-10" onClick={() => toast.success("Showing full interaction...")}>
                     <Eye className="h-4 w-4" /> View Context
                   </Button>
                 </div>

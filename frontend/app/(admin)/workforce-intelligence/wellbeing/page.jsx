@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { ShieldAlert, ArrowUpRight, ArrowDownRight, Settings2, Calendar, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,7 @@ export default function WellbeingPage() {
           <h2 className="text-xl font-bold tracking-tight">Wellbeing & Burnout Engine</h2>
           <p className="text-xs text-muted-foreground font-medium italic">Proactive monitoring of team health and fatigue levels.</p>
         </div>
-        <Button variant="outline" size="sm" className="gap-2 text-xs font-bold shadow-sm" onClick={() => alert("Opening threshold configuration...")}>
+        <Button variant="outline" size="sm" className="gap-2 text-xs font-bold shadow-sm" onClick={() => toast.success("Opening threshold configuration...")}>
           <Settings2 className="h-4 w-4" /> Threshold Config
         </Button>
       </div>
@@ -81,10 +82,10 @@ export default function WellbeingPage() {
                       </div>
 
                       <div className="flex items-center justify-center md:justify-end gap-2">
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-red-500/10 hover:text-red-600 rounded-full" onClick={() => alert("Flagging risk for follow-up...")}>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-red-500/10 hover:text-red-600 rounded-full" onClick={() => toast.success("Flagging risk for follow-up...")}>
                           <ShieldAlert className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" className="h-8 text-[10px] font-black uppercase tracking-widest shadow-sm" onClick={() => alert("Executing wellbeing intervention...")}>Intervene</Button>
+                        <Button size="sm" className="h-8 text-[10px] font-black uppercase tracking-widest shadow-sm" onClick={() => toast.success("Executing wellbeing intervention...")}>Intervene</Button>
                       </div>
                     </div>
                   </div>
@@ -145,7 +146,7 @@ export default function WellbeingPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button className="w-full text-xs font-black uppercase tracking-widest h-10 shadow-lg shadow-primary/10" onClick={() => alert("Burnout logic weights updated successfully!")}>Apply Logic Update</Button>
+                <Button className="w-full text-xs font-black uppercase tracking-widest h-10 shadow-lg shadow-primary/10" onClick={() => toast.success("Burnout logic weights updated successfully!")}>Apply Logic Update</Button>
               </div>
             </CardContent>
           </Card>
@@ -162,7 +163,7 @@ export default function WellbeingPage() {
                   3 agents have reached a burnout score &gt; 60. Recommendation: Immediate 1-on-1 check-in or mandatory ACW extension for cooling.
                 </p>
               </div>
-              <Button variant="destructive" size="sm" className="w-full h-9 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20" onClick={() => alert("Batch intervention executed for high-risk agents.")}>
+              <Button variant="destructive" size="sm" className="w-full h-9 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20" onClick={() => toast.success("Batch intervention executed for high-risk agents.")}>
                 Execute Intervention
               </Button>
             </CardContent>

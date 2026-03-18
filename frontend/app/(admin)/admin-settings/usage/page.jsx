@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { accountUsage } from "@/lib/mock-data/admin";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function AccountSettings() {
    return (
@@ -92,7 +93,7 @@ export default function AccountSettings() {
                               <CreditCard className="h-4 w-4 text-muted-foreground" />
                               <span className="font-mono text-xs font-bold">Visa •••• 9012</span>
                            </div>
-                           <Button variant="link" className="text-[10px] font-black uppercase p-0 h-auto">Edit</Button>
+                           <Button variant="link" className="text-[10px] font-black uppercase p-0 h-auto" onClick={() => toast.info("Edit payment method")}>Edit</Button>
                         </div>
                      </div>
 
@@ -108,10 +109,10 @@ export default function AccountSettings() {
                      </div>
 
                      <div className="pt-4 space-y-3">
-                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10">
+                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10" onClick={() => toast.info("Upgrade allocation logic")}>
                            Upgrade Allocation
                         </Button>
-                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10">
+                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10" onClick={() => toast.success("Invoices downloaded")}>
                            Download Invoices
                         </Button>
                      </div>

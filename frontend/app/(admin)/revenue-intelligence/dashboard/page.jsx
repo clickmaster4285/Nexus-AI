@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import {
   TrendingUp,
   Zap,
@@ -168,8 +169,8 @@ export default function RevenueDashboardPage() {
             </p>
           </div>
           <div className="flex gap-4 w-full md:w-auto">
-            <Button size="lg" className="shadow-md flex-1 md:flex-none font-bold" onClick={() => alert("Analyzing sales cycle...")}>Analyze Cycle</Button>
-            <Button variant="outline" size="lg" className="bg-background/50 flex-1 md:flex-none font-bold" onClick={() => alert("Loading forecast data...")}>View Forecast</Button>
+            <Button size="lg" className="shadow-md flex-1 md:flex-none font-bold" onClick={() => toast.success("Analyzing sales cycle...")}>Analyze Cycle</Button>
+            <Button variant="outline" size="lg" className="bg-background/50 flex-1 md:flex-none font-bold" onClick={() => toast.success("Loading forecast data...")}>View Forecast</Button>
           </div>
         </CardContent>
       </Card>

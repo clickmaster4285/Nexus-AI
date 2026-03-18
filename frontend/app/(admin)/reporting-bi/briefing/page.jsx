@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { Sparkles, TrendingUp, AlertTriangle, CheckCircle2, Calendar, Share2, Download, MessageSquare, ShieldCheck, Zap, ArrowRight, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,10 +23,10 @@ export default function ExecutiveBriefing() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="h-9 gap-2 text-xs font-bold border-primary/10">
+          <Button variant="outline" size="sm" className="h-9 gap-2 text-xs font-bold border-primary/10" onClick={() => toast.success("Briefing shared.")}>
             <Share2 className="h-4 w-4" /> Share
           </Button>
-          <Button size="sm" className="h-9 gap-2 text-xs font-black shadow-lg">
+          <Button size="sm" className="h-9 gap-2 text-xs font-black shadow-lg" onClick={() => toast.success("Exporting to PDF...")}>
             <Download className="h-4 w-4" /> Export PDF
           </Button>
         </div>
@@ -93,7 +94,7 @@ export default function ExecutiveBriefing() {
                   <div className="space-y-1 pt-1">
                     <p className="text-sm font-bold leading-tight">{item}</p>
                     <div className="flex items-center gap-2">
-                      <Button variant="link" className="p-0 h-auto text-[10px] font-bold text-amber-600 flex items-center gap-1 group/btn">
+                      <Button variant="link" className="p-0 h-auto text-[10px] font-bold text-amber-600 flex items-center gap-1 group/btn" onClick={() => toast.success("Investigating root cause...")}>
                         Investigate Root Cause <ArrowRight className="h-3 w-3 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </div>
@@ -128,7 +129,7 @@ export default function ExecutiveBriefing() {
                 <span className="text-lg font-black text-primary">Medium Priority</span>
               </div>
             </div>
-            <Button className="w-full h-12 text-sm font-black uppercase tracking-tight shadow-lg gap-2 mt-4">
+            <Button className="w-full h-12 text-sm font-black uppercase tracking-tight shadow-lg gap-2 mt-4" onClick={() => toast.success("Action plan initialized.")}>
               <Zap className="h-5 w-5 fill-current" /> Initialize Action Plan
             </Button>
           </div>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { roles } from "@/lib/mock-data/admin";
 import { cn } from "@/lib/utils";
 import RoleAddForm from "./RoleAddForm";
+import { toast } from "sonner";
 
 export default function RolePermissions() {
    const [isAddingRole, setIsAddingRole] = useState(false);
@@ -53,7 +54,7 @@ export default function RolePermissions() {
                      <ChevronRight className={cn("h-4 w-4 transition-transform", selectedRole === role.id ? "text-primary translate-x-1" : "text-muted-foreground/30")} />
                   </button>
                ))}
-               <Button variant="outline" className="w-full h-12 border-dashed border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary/5">
+               <Button variant="outline" className="w-full h-12 border-dashed border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary/5" onClick={() => setIsAddingRole(true)}>
                   Create Custom Role blueprint
                </Button>
             </div>
@@ -70,7 +71,7 @@ export default function RolePermissions() {
                            <CardTitle className="text-xl font-black tracking-tighter uppercase">{activeRoleData.name} <span className="text-muted-foreground/50 font-mono ml-2">V2.0</span></CardTitle>
                            <CardDescription className="text-xs font-medium italic">{activeRoleData.description}</CardDescription>
                         </div>
-                        <Button size="sm" className="h-9 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+                        <Button size="sm" className="h-9 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20" onClick={() => toast.success("Framework saved")}>
                            Save Framework Changes
                         </Button>
                      </div>

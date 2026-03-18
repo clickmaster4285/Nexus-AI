@@ -60,10 +60,10 @@ export default function TasksPage() {
           />
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]">
+          <Button variant="outline" className="h-11 px-4 border-primary/10 font-bold uppercase text-[10px]" onClick={() => toast.info("Opening filter...")}>
             <Filter className="h-3.5 w-3.5 mr-2" /> Filter
           </Button>
-          <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20">
+          <Button className="h-11 px-6 bg-primary font-black uppercase text-[10px] shadow-lg shadow-primary/20" onClick={() => toast.success("Create Task Dialog")}>
             <Plus className="h-4 w-4 mr-2" /> Create Task
           </Button>
         </div>
@@ -164,7 +164,7 @@ export default function TasksPage() {
                      <p className="text-[11px] font-black mt-1">Signatory required for Account ACC-002</p>
                      <p className="text-[9px] text-muted-foreground italic mt-1 font-medium">Overdue by 48 hours</p>
                   </div>
-                  <Button variant="outline" className="w-full h-9 border-primary/10 text-[9px] font-black uppercase tracking-widest hover:bg-primary/5">
+                  <Button variant="outline" className="w-full h-9 border-primary/10 text-[9px] font-black uppercase tracking-widest hover:bg-primary/5" onClick={() => toast.info("Viewing all red alerts")}>
                      View All Red Alerts
                   </Button>
                </div>

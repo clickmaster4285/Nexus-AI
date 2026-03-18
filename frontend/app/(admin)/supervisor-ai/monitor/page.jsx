@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Users, Clock, ShieldAlert, Zap, TrendingUp, MoreVertical, Phone, BadgeCheck, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -62,10 +63,10 @@ export default function LiveCopilotPage() {
             ))}
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="h-8 gap-2 text-[10px] font-black border-primary/10 bg-background" onClick={() => alert("Switching layout...")}>
+            <Button variant="outline" size="sm" className="h-8 gap-2 text-[10px] font-black border-primary/10 bg-background" onClick={() => toast.success("Switching layout...")}>
               Layout View
             </Button>
-            <Button size="sm" className="h-8 gap-2 text-[10px] font-black shadow-md bg-primary text-white" onClick={() => alert("Broadcast message modal...")}>
+            <Button size="sm" className="h-8 gap-2 text-[10px] font-black shadow-md bg-primary text-white" onClick={() => toast.success("Broadcast message modal...")}>
               Broadcast Message
             </Button>
           </div>
@@ -139,10 +140,10 @@ export default function LiveCopilotPage() {
                     </div>
 
                     <div className="flex gap-2 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="outline" size="sm" className="flex-1 h-8 gap-1 text-[9px] font-black uppercase bg-background shadow-sm hover:border-primary group/btn" onClick={() => alert("Barging into call...")}>
+                      <Button variant="outline" size="sm" className="flex-1 h-8 gap-1 text-[9px] font-black uppercase bg-background shadow-sm hover:border-primary group/btn" onClick={() => toast.success("Barging into call...")}>
                         <Phone className="h-3 w-3 group-hover/btn:text-primary transition-colors" /> Listen
                       </Button>
-                      <Button size="sm" className="flex-1 h-8 gap-1 text-[9px] font-black uppercase shadow-md bg-primary text-white hover:bg-primary/90" onClick={() => alert("Opening whisper coaching...")}>
+                      <Button size="sm" className="flex-1 h-8 gap-1 text-[9px] font-black uppercase shadow-md bg-primary text-white hover:bg-primary/90" onClick={() => toast.success("Opening whisper coaching...")}>
                         <Zap className="h-3 w-3 fill-current" /> Whisper
                       </Button>
                     </div>

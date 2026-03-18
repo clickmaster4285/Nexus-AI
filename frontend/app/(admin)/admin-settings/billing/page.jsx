@@ -23,10 +23,10 @@ export default function BillingPage() {
                <p className="text-xs text-muted-foreground font-medium italic">Manage subscriptions, analyze agent resource costs, and view transaction history.</p>
             </div>
             <div className="flex gap-2">
-               <Button variant="outline" size="sm" className="text-[10px] font-black uppercase tracking-widest h-9">
+               <Button variant="outline" size="sm" className="text-[10px] font-black uppercase tracking-widest h-9" onClick={() => toast.info("Opening portal...")}>
                   <ExternalLink className="mr-2 h-3.5 w-3.5" /> Portal
                </Button>
-               <Button size="sm" className="text-[10px] font-black uppercase tracking-widest h-9 shadow-lg shadow-primary/20">
+               <Button size="sm" className="text-[10px] font-black uppercase tracking-widest h-9 shadow-lg shadow-primary/20" onClick={() => toast.info("Add Credits dialog")}>
                   <Wallet className="mr-2 h-3.5 w-3.5" /> Add Credits
                </Button>
             </div>
@@ -94,7 +94,7 @@ export default function BillingPage() {
                            <CardTitle className="text-sm font-black uppercase tracking-widest">Resource Expense Analysis</CardTitle>
                            <CardDescription className="text-[10px] font-medium italic">Detailed breakdown of agent session costs and call resource consumption.</CardDescription>
                         </div>
-                        <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest h-8">
+                        <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest h-8" onClick={() => toast.success("Exporting CSV...")}>
                            Export CSV
                         </Button>
                      </div>
@@ -210,7 +210,7 @@ export default function BillingPage() {
                      <div className="space-y-4 pt-4 border-t border-dashed">
                         <div className="flex justify-between items-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">
                            <span>Payment Method</span>
-                           <Button variant="link" className="p-0 h-auto text-[10px] font-black uppercase">Edit</Button>
+                           <Button variant="link" className="p-0 h-auto text-[10px] font-black uppercase" onClick={() => toast.info("Editing Payment Method")}>Edit</Button>
                         </div>
                         <div className="p-4 rounded-xl bg-muted/50 border border-primary/5 flex items-center gap-3">
                            <div className="h-10 w-10 rounded-lg bg-background flex items-center justify-center border shadow-sm">
@@ -233,10 +233,10 @@ export default function BillingPage() {
                      </div>
 
                      <div className="pt-2 space-y-3">
-                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10">
+                        <Button className="w-full h-11 text-[10px] font-black uppercase tracking-widest bg-primary hover:bg-primary/90 shadow-xl shadow-primary/10" onClick={() => toast.info("Upgrading Subscription...")}>
                            Upgrade Subscription <ArrowUpRight className="ml-2 h-4 w-4" />
                         </Button>
-                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10 group">
+                        <Button variant="outline" className="w-full h-11 text-[10px] font-black uppercase tracking-widest border-primary/10 group" onClick={() => toast.info("Viewing policies")}>
                            View Usage Policies
                         </Button>
                      </div>
@@ -251,7 +251,7 @@ export default function BillingPage() {
                   <p className="text-[10px] text-muted-foreground leading-relaxed italic">
                      Billing data is handled by our SOC 2 Type II compliant partner. Nexus AI never stores raw credit card details on its own servers.
                   </p>
-                  <Button variant="link" className="p-0 h-auto text-[9px] font-black uppercase tracking-tighter text-primary/60">
+                  <Button variant="link" className="p-0 h-auto text-[9px] font-black uppercase tracking-tighter text-primary/60" onClick={() => toast.info("Viewing Certs")}>
                      View Security Certifications
                   </Button>
                </div>

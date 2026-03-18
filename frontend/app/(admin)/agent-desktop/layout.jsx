@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 export default function AgentDesktopLayout({ children }) {  
 
@@ -41,10 +42,10 @@ export default function AgentDesktopLayout({ children }) {
           </div>
           
           <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="h-8 text-xs">
+            <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => toast.success("Mic test initiated")}>
               <Mic className="h-3 w-3 mr-2" /> Test Mic
             </Button>
-            <Button variant="outline" size="sm" className="h-8 text-xs">
+            <Button variant="outline" size="sm" className="h-8 text-xs" onClick={() => toast.info("Audio settings opened")}>
               <Volume2 className="h-3 w-3 mr-2" /> Audio Settings
             </Button>
           </div>

@@ -41,7 +41,7 @@ export default function ActionCenterPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold tracking-tight">Autonomous Action Center</h3>
-        <Button className="gap-2 shadow-lg font-bold" onClick={() => alert("Opening action builder...")}>
+        <Button className="gap-2 shadow-lg font-bold" onClick={() => toast.success("Opening action builder...")}>
           <Plus className="h-4 w-4" />
           Create New Action
         </Button>
@@ -56,7 +56,7 @@ export default function ActionCenterPage() {
                   <Bot className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex gap-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => alert("Edit action...")}>
+                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toast.success("Opening action editor...")}>
                     <Settings2 className="h-3.5 w-3.5" />
                   </Button>
                   <Button variant="ghost" size="icon" className="h-7 w-7 text-red-500" onClick={() => deleteAction(action.id)}>
@@ -125,7 +125,7 @@ export default function ActionCenterPage() {
         ))}
 
         {/* Action Template Card */}
-        <Card className="border-2 border-dashed border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer flex flex-col items-center justify-center p-8 text-center" onClick={() => alert("Opening templates...")}>
+        <Card className="border-2 border-dashed border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer flex flex-col items-center justify-center p-8 text-center" onClick={() => toast.success("Opening templates...")}>
           <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
             <Zap className="h-6 w-6 text-primary" />
           </div>

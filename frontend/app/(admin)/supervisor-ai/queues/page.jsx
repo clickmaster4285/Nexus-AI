@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { AlertCircle, Clock, ArrowRight, Settings2, CheckCircle2, TrendingUp, BellRing, Zap, TrendingDown, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -67,7 +68,7 @@ export default function QueueHealthPage() {
               </div>
 
               <div className="pt-2">
-                <Button variant="outline" size="sm" className="w-full h-9 text-[10px] font-black uppercase gap-2 border-primary/10 group-hover:border-primary transition-all bg-background shadow-sm hover:shadow-md" onClick={() => alert("Loading capacity management dashboard...")}>
+                <Button variant="outline" size="sm" className="w-full h-9 text-[10px] font-black uppercase gap-2 border-primary/10 group-hover:border-primary transition-all bg-background shadow-sm hover:shadow-md" onClick={() => toast.success("Loading capacity management dashboard...")}>
                   Manage Capacity <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </div>
@@ -84,7 +85,7 @@ export default function QueueHealthPage() {
               <CardTitle className="text-sm font-black uppercase tracking-widest text-primary">Queue Threshold Management</CardTitle>
               <CardDescription className="text-[10px] font-medium italic">Configure real-time alerts and automated surfacing logic.</CardDescription>
             </div>
-            <Button size="sm" className="h-9 gap-2 text-[10px] font-black shadow-lg bg-primary text-white hover:bg-primary/90 uppercase tracking-widest" onClick={() => alert("Threshold configuration saved successfully!")}>
+            <Button size="sm" className="h-9 gap-2 text-[10px] font-black shadow-lg bg-primary text-white hover:bg-primary/90 uppercase tracking-widest" onClick={() => toast.success("Threshold configuration saved successfully!")}>
               <Settings2 className="h-3.5 w-3.5" /> Save Configuration
             </Button>
           </CardHeader>
@@ -135,7 +136,7 @@ export default function QueueHealthPage() {
                 SLA in <span className="font-bold text-foreground underline decoration-amber-500/30 italic">&quot;Billing&quot;</span> is dropping. AI recommends re-routing 4 agents from &quot;Sales&quot; to handle volume surge.
               </p>
               <div className="pt-2">
-                <Button size="sm" className="w-full h-10 gap-2 font-black shadow-lg bg-amber-500 hover:bg-amber-600 text-white border-none transition-all text-[10px] uppercase tracking-widest" onClick={() => alert("Executing AI routing optimization plan...")}>
+                <Button size="sm" className="w-full h-10 gap-2 font-black shadow-lg bg-amber-500 hover:bg-amber-600 text-white border-none transition-all text-[10px] uppercase tracking-widest" onClick={() => toast.success("Executing AI routing optimization plan...")}>
                   Approve Re-Routing Plan
                 </Button>
               </div>

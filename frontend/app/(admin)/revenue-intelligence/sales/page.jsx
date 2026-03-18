@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   BarChart3,
   Target,
@@ -207,7 +208,7 @@ export default function SalesScoringPage() {
                 </div>
 
                 {/* Interaction Button */}
-                <Button className="w-full h-11 gap-2 font-black uppercase tracking-widest shadow-lg" onClick={() => alert("Loading full interaction transcript...")}>
+                <Button className="w-full h-11 gap-2 font-black uppercase tracking-widest shadow-lg" onClick={() => toast.success("Loading full interaction transcript...")}>
                   Full Transcript <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
@@ -231,8 +232,8 @@ export default function SalesScoringPage() {
                     Agent <span className="font-black underline decoration-2 underline-offset-4">Sarah Jenkins</span> excelled in Discovery but missed the Close Attempt. **Recommendation:** Implement the <span className="font-bold">&quot;Assumptive Close&quot;</span> technique defined in the Retention win-back protocol.
                   </p>
                   <div className="flex gap-4 pt-3">
-                    <Button variant="secondary" size="sm" className="font-black uppercase tracking-widest text-[10px] h-9 px-4" onClick={() => alert("Coaching module assigned to agent dashboard.")}>ASSIGN MODULE</Button>
-                    <Button variant="link" size="sm" className="text-white font-black uppercase tracking-widest text-[10px] h-9 p-0 hover:no-underline hover:opacity-70 transition-opacity" onClick={() => alert("Showing behavioral drill down...")}>VIEW DRILL DOWN</Button>
+                    <Button variant="secondary" size="sm" className="font-black uppercase tracking-widest text-[10px] h-9 px-4" onClick={() => toast.success("Coaching module assigned to agent dashboard.")}>ASSIGN MODULE</Button>
+                    <Button variant="link" size="sm" className="text-white font-black uppercase tracking-widest text-[10px] h-9 p-0 hover:no-underline hover:opacity-70 transition-opacity" onClick={() => toast.success("Showing behavioral drill down...")}>VIEW DRILL DOWN</Button>
                   </div>
                 </div>
               </div>

@@ -82,7 +82,7 @@ function TranscriptContent() {
   const filteredSegments = transcript?.segments || [];
 
   const handleExport = (format) => {
-    alert(`Transcript exported as ${format.toUpperCase()}`);
+    toast.success(`Transcript exported as ${format.toUpperCase()}`);
   };
 
   const handleAddAnnotation = () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Users, UserPlus, Mic, MicOff, PhoneOff, Copy, Trash2, MoreVertical, Phone, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -138,6 +139,7 @@ export default function ConferenceBridgePage() {
   const handleCreateConference = () => {
     // Handle create conference logic
     console.log("Creating conference:", newConference);
+    toast.success("Conference bridge created successfully");
     setShowCreateDialog(false);
     setNewConference({
       name: "",
@@ -315,15 +317,15 @@ export default function ConferenceBridgePage() {
                         </Button>
                       )}
                       {conf.status === "Scheduled" && (
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.success("Starting conference bridge")}>
                           Start
                         </Button>
                       )}
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => { navigator.clipboard.writeText(conf.bridgeId); toast.success("Bridge ID copied to clipboard"); }}>
                         <Copy className="h-3 w-3" />
                       </Button>
                       {conf.status !== "Active" && (
-                        <Button variant="ghost" size="sm" className="text-red-500">
+                        <Button variant="ghost" size="sm" className="text-red-500" onClick={() => toast.success("Conference bridge deleted")}>
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       )}
@@ -391,15 +393,15 @@ export default function ConferenceBridgePage() {
                 </span>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => toast.success("All participants muted")}>
                   <Mic className="h-4 w-4 mr-1" />
                   Mute All
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => toast.success("Chat interface opened")}>
                   <MessageSquare className="h-4 w-4 mr-1" />
                   Chat
                 </Button>
-                <Button variant="destructive" size="sm">
+                <Button variant="destructive" size="sm" onClick={() => toast.success("Call ended for all participants")}>
                   <PhoneOff className="h-4 w-4 mr-1" />
                   End Call
                 </Button>
@@ -432,7 +434,7 @@ export default function ConferenceBridgePage() {
                       ) : (
                         <Mic className="h-4 w-4 text-green-500" />
                       )}
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => toast.success("Opening participant actions")}>
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </div>
@@ -444,7 +446,7 @@ export default function ConferenceBridgePage() {
             {/* Add Participant */}
             <div className="flex gap-2">
               <Input placeholder="Enter phone number or agent ID" className="flex-1" />
-              <Button>
+              <Button onClick={() => toast.success("Participant invited")}>
                 <Phone className="h-4 w-4 mr-2" />
                 Add
               </Button>

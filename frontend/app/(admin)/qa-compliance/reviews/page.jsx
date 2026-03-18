@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Play,
   CheckCircle2,
@@ -82,7 +83,7 @@ export default function EvaluationQueuePage() {
               </div>
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <Button variant="ghost" className="h-16 w-16 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white group-hover:scale-110 transition-transform" onClick={() => alert("Playing call recording...")}>
+                <Button variant="ghost" className="h-16 w-16 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white group-hover:scale-110 transition-transform" onClick={() => toast.success("Playing call recording...")}>
                   <Play className="h-8 w-8 fill-current" />
                 </Button>
               </div>
@@ -241,16 +242,16 @@ export default function EvaluationQueuePage() {
 
             <div className="p-4 border-t bg-muted/30 flex items-center justify-between shrink-0">
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="gap-2" onClick={() => alert("Draft saved!")}>
+                <Button variant="outline" size="sm" className="gap-2" onClick={() => toast.success("Draft saved!")}>
                   <Save className="h-3.5 w-3.5" />
                   Save Draft
                 </Button>
-                <Button variant="outline" size="sm" className="gap-2 text-red-500 hover:text-red-600" onClick={() => alert("Dispute flagged!")}>
+                <Button variant="outline" size="sm" className="gap-2 text-red-500 hover:text-red-600" onClick={() => toast.success("Dispute flagged!")}>
                   <Flag className="h-3.5 w-3.5" />
                   Dispute AI Score
                 </Button>
               </div>
-              <Button size="sm" className="gap-2 bg-primary shadow-lg font-bold" onClick={() => alert("Evaluation submitted and shared with agent!")}>
+              <Button size="sm" className="gap-2 bg-primary shadow-lg font-bold" onClick={() => toast.success("Evaluation submitted and shared with agent!")}>
                 <Send className="h-3.5 w-3.5" />
                 Finalize & Share
               </Button>

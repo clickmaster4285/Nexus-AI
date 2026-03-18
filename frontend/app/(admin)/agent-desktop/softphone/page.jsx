@@ -145,19 +145,19 @@ export default function SoftphonePage() {
       <div className="lg:col-span-2 space-y-6">
         {/* Quick Actions Panel */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5">
+          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5" onClick={() => toast.success("Conference started")}>
             <Users className="h-5 w-5 text-primary" />
             <span className="text-xs font-bold uppercase">Conference</span>
           </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5">
+          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5" onClick={() => toast.success("Transfer started")}>
             <CornerUpRight className="h-5 w-5 text-primary" />
             <span className="text-xs font-bold uppercase">Transfer</span>
           </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5">
+          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5" onClick={() => toast.success("Sent to voicemail")}>
             <Voicemail className="h-5 w-5 text-primary" />
             <span className="text-xs font-bold uppercase">Voicemail</span>
           </Button>
-          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5">
+          <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2 border-dashed border-2 hover:border-primary hover:bg-primary/5" onClick={() => toast.success("DTMF Pad opened")}>
             <Hash className="h-5 w-5 text-primary" />
             <span className="text-xs font-bold uppercase">DTMF Pad</span>
           </Button>

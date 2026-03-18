@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus, Play, Pause, Edit, Trash2, Copy, FileText, Clock, CheckCircle, GripVertical, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -293,21 +294,21 @@ export default function ScriptBuilderPage() {
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       {script.status === "Draft" || script.status === "Paused" ? (
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.success("Script activated")}>
                           <Play className="h-4 w-4 text-green-500" />
                         </Button>
                       ) : script.status === "Active" ? (
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.success("Script paused")}>
                           <Pause className="h-4 w-4" />
                         </Button>
                       ) : null}
                       <Button variant="ghost" size="sm" onClick={() => handleEditScript(script)}>
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => toast.success("Script copied")}>
                         <Copy className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-red-500">
+                      <Button variant="ghost" size="sm" className="text-red-500" onClick={() => toast.success("Script deleted")}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -326,11 +327,11 @@ export default function ScriptBuilderPage() {
             <CardTitle className="flex items-center justify-between">
               <span>Script Preview - {selectedScript.name}</span>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => toast.info("Entering Preview Mode")}>
                   <Play className="h-4 w-4 mr-2" />
                   Preview
                 </Button>
-                <Button size="sm">
+                <Button size="sm" onClick={() => toast.info("Opening Step Editor")}>
                   <Edit className="h-4 w-4 mr-2" />
                   Edit Steps
                 </Button>
@@ -356,7 +357,7 @@ export default function ScriptBuilderPage() {
               <div className="text-center py-8 text-muted-foreground">
                 <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No script steps defined yet</p>
-                <Button variant="outline" className="mt-4">
+                <Button variant="outline" className="mt-4" onClick={() => toast.info("Adding New Step")}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Step
                 </Button>

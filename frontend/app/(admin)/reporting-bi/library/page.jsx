@@ -3,6 +3,7 @@
 import { Search, FileText, Calendar, Plus, Clock, FileDown, Settings, Layers, Terminal, MoreVertical, CheckCircle2, Mail, Slack } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { reports, schedules } from "@/lib/mock-data/reporting";
@@ -57,10 +58,10 @@ export default function ReportLibrary() {
                                  <FileText className="h-5 w-5 text-primary" />
                               </div>
                               <div className="flex gap-1">
-                                 <Button variant="ghost" size="icon" className="h-7 w-7">
+                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toast.success("Downloading report...")}>
                                     <FileDown className="h-3.5 w-3.5" />
                                  </Button>
-                                 <Button variant="ghost" size="icon" className="h-7 w-7">
+                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => toast.info("Report settings...")}>
                                     <Settings className="h-3.5 w-3.5" />
                                  </Button>
                               </div>
@@ -133,7 +134,7 @@ export default function ReportLibrary() {
                            </div>
                         </div>
                      ))}
-                     <Button variant="ghost" className="w-full border border-dashed border-primary/20 hover:bg-primary/5 h-10 text-[10px] font-black uppercase">
+                     <Button variant="ghost" className="w-full border border-dashed border-primary/20 hover:bg-primary/5 h-10 text-[10px] font-black uppercase" onClick={() => toast.success("Creating new schedule")}>
                         <Plus className="h-4 w-4 mr-2" /> New Delivery Schedule
                      </Button>
 
